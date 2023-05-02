@@ -14,7 +14,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 DEPS = libft/libft.a
 
-SRC = src/main.c src/prompt_split.c
+SRC = src/main.c src/builtins/pwd.c
 
 OBJ = $(SRC:.c=.o)
 
