@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 19:36:52 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/01 19:40:22 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/01 20:02:40 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,20 +89,3 @@ char	**prompt_split(char const *s, char c)
 	arr[j] = 0;
 	return (arr);
 }
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-//	char	s[] = "    Hello    wor  l d!  ";
-	char	s[] = "      split       this for   me  !       ";
-	char	**result;
-	int		i = 0;
-	
-	result = ft_split(s, ' ');
-	while (result[i])
-	{
-		puts(result[i]);
-		i++;
-	}
-}*/
