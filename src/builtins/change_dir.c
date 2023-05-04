@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 11:38:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/04 11:59:30 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:02:16 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_cd(t_data *data, char **argv)
 {
 	char *path;
 
+	(void)data;
 	if (argv[2] != NULL)
 		ft_printf("cd: too many arguments\n");
 	path = argv[1];

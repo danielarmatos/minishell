@@ -6,15 +6,16 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 19:05:36 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/02 20:54:05 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:23:51 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	pwd(char **argv)
+int	ft_pwd(t_data *data, char **argv)
 {
 	char	*path;
+	(void)data;
 
 	if (argv[1] != NULL)
 	{
