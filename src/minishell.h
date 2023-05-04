@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/01 19:38:06 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/02 20:40:24 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-char	**prompt_split(char const *s, char c);
+int	pwd(char **argv);
 
 #endif
