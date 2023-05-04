@@ -20,6 +20,8 @@ int check_builtins(t_data *data, char **input)
 		ft_cd(data,input);
 	if (ft_strncmp("exit", input[0], 4) == 0)
 		ft_exit(data,input);
+  if (ft_strncmp("echo", input[0], 4) == 0)
+	  ft_echo(data, input);
 	return (0);
 }
 

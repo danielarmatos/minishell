@@ -28,5 +28,6 @@ typedef struct s_data
 int	ft_pwd(t_data *data, char **argv);
 void	ft_cd(t_data *data, char **argv);
 void	ft_exit(t_data *data, char **input);
+void	ft_echo(t_data *data, char **argv);
 
 #endif
