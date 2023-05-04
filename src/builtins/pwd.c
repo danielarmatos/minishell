@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 19:05:36 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/04 16:23:51 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/04 20:56:41 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_pwd(t_data *data, char **argv)
 	}
 	if (argv[0][3] != '\0')
 	{
-		ft_printf("zsh: command not found: %s\n", argv[0]);
+		ft_printf("minishell: command not found: %s\n", argv[0]);
 		return (0);
 	}
 	else

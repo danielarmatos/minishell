@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/04 16:57:45 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:45:24 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 
 typedef struct s_data
 {
@@ -25,9 +26,10 @@ typedef struct s_data
 	int		exit_status;
 }		t_data;
 
-int	ft_pwd(t_data *data, char **argv);
+int		ft_pwd(t_data *data, char **argv);
 void	ft_cd(t_data *data, char **argv);
 void	ft_exit(t_data *data, char **input);
 void	ft_echo(t_data *data, char **argv);
+void	set_signals(void);
 
 #endif

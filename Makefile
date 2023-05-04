@@ -6,7 +6,7 @@
 #    By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 18:12:34 by dreis-ma          #+#    #+#              #
-#    Updated: 2023/05/01 18:12:37 by dreis-ma         ###   ########.fr        #
+#    Updated: 2023/05/04 19:46:25 by dreis-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CFLAGS = -Wall -Wextra -Werror -g
 DEPS = libft/libft.a
 
 SRC = src/main.c src/prompt_split.c src/builtins/pwd.c \
-src/builtins/change_dir.c src/builtins/echo.c src/builtins/exit.c
+src/builtins/change_dir.c src/builtins/echo.c src/builtins/exit.c \
+src/signals.c
 
 OBJ = $(SRC:.c=.o)
 
