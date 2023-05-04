@@ -14,11 +14,17 @@
 # define MINISHELL_H
 
 # include <unistd.h>
-# include "../libft/libft.h"
+# include "../libft/include/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_data
+{
+	char *prompt;
+}		t_data;
+
 int	pwd(char **argv);
+void	ft_cd(t_data *data, char **argv);
 
 #endif
