@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 DEPS = libft/libft.a
 
 SRC = src/main.c src/prompt_split.c src/builtins/pwd.c \
-src/builtins/change_dir.c src/builtins/echo.c
+src/builtins/change_dir.c src/builtins/echo.c src/builtins/exit.c
 
 OBJ = $(SRC:.c=.o)
 
