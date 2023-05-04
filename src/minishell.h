@@ -21,10 +21,11 @@
 
 typedef struct s_data
 {
-	char *prompt;
+	char	*prompt;
 }		t_data;
 
-int	pwd(char **argv);
+int		pwd(char **argv);
 void	ft_cd(t_data *data, char **argv);
+void	ft_echo(t_data *data, char **argv);
 
 #endif

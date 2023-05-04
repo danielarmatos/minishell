@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   change_dir.c                                       :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/04 15:49:45 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/04 15:49:45 by dmanuel-         ###   ########.fr       */
+/*   Created: 2023/05/04 16:04:33 by dmanuel-          #+#    #+#             */
+/*   Updated: 2023/05/04 16:04:33 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../minishell.h"
 
-void	ft_cd(t_data *data, char **argv)
+void	ft_echo(t_data *data, char **argv)
 {
-	char	*path;
+	int	i;
+	int	n;
 
 	(void)data;
-	if (argv[2] != NULL)
-		ft_printf("cd: too many arguments\n");
-	path = argv[1];
-	if (!path)
-		ft_printf("cd: no path\n");
-	if (chdir(path) != 0)
-		ft_printf("cd: no path\n");
+	i = 1;
+	n = 0;
+	if (argv[1] && ft_strncmp(argv[1], "-n", 3) == 0)
+	{
+		n = 1;
+		i++;
+	}
+	while (argv[i])
+	{
+		ft_putstr_fd(argv[i], STDOUT_FILENO);
+		if (argv[i + 1])
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		i++;
+	}
+	if (n == 0)
+		ft_putchar_fd('\n', STDOUT_FILENO);
 }
