@@ -14,16 +14,18 @@
 
 int	main(void)
 {
-	char	*prompt;
+	t_data	*data;
 	char	**input;
 
 	while (1)
 	{
-		prompt = readline("Minishell$ ");
-		if (*prompt)
-			add_history(prompt);
-		input = ft_split(prompt, ' ');
+		data->prompt = readline("Minishell$ ");
+		if (data->prompt != NULL)
+			add_history(data->prompt);
+		input = ft_split(data->prompt, ' ');
 		if (ft_strncmp("pwd", input[0], 3) == 0)
 			pwd(input);
+		if (ft_strncmp("cd", input[0], 2) == 0)
+			ft_cd(data,input);
 	}
 }
