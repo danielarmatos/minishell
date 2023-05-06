@@ -6,11 +6,16 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/04 20:46:07 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/06 14:06:16 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+    SIGINT - ctrl-C displays a new prompt on a new line.
+    SIGQUIT - ctrl-\ does nothing
+*/
 
 static void	handle_signals(int sig)
 {
