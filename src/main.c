@@ -12,25 +12,28 @@
 
 #include "minishell.h"
 
-int check_builtins(t_data *data, char **input)
+int	check_builtins(t_data *data, char **input)
 {
-	if (ft_strncmp("pwd", input[0], 3) == 0)
-		ft_pwd(data,input);
-	if (ft_strncmp("cd", input[0], 2) == 0)
-		ft_cd(data,input);
-	if (ft_strncmp("exit", input[0], 4) == 0)
-		ft_exit(data,input);
-  	if (ft_strncmp("echo", input[0], 4) == 0)
-	  ft_echo(data, input);
+	if (ft_strncmp("pwd", input[0], 4) == 0)
+		ft_pwd(data, input);
+	if (ft_strncmp("cd", input[0], 3) == 0)
+		ft_cd(data, input);
+	if (ft_strncmp("exit", input[0], 5) == 0)
+		ft_exit(data, input);
+	if (ft_strncmp("echo", input[0], 5) == 0)
+		ft_echo(data, input);
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 	char	**input;
 
+	(void)argc;
+	(void)argv;
 	data = malloc(sizeof(t_data));
+	data->env = envp;
 	set_signals();
 	while (1)
 	{

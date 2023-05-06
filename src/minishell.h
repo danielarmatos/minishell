@@ -22,6 +22,7 @@
 
 typedef struct s_data
 {
+	char	**env;
 	char	*prompt;
 	int		exit_status;
 }		t_data;
