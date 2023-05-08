@@ -22,6 +22,8 @@ int	check_builtins(t_data *data, char **input)
 		ft_exit(data, input);
 	if (ft_strncmp("echo", input[0], 5) == 0)
 		ft_echo(data, input);
+	if (ft_strncmp("env", input[0], 4) == 0)
+		ft_env(data);
 	return (0);
 }
 
