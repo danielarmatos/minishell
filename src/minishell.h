@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/04 19:45:24 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:54:39 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 typedef struct s_data
 {
+	char	**env;
 	char	*prompt;
 	int		exit_status;
 }		t_data;
@@ -30,6 +31,7 @@ int		ft_pwd(t_data *data, char **argv);
 void	ft_cd(t_data *data, char **argv);
 void	ft_exit(t_data *data, char **input);
 void	ft_echo(t_data *data, char **argv);
+int		ft_env(t_data *data);
 void	set_signals(void);
 
 #endif
