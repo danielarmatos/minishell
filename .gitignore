@@ -47,6 +47,7 @@ minishell
 *.mod*
 *.cmd
 .tmp_versions/
+.idea/
 modules.order
 Module.symvers
 Mkfile.old
