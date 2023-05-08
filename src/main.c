@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/04 20:59:52 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/06 15:42:40 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ int	main(void)
 	{
 		data->prompt = readline("Minishell$ ");
 		if (!data->prompt)
+		{
+			ft_printf("\n");
 			ft_exit(data, 0);
+		}
 		data->exit_status = EXIT_SUCCESS;
 		if (data->prompt != NULL)
 			add_history(data->prompt);
