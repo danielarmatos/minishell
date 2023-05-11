@@ -6,13 +6,13 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/06 14:01:04 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/11 21:01:50 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void free_data(t_data *data, char **input)
+void	free_data(t_data *data, char **input)
 {
 	int	i;
 
@@ -34,6 +34,7 @@ void free_data(t_data *data, char **input)
 void	ft_exit(t_data *data, char **input)
 {
 	int	exit_status;
+
 	if (input && input[0][4] != '\0')
 		ft_printf("minishell: command not found: %s\n", input[0]);
 	else

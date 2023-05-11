@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/06 14:06:16 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:59:20 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	handle_signals(int sig)
 	}
 }
 
-void set_signals(void)
+void	set_signals(void)
 {
 	struct sigaction	signal;
 

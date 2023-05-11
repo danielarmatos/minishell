@@ -6,7 +6,7 @@
 #    By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 18:12:34 by dreis-ma          #+#    #+#              #
-#    Updated: 2023/05/09 18:33:22 by dreis-ma         ###   ########.fr        #
+#    Updated: 2023/05/11 20:02:05 by dreis-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ DEPS = libft/libft.a
 
 SRC = src/main.c src/input_split.c src/builtins/pwd.c \
 src/builtins/change_dir.c src/builtins/echo.c src/builtins/exit.c \
-src/signals.c src/builtins/env.c src/executable.c src/lexer.c
+src/signals.c src/builtins/env.c src/executable.c src/lexer/lexer.c \
+src/lexer/lexer_utils.c
 
 OBJ = $(SRC:.c=.o)
 
