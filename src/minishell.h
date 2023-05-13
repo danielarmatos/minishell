@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/11 20:54:19 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/13 11:22:32 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ int		check_executable(t_data *data, char **input);
 int		lexical_analysis(t_data *data);
 char	**input_split(char const *s, char c);
 
+int		check_quote(char *input, int i);
 void	add_node(t_lexer **lexer, t_lexer *new_node);
+t_lexer	*create_token_node(char *str);
 t_lexer	*create_str_node(char *str);
 
 #endif

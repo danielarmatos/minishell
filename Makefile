@@ -14,7 +14,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 DEPS = libft/libft.a
 
-SRC = src/main.c src/input_split.c src/builtins/pwd.c \
+SRC = src/main.c src/builtins/pwd.c \
 src/builtins/change_dir.c src/builtins/echo.c src/builtins/exit.c \
 src/signals.c src/builtins/env.c src/executable.c src/lexer/lexer.c \
 src/lexer/lexer_utils.c

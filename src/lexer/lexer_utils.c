@@ -6,11 +6,45 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:54:37 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/11 20:52:39 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/13 14:09:19 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	check_quote(char *input, int i)
+{
+	int	quote;
+
+	quote = 0;
+	if (input[i] == '\"')
+	{
+		quote = 1;
+		i++;
+		while (input[i])
+		{
+			if (input[i] == '\"')
+				quote++;
+			i++;
+		}
+	}
+	if (quote % 2 != 0)
+		quote--;
+	return (quote);
+}
+
+t_lexer	*create_token_node(char *str)
+{
+	t_lexer	*node;
+
+	node = malloc(sizeof(t_lexer));
+	node->index = 0;
+	node->str = NULL;
+	node->token = str;
+	node->next = NULL;
+	node->prev = NULL;
+	return (node);
+}
 
 t_lexer	*create_str_node(char *str)
 {
