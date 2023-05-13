@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   change_dir.c                                       :+:      :+:    :+:   */
+/*   executable.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
+/*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/04 11:38:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/11 21:00:51 by dreis-ma         ###   ########.fr       */
+/*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
+/*   Updated: 2023/05/11 21:01:24 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
-void	ft_cd(t_data *data, char **argv)
+int	check_executable(t_data *data, char **input)
 {
-	char	*path;
-
 	(void)data;
-	if (argv[2] != NULL)
-		ft_printf("cd: too many arguments\n");
-	path = argv[1];
-	if (!path)
-		ft_printf("cd: no path\n");
-	if (chdir(path) != 0)
-		ft_printf("cd: no path\n");
+	(void)input;
+	return (0);
 }

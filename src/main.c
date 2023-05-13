@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/06 15:42:40 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:57:53 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	main(int argc, char **argv, char **envp)
 		if (data->prompt != NULL)
 			add_history(data->prompt);
 		input = ft_split(data->prompt, ' ');
+		lexical_analysis(data);
 		check_builtins(data, input);
+		check_executable(data, input);
 	}
 }
