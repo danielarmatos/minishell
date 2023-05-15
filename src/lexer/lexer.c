@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/13 14:24:20 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:37:17 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,11 @@ int	add_string(t_data *data, char *input, int i)
 
 	quote = check_quote(input, i);
 	if (input[i] == '\"')
-		if (quote < 2)
-		{
-			if (input[i + 1] == ' ')
+			if (input[i + 1] == ' ' || input[i + 1] == '\"' || input[i + 1] == '\0')
 				return (i + 1);
-			i++;
-		}
 	j = i;
-	if (quote < 2)
-		while (input[j] && input[j] != 32 && !(input[j] >= 9 && input[j] <= 13) && input[j] != '|' && input[j] != '<' && input[j] != '>')
+	if (quote < 2 || input[i] != '\"')
+		while (input[j] && input[j] != 32 && input[j] != '\"' && !(input[j] >= 9 && input[j] <= 13) && input[j] != '|' && input[j] != '<' && input[j] != '>')
 			j++;
 	else
 	{
@@ -97,15 +93,15 @@ void print_lexer(t_data *data)
 	while (node->next != NULL)
 	{
 		if (node->str != NULL)
-			ft_printf("%s\n", node->str);
+			ft_printf("%i: %s\n", node->index, node->str);
 		else
-			ft_printf("\033[0;36m%s\033[0m\n", node->token);
+			ft_printf("\033[0;36m%i: %s\033[0m\n", node->index, node->token);
 		node = node->next;
 	}
 	if (node->str != NULL)
-		ft_printf("%s\n", node->str);
+		ft_printf("%i: %s\n", node->index, node->str);
 	else
-		ft_printf("\033[0;36m%s\033[0m\n", node->token);
+		ft_printf("\033[0;36m%i: %s\033[0m\n", node->index, node->token);
 }
 
 int	lexical_analysis(t_data *data)
@@ -131,6 +127,7 @@ int	lexical_analysis(t_data *data)
 			i = add_string(data, input, i);
 		i++;
 	}
-//	print_lexer(data);
+	//print_lexer(data);
+	//parsing(data);
 	return (1);
 }

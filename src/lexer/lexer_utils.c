@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:54:37 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/13 14:09:19 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:36:35 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	add_node(t_lexer **lexer, t_lexer *new_node)
 			temp = temp->next;
 		temp->next = new_node;
 		new_node->prev = temp;
+		new_node->index = new_node->prev->index + 1;
 	}
 	else
 		(*lexer) = new_node;
