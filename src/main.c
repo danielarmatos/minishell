@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/13 14:09:06 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:35:58 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	check_builtins(t_data *data, char **input)
 {
-	if (ft_strncmp("pwd", input[0], 4) == 0)
-		ft_pwd(data, input);
-	if (ft_strncmp("cd", input[0], 3) == 0)
-		ft_cd(data, input);
+	//if (ft_strncmp("pwd", input[0], 4) == 0)
+	//	ft_pwd(data, input);
+	//if (ft_strncmp("cd", input[0], 3) == 0)
+	//	ft_cd(data, input);
 	if (ft_strncmp("exit", input[0], 5) == 0)
 		ft_exit(data, input);
 	if (ft_strncmp("echo", input[0], 5) == 0)
