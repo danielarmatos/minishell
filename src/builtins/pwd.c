@@ -6,36 +6,32 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 19:05:36 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/11 21:01:07 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/18 12:53:40 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_pwd(t_data *data, char **argv)
+int	find_pwd(t_data *data)
 {
-	char	*path;
+	int	i;
 
-	(void)data;
-	if (argv[1] != NULL)
+	i = 0;
+	while (data->env[i])
 	{
-		ft_printf("pwd: too many arguments\n");
-		return (0);
+		if (!ft_strncmp(data->env[i], "PWD=", 4))
+			data->pwd = ft_substr(data->env[i], 4, ft_strlen(data->env[i]) - 4);
+		if (!ft_strncmp(data->env[i], "OLDPWD=", 7))
+			data->oldpwd = ft_substr(data->env[i], 7, \
+			ft_strlen(data->env[i]) - 7);
+		i++;
 	}
-	if (argv[0][3] != '\0')
-	{
-		ft_printf("minishell: command not found: %s\n", argv[0]);
-		return (0);
-	}
-	else
-	{
-		path = getcwd(NULL, 0);
-		if (path == NULL)
-			return (0);
-		else
-		{
-			ft_printf("%s\n", path);
-			return (1);
-		}
-	}
+	return (1);
+}
+
+int	ft_pwd(t_data *data, t_simple_cmds *simple_cmd)
+{
+	(void)simple_cmd;
+	ft_putendl_fd(data->pwd, STDOUT_FILENO);
+	return (0);
 }
