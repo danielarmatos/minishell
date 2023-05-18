@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/18 19:58:19 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/18 20:28:22 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int	add_simple_cmd(t_lexer *node, t_data *data, int i, int j)
 	x = 0;
 	while ((i + x) <= j)
 	{
-		command[x] = node->str;
+		if (node->str == NULL)
+			command[x] = node->token;
+		else
+			command[x] = node->str;
 		x++;
 		node = node->next;
 	}
@@ -93,6 +96,6 @@ int	parsing(t_data *data)
 	(*simple_cmds) = 0;
 	data->simple_cmds = simple_cmds;
 	check_pipes(data);
-	print_simple_cmds(data);
+//	print_simple_cmds(data);
 	return (0);
 }
