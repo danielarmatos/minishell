@@ -36,6 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	data = malloc(sizeof(t_data));
 	data->env = envp;
+	find_pwd(data);
 	set_signals();
 	while (1)
 	{

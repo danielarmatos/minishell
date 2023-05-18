@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/15 18:23:29 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/18 12:53:40 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,14 @@ typedef struct s_data
 	struct s_simple_cmds	**simple_cmds;
 }		t_data;
 
-int		ft_pwd(t_data *data, char **argv);
+int		ft_pwd(t_data *data, t_simple_cmds *simple_cmd);
 void	ft_cd(t_data *data, t_simple_cmds *simple_cmd);
 void	ft_exit(t_data *data, char **input);
 void	ft_echo(t_data *data, char **argv);
 int		ft_env(t_data *data);
 void	set_signals(void);
 int		check_executable(t_data *data, char **input);
+int		find_pwd(t_data *data);
 
 int		lexical_analysis(t_data *data);
 int		check_quote(char *input, int i);
