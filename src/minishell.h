@@ -39,6 +39,8 @@ typedef struct s_lexer
 typedef struct s_data
 {
 	char					**env;
+	char					*pwd;
+	char					*oldpwd;
 	char					*prompt;
 	int						exit_status;
 	struct s_lexer			**lexer;
@@ -46,7 +48,7 @@ typedef struct s_data
 }		t_data;
 
 int		ft_pwd(t_data *data, char **argv);
-void	ft_cd(t_data *data, char **argv);
+void	ft_cd(t_data *data, t_simple_cmds *simple_cmd);
 void	ft_exit(t_data *data, char **input);
 void	ft_echo(t_data *data, char **argv);
 int		ft_env(t_data *data);
