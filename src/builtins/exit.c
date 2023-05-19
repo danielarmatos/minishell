@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/11 21:01:50 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/19 12:48:36 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ void	free_data(t_data *data, char **input)
 
 	i = 0;
 	free(data->prompt);
+	free(data->env);
+	free(data->pwd);
+	free(data->oldpwd);
 	free(data);
 	if (input)
 	{
