@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 11:38:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/18 12:14:06 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:36:22 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	specific_path(t_data *data, char *str)
 		free(str);
 		ft_putendl_fd(" not set", STDERR_FILENO);
 	}
+	return (0);
 }
 
 void	ft_cd(t_data *data, t_simple_cmds *simple_cmd)

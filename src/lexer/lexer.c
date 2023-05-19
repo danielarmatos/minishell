@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/18 10:29:21 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/18 20:00:40 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ int	add_string(t_data *data, char *input, int i)
 
 	quote = check_quote(input, i);
 	if (input[i] == '\"')
-			if (input[i + 1] == ' ' || input[i + 1] == '\"' || input[i + 1] == '\0')
-				return (i + 1);
+		if (input[i + 1] == ' ' || input[i + 1] == '\"' || input[i + 1] == '\0')
+			return (i + 1);
 	j = i;
 	if (quote < 2 || input[i] != '\"')
-		while (input[j] && input[j] != 32 && input[j] != '\"' && !(input[j] >= 9 && input[j] <= 13) && input[j] != '|' && input[j] != '<' && input[j] != '>')
+		while (input[j] && input[j] != 32 && input[j] != '\"'
+			&& !(input[j] >= 9 && input[j] <= 13) && input[j] != '|'
+			&& input[j] != '<' && input[j] != '>')
 			j++;
 	else
 	{
@@ -57,10 +59,10 @@ int	add_string(t_data *data, char *input, int i)
 	return (j - 1);
 }
 
-int add_token(t_data *data, char *input, int i)
+int	add_token(t_data *data, char *input, int i)
 {
-	int	j;
-	char *str;
+	int		j;
+	char	*str;
 
 	j = i;
 	if (input[i] == '|')
@@ -85,7 +87,7 @@ int add_token(t_data *data, char *input, int i)
 	return (j);
 }
 
-void print_lexer(t_data *data)
+void	print_lexer(t_data *data)
 {
 	t_lexer	*node;
 
@@ -123,11 +125,12 @@ int	lexical_analysis(t_data *data)
 			i++;
 		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
 			i = add_token(data, input, i);
-		else if (input[i] && (input[i] != '|' && input[i] != '<' && input[i] != '>'))
+		else if (input[i] && (input[i] != '|' && input[i] != '<'
+				&& input[i] != '>'))
 			i = add_string(data, input, i);
 		i++;
 	}
 	//print_lexer(data);
-	//parsing(data);
+	parsing(data);
 	return (1);
 }
