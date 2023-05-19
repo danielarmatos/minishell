@@ -50,7 +50,7 @@ typedef struct s_data
 int				ft_pwd(t_data *data, t_simple_cmds *simple_cmd);
 void			ft_cd(t_data *data, t_simple_cmds *simple_cmd);
 void			ft_exit(t_data *data, char **input);
-void			ft_echo(t_data *data, char **argv);
+void			ft_echo(t_data *data, t_simple_cmds *simple_cmd);
 int				ft_env(t_data *data);
 void			set_signals(void);
 int				check_executable(t_data *data, char **input);
