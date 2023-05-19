@@ -6,11 +6,16 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/18 20:28:22 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/19 17:41:15 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void add_redirections(t_lexer *node)
+{
+	(void)node;
+}
 
 int	add_simple_cmd(t_lexer *node, t_data *data, int i, int j)
 {
@@ -26,10 +31,17 @@ int	add_simple_cmd(t_lexer *node, t_data *data, int i, int j)
 	while ((i + x) <= j)
 	{
 		if (node->str == NULL)
-			command[x] = node->token;
+		{
+			add_redirections(node);
+			i = i + 2;
+			if (node->next != NULL)
+				node = node->next;
+		}
 		else
+		{
 			command[x] = node->str;
-		x++;
+			x++;
+		}
 		node = node->next;
 	}
 	command[x] = NULL;
@@ -96,6 +108,6 @@ int	parsing(t_data *data)
 	(*simple_cmds) = 0;
 	data->simple_cmds = simple_cmds;
 	check_pipes(data);
-//	print_simple_cmds(data);
+	//print_simple_cmds(data);
 	return (0);
 }

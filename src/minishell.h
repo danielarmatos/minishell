@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/18 19:57:19 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/19 18:25:53 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void			ft_exit(t_data *data, char **input);
 void			ft_echo(t_data *data, t_simple_cmds *simple_cmd);
 int				ft_env(t_data *data);
 void			set_signals(void);
-int				check_executable(t_data *data, char **input);
+int				check_executable(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
 
 int				lexical_analysis(t_data *data);
