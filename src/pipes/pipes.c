@@ -6,79 +6,97 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:39:27 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/20 20:12:31 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/21 20:12:06 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-int	open_file(char *file, int in_or_out)
+int	execute_path_p(char *name, t_simple_cmds *simple_cmds)
 {
-	int	ret;
+	int result;
+	int found;
 
-	if (in_or_out == 0)
-		ret = open(file, O_RDONLY, 0777);
-	if (in_or_out == 1)
-		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (ret == -1)
-		exit(0);
-	return (ret);
+	found = 0;
+	result = access(name, F_OK);
+	if (result == 0)
+	{
+		found = 1;
+		execve(name, simple_cmds->cmds, NULL);
+	}
+	return (found);
 }
 
-void	exec(char *cmd, char **env)
+int	exec(t_data *data, t_simple_cmds *simple_cmds, int fd_in)
 {
-	(void)cmd;
-	(void)env;
-
-	printf("Exec function\n");
-}
-
-void	parent_process(t_data *data, t_simple_cmds *simple_cmds, int *p_fd)
-{
-	//int	fd;
 	(void)data;
-	(void)simple_cmds;
+	char	**paths;
+	char 	*name;
+	char 	*temp;
+	int 	i;
+	int 	found;
 
-	printf("\033[0;36mParent Process:\033[0m %s\n%i, %i\n", simple_cmds->cmds[0], p_fd[0], p_fd[1]);
-/*	fd = open_file(argv[4], 1);
-	dup2(fd, 1);
-	dup2(p_fd[0], 0);
-	close(p_fd[1]);
-	exec(argv[3], env);*/
+	dup2(fd_in, STDIN_FILENO);
+	close(fd_in);
+	i = 0;
+	paths = ft_split(getenv("PATH"), ':');
+	while (paths[i])
+	{
+		temp = ft_strjoin(paths[i], "/");
+		name = ft_strjoin(temp, simple_cmds->cmds[0]);
+		found = execute_path_p(name, simple_cmds);
+		if (found == 1)
+			break ;
+		i++;
+	}
+	if (found == 0)
+		execute_direct_path(simple_cmds);
+	return (0);
 }
 
-void	child_process(t_data *data, t_simple_cmds *simple_cmds, int *p_fd)
+void	parent_process(t_data *data, t_simple_cmds *simple_cmds, int *fd, int fd_in)
 {
-//	int		fd;
-	(void)data;
-	(void)simple_cmds;
-	(void)p_fd;
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[1]);
+	close(fd[0]);
+	exec(data, simple_cmds, fd_in);
+	/*if (fork() == 0)
+		exec(data, simple_cmds, fd_in);
+	else
+		while (waitpid(-1, 0, WUNTRACED) == -1)
+			;*/
+}
 
-	printf("\033[0;36mChild Process:\033[0m %s\n", simple_cmds->cmds[0]);
-/*
-	fd = open_file(argv[1], 0);
-	dup2(fd, 0);
-	dup2(p_fd[1], 1);
-	close(p_fd[0]);
-	exec(argv[2], env);*/
+void	child_process(t_data *data, t_simple_cmds *simple_cmds, int *fd, int fd_in)
+{
+	//printf("\033[0;36mChild Process:\033[0m %s\n", simple_cmds->cmds[0]);
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+	exec(data, simple_cmds, fd_in);
 }
 
 void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 {
 	(void)data;
-	int   fd[2];
-	pid_t pid;
+	int		fd[2];
+	int		fd_in;
+	pid_t	pid;
 
-	pipe(fd);
+	fd_in = dup(STDIN_FILENO);
+	if (pipe(fd) == -1)
+	{
+		ft_printf("Error opening the pipe\n");
+		return ;
+	}
 	pid = fork();
 	if (pid < 0)
 	{
 		printf("Error\n");
 		return ;
 	}
-	if (!pid)
-		child_process(data, simple_cmds, fd);
+	if (pid == 0)
+		child_process(data, simple_cmds, fd, fd_in);
 	else
-		parent_process(data, simple_cmds->next, fd);
+		parent_process(data, simple_cmds->next, fd, fd[0]);
 }
