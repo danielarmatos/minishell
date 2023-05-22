@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/20 15:48:25 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:06:43 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_builtins(t_data *data, char **input)
 	else if (ft_strncmp("env", input[0], 4) == 0)
 		ft_env(data);
 	else
-		check_executable(data, data->simple_cmds[0]);
+		execute(data, data->simple_cmds[0]);
 	return (0);
 }
 
