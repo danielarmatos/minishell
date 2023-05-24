@@ -18,7 +18,7 @@ SRC = src/main.c src/builtins/pwd.c \
 src/builtins/change_dir.c src/builtins/echo.c src/builtins/exit.c \
 src/signals.c src/builtins/env.c src/executable.c src/lexer/lexer.c \
 src/lexer/lexer_utils.c src/parser/parser.c src/parser/parser_utils.c \
-src/builtins/ft_export.c
+src/builtins/ft_export.c src/builtins/utils_builtins.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -55,15 +55,20 @@ int				ft_env(t_data *data);
 void			set_signals(void);
 int				check_executable(t_data *data, char **input);
 int				find_pwd(t_data *data);
+int				check_identifier(char c);
 
 int				lexical_analysis(t_data *data);
 int				check_quote(char *input, int i);
 void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
 t_lexer			*create_str_node(char *str);
+size_t			equals(char *str);
 
 int				parsing(t_data *data);
 t_simple_cmds	*create_cmd_node(char **command);
-void			add_cmd_node(t_simple_cmds **simple_cmds, t_simple_cmds *new_node);
+void			add_cmd_node(t_simple_cmds **simple_cmds, \
+							t_simple_cmds *new_node);
+char			*delete_quotes(char *str, char c);
+void			free_arr(char **split_arr);
 
 #endif

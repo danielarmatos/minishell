@@ -58,3 +58,16 @@ char	**ft_split(char const *s, char c)
 	}
 	return (str);
 }
+
+void	free_arr(char **split_arr)
+{
+	int	i;
+
+	i = 0;
+	while (split_arr[i])
+	{
+		free(split_arr[i]);
+		i++;
+	}
+	free(split_arr);
+}
