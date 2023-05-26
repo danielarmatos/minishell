@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/19 12:48:36 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:50:14 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	free_data(t_data *data, t_simple_cmds *simple_cmd)
 {
+	(void)simple_cmd;
 	int	i;
 
 	i = 0;

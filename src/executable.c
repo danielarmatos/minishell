@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/24 19:32:45 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:09:56 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_direct_path(t_simple_cmds *simple_cmds)
 	}
 }
 
-int	execute_path(char *name, t_simple_cmds *simple_cmds)
+int	execute_path(char *name, t_simple_cmds *simple_cmds, int fd_in)
 {
 	int	result;
 	int	found;
@@ -31,17 +31,15 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 	if (result == 0)
 	{
 		found = 1;
-		//dup2(fd_in, STDIN_FILENO);
-		//close(fd_in);
+		dup2(fd_in, STDIN_FILENO);
+		close(fd_in);
 		if (execve(name, simple_cmds->cmds, NULL) == -1)
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
 	}
-	if (found == 0)
-		execute_direct_path(simple_cmds);
 	return (0);
 }
 
-int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
+int	check_executable(t_data *data, t_simple_cmds *simple_cmds, int fd_in)
 {
 	(void)data;
 	char 	*temp;
@@ -56,11 +54,13 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 	{
 		temp = ft_strjoin(paths[i], "/");
 		name = ft_strjoin(temp, simple_cmds->cmds[0]);
-		found = execute_path(name, simple_cmds);
+		found = execute_path(name, simple_cmds, fd_in);
 		if (found == 1)
 			break ;
 		i++;
 	}
+	if (found == 0)
+		execute_direct_path(simple_cmds);
 	return (found);
 }
 
@@ -68,10 +68,7 @@ int	execute(t_data *data, t_simple_cmds *simple_cmds)
 {
 	(void)data;
 	int 	fd_in;
-	//int 	fd[2];
-	int 	temp;
 
-	temp = 1;
 	fd_in = dup(STDIN_FILENO);
 	if (simple_cmds->next != NULL)
 		ft_pipes(data, simple_cmds);
@@ -79,7 +76,8 @@ int	execute(t_data *data, t_simple_cmds *simple_cmds)
 	{
 		if (fork() == 0)
 		{
-			check_executable(data, simple_cmds);
+			if (check_builtins(data, simple_cmds) == 0)
+				check_executable(data, simple_cmds, fd_in);
 			return (1);
 		}
 		else

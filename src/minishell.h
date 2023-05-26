@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/26 15:57:20 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:09:50 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ char			*delete_quotes(char *str, char c);
 void			free_arr(char **split_arr);
 
 void			ft_pipes(t_data *data, t_simple_cmds *simple_cmds);
-int				execute_path(char *name, t_simple_cmds *simple_cmds);
+int				execute_path(char *name, t_simple_cmds *simple_cmds, int fd_in);
 void			execute_direct_path(t_simple_cmds *simple_cmds);
+int				check_builtins(t_data *data, t_simple_cmds *simple_cmd);
 
 #endif
