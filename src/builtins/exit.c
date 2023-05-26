@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	free_data(t_data *data, char **input)
+void	free_data(t_data *data, t_simple_cmds *simple_cmd)
 {
 	int	i;
 
@@ -22,28 +22,29 @@ void	free_data(t_data *data, char **input)
 	free(data->pwd);
 	free(data->oldpwd);
 	free(data);
-	if (input)
+	/*if (simple_cmd->cmds[0])
 	{
-		while (input[i])
+		while (simple_cmd->cmds[i])
 		{
-			free(input[i]);
+			free(simple_cmd->cmds[i]);
 			i++;
 		}
-		free(input);
-	}
+		free(simple_cmd->cmds);
+	}*/
+	//limpar data->simple_cmd;
 	clear_history();
 }
 
-void	ft_exit(t_data *data, char **input)
+void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 {
 	int	exit_status;
 
-	if (input && input[0][4] != '\0')
-		ft_printf("minishell: command not found: %s\n", input[0]);
+	if (simple_cmd->cmds && simple_cmd->cmds[0][4] != '\0')
+		ft_printf("minishell: command not found: %s\n", simple_cmd->cmds[0]);
 	else
 	{
 		exit_status = data->exit_status;
-		free_data(data, input);
+		free_data(data, simple_cmd);
 		exit(exit_status);
 	}
 }

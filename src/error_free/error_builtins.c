@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
+/*
 int	unset_error(t_simple_cmds *simple_cmd)
 {
 	int	i;
@@ -29,4 +29,4 @@ int	unset_error(t_simple_cmds *simple_cmd)
 
 		}
 	}
-}
+}*/

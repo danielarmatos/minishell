@@ -12,7 +12,6 @@
 
 #include "../minishell.h"
 /*
-
 int	var_exist(t_data *data, char *str)
 {
 	int	i;

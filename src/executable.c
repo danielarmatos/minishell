@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void execute_direct_path(t_simple_cmds *simple_cmds)
+void	execute_direct_path(t_simple_cmds *simple_cmds)
 {
 	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, NULL) == -1)
 	{
@@ -23,8 +23,8 @@ void execute_direct_path(t_simple_cmds *simple_cmds)
 
 int	execute_path(char *name, t_simple_cmds *simple_cmds)
 {
-	int result;
-	int found;
+	int	result;
+	int	found;
 
 	found = 0;
 	result = access(name, F_OK);
@@ -32,7 +32,7 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 	{
 		found = 1;
 		//dup2(fd_in, STDIN_FILENO);
-	//	close(fd_in);
+		//close(fd_in);
 		if (execve(name, simple_cmds->cmds, NULL) == -1)
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
 	}
