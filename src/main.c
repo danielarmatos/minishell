@@ -14,10 +14,10 @@
 
 int	check_builtins(t_data *data, char **input)
 {
-	//if (ft_strncmp("pwd", input[0], 4) == 0)
+	/*if (ft_strncmp("pwd", input[0], 4) == 0)
 	//	ft_pwd(data, input);
 	//if (ft_strncmp("cd", input[0], 3) == 0)
-	//	ft_cd(data, input);
+	//	ft_cd(data, input);*/
 	if (ft_strncmp("exit", input[0], 5) == 0)
 		ft_exit(data, input);
 	if (ft_strncmp("echo", input[0], 5) == 0)

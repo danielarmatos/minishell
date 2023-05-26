@@ -84,9 +84,9 @@ char	**add_var(char **arr, char *str)
 	size_t	i;
 
 	i = 0;
-	if (str[equal_sign(str)] == '\"')
+	if (str[equals(str)] == '\"')
 		delete_quotes(str, '\"');
-	if (str[equal_sign(str)] == '\'')
+	if (str[equals(str)] == '\'')
 		delete_quotes(str, '\'');
 	while (arr[i] != NULL)
 		i++;
