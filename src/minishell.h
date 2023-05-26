@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/24 19:30:32 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/26 15:57:20 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,28 @@ void			ft_cd(t_data *data, t_simple_cmds *simple_cmd);
 void			ft_exit(t_data *data, char **input);
 void			ft_echo(t_data *data, t_simple_cmds *simple_cmd);
 int				ft_env(t_data *data);
+int				ft_unset(t_data *data, t_simple_cmds *simple_cmds);
+void			ft_export(t_data *data, t_simple_cmds *simple_cmds);
 void			set_signals(void);
 int				execute(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
+int				check_identifier(char c);
+
+int				unset_error(t_simple_cmds *simple_cmd);
 
 int				lexical_analysis(t_data *data);
 int				check_quote(char *input, int i);
 void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
 t_lexer			*create_str_node(char *str);
+size_t			equals(char *str);
 
 int				parsing(t_data *data);
 t_simple_cmds	*create_cmd_node(char **command);
-void			add_cmd_node(t_simple_cmds **simple_cmds, t_simple_cmds *new_node);
+void			add_cmd_node(t_simple_cmds **simple_cmds, \
+							t_simple_cmds *new_node);
+char			*delete_quotes(char *str, char c);
+void			free_arr(char **split_arr);
 
 void			ft_pipes(t_data *data, t_simple_cmds *simple_cmds);
 int				execute_path(char *name, t_simple_cmds *simple_cmds);

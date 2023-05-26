@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 19:05:36 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/18 12:53:40 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/26 15:49:48 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@ int	find_pwd(t_data *data)
 	return (1);
 }
 
-int	ft_pwd(t_data *data, t_simple_cmds *simple_cmd)
+int	ft_pwd(t_data *data)
 {
-	(void)simple_cmd;
 	ft_putendl_fd(data->pwd, STDOUT_FILENO);
 	return (0);
 }
