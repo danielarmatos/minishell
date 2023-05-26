@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+/*
 
 int	var_exist(t_data *data, char *str)
 {
@@ -124,3 +125,4 @@ void	ft_export(t_data *data, t_simple_cmds *simple_cmds)
 		}
 	}
 }
+*/

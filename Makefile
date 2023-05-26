@@ -20,6 +20,7 @@ src/signals.c src/builtins/env.c src/executable.c src/lexer/lexer.c \
 src/lexer/lexer_utils.c src/parser/parser.c src/parser/parser_utils.c \
 src/builtins/ft_export.c src/builtins/utils_builtins.c src/builtins/unset.c \
 src/Error_Free/error_builtins.c
+src/builtins/ft_export.c src/pipes/pipes.c
 
 OBJ = $(SRC:.c=.o)
 

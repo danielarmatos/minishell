@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 11:38:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/18 15:36:22 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/19 16:18:30 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ void	ft_cd(t_data *data, t_simple_cmds *simple_cmd)
 {
 	int	path;
 
-	if (!simple_cmd->str[1])
+	if (!simple_cmd->cmds[1])
 		path = specific_path(data, "home=");
-	else if (ft_strncmp(simple_cmd->str[1], "-", 1) == 0)
+	else if (ft_strncmp(simple_cmd->cmds[1], "-", 1) == 0)
 		path = specific_path(data, "oldpwd=");
 	else
 	{
-		path = chdir(simple_cmd->str[1]);
+		path = chdir(simple_cmd->cmds[1]);
 		if (path != 0)
 		{
 			ft_printf("cd: no path\n");

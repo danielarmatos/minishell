@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include <sys/wait.h>
 
 typedef struct s_simple_cmds
 {
@@ -55,7 +56,7 @@ int				ft_env(t_data *data);
 int				ft_unset(t_data *data, t_simple_cmds *simple_cmds);
 void			ft_export(t_data *data, t_simple_cmds *simple_cmds);
 void			set_signals(void);
-int				check_executable(t_data *data, char **input);
+int				execute(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
 int				check_identifier(char c);
 
@@ -74,5 +75,9 @@ void			add_cmd_node(t_simple_cmds **simple_cmds, \
 							t_simple_cmds *new_node);
 char			*delete_quotes(char *str, char c);
 void			free_arr(char **split_arr);
+
+void			ft_pipes(t_data *data, t_simple_cmds *simple_cmds);
+int				execute_path(char *name, t_simple_cmds *simple_cmds);
+void			execute_direct_path(t_simple_cmds *simple_cmds);
 
 #endif
