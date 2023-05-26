@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/18 19:57:19 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/24 19:30:32 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include <sys/wait.h>
 
 typedef struct s_simple_cmds
 {
@@ -53,7 +54,7 @@ void			ft_exit(t_data *data, char **input);
 void			ft_echo(t_data *data, t_simple_cmds *simple_cmd);
 int				ft_env(t_data *data);
 void			set_signals(void);
-int				check_executable(t_data *data, char **input);
+int				execute(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
 
 int				lexical_analysis(t_data *data);
@@ -65,5 +66,9 @@ t_lexer			*create_str_node(char *str);
 int				parsing(t_data *data);
 t_simple_cmds	*create_cmd_node(char **command);
 void			add_cmd_node(t_simple_cmds **simple_cmds, t_simple_cmds *new_node);
+
+void			ft_pipes(t_data *data, t_simple_cmds *simple_cmds);
+int				execute_path(char *name, t_simple_cmds *simple_cmds);
+void			execute_direct_path(t_simple_cmds *simple_cmds);
 
 #endif
