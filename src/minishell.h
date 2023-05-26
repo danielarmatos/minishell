@@ -48,9 +48,9 @@ typedef struct s_data
 	struct s_simple_cmds	**simple_cmds;
 }		t_data;
 
-int				ft_pwd(t_data *data, t_simple_cmds *simple_cmd);
+int				ft_pwd(t_data *data);
 void			ft_cd(t_data *data, t_simple_cmds *simple_cmd);
-void			ft_exit(t_data *data, char **input);
+void			ft_exit(t_data *data, t_simple_cmds *simple_cmds);
 void			ft_echo(t_data *data, t_simple_cmds *simple_cmd);
 int				ft_env(t_data *data);
 int				ft_unset(t_data *data, t_simple_cmds *simple_cmds);
