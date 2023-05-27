@@ -6,11 +6,18 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/26 18:11:14 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/27 14:00:35 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	clear_data(t_data *data)
+{
+	free(data->prompt);
+	free_lexer(data);
+	free_simple_cmds(data);
+}
 
 int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 {
@@ -35,28 +42,25 @@ int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
-	//char	**input;
 
 	(void)argc;
 	(void)argv;
 	data = malloc(sizeof(t_data));
 	data->env = envp;
+	data->simple_cmds = NULL;
+	data->lexer = NULL;
 	find_pwd(data);
 	set_signals();
 	while (1)
 	{
 		data->prompt = readline("Minishell$ ");
 		if (!data->prompt)
-		{
-			ft_printf("\n");
-			ft_exit(data, 0);
-		}
+			close_minishell(data);
 		data->exit_status = EXIT_SUCCESS;
 		if (data->prompt != NULL)
 			add_history(data->prompt);
-		//input = ft_split(data->prompt, ' ');
 		lexical_analysis(data);
-		//check_builtins(data, data->simple_cmds[0]);
-		execute(data, data->simple_cmds[0]);
+		executor(data, data->simple_cmds[0]);
+		clear_data(data);
 	}
 }

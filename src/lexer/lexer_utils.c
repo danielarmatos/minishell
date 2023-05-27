@@ -12,6 +12,21 @@
 
 #include "../minishell.h"
 
+int		get_lexer_len(t_lexer *lexer)
+{
+	t_lexer	*node;
+	int		i;
+
+	i = 1;
+	node = lexer;
+	while (node->next != NULL)
+	{
+		node = node->next;
+		i++;
+	}
+	return (i);
+}
+
 int	check_quote(char *input, int i)
 {
 	int	quote;

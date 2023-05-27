@@ -6,11 +6,11 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/26 18:09:56 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/27 12:23:05 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	execute_direct_path(t_simple_cmds *simple_cmds)
 {
@@ -21,7 +21,7 @@ void	execute_direct_path(t_simple_cmds *simple_cmds)
 	}
 }
 
-int	execute_path(char *name, t_simple_cmds *simple_cmds, int fd_in)
+int	execute_path(char *name, t_simple_cmds *simple_cmds)
 {
 	int	result;
 	int	found;
@@ -31,30 +31,28 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds, int fd_in)
 	if (result == 0)
 	{
 		found = 1;
-		dup2(fd_in, STDIN_FILENO);
-		close(fd_in);
 		if (execve(name, simple_cmds->cmds, NULL) == -1)
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
 	}
-	return (0);
+	return (found);
 }
 
-int	check_executable(t_data *data, t_simple_cmds *simple_cmds, int fd_in)
+int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 {
-	(void)data;
-	char 	*temp;
+	char	*temp;
 	char	**paths;
-	char 	*name;
-	int 	found;
+	char	*name;
+	int		found;
 	int		i;
 
+	(void)data;
 	i = 0;
 	paths = ft_split(getenv("PATH"), ':');
 	while (paths[i])
 	{
 		temp = ft_strjoin(paths[i], "/");
 		name = ft_strjoin(temp, simple_cmds->cmds[0]);
-		found = execute_path(name, simple_cmds, fd_in);
+		found = execute_path(name, simple_cmds);
 		if (found == 1)
 			break ;
 		i++;
@@ -64,27 +62,29 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds, int fd_in)
 	return (found);
 }
 
-int	execute(t_data *data, t_simple_cmds *simple_cmds)
+int	executor(t_data *data, t_simple_cmds *simple_cmds)
 {
-	(void)data;
-	int 	fd_in;
+	int		fd_in;
 
+	(void)data;
 	fd_in = dup(STDIN_FILENO);
 	if (simple_cmds->next != NULL)
 		ft_pipes(data, simple_cmds);
 	else
 	{
-		if (fork() == 0)
+		if (check_builtins(data, simple_cmds) == 0)
 		{
-			if (check_builtins(data, simple_cmds) == 0)
-				check_executable(data, simple_cmds, fd_in);
-			return (1);
-		}
-		else
-		{
-			close(fd_in);
-			while(waitpid(-1, NULL, WUNTRACED) != -1)
-				;
+			if (fork() == 0)
+			{
+				check_executable(data, simple_cmds);
+				return (1);
+			}
+			else
+			{
+				close(fd_in);
+				while (waitpid(-1, NULL, WUNTRACED) != -1)
+					;
+			}
 		}
 	}
 	close(fd_in);
