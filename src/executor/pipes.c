@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/27 10:45:40 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:17:10 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ void	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 		parent_process(data, simple_cmds, id, pipe_fd, pid);
 }
 
-
 void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 {
 	int	**pipe_fd;
 	int	pipe_count;
+	int	i;
 
 	pipe_count = count_pipes(simple_cmds);
 	pipe_fd = ft_calloc((pipe_count + 1), sizeof(int *));
@@ -70,4 +70,11 @@ void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 	close_pipes(pipe_fd, pipe_count);
 	while (waitpid(-1, NULL, 0) != -1)
 		;
+	i = 0;
+	while (i < pipe_count)
+	{
+		free(pipe_fd[i]);
+		i++;
+	}
+	free(pipe_fd);
 }

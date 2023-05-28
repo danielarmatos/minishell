@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/27 14:02:19 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:19:29 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 void	free_lexer(t_data *data)
 {
-	int len;
-	int i;
-	t_lexer *node;
+	int		len;
+	int		i;
+	t_lexer	*node;
 
 	i = 0;
-	len = get_lexer_len(data->lexer[0]);
+	len = 0;
+	if (data->lexer[0])
+		len = get_lexer_len(data->lexer[0]);
 	while (i < len)
 	{
 		node = data->lexer[0];
@@ -36,12 +38,14 @@ void	free_lexer(t_data *data)
 
 void	free_simple_cmds(t_data *data)
 {
-	int	i;
-	int	len;
+	int				i;
+	int				len;
 	t_simple_cmds	*node;
 
 	i = 0;
-	len = count_pipes(data->simple_cmds[0]);
+	len = 0;
+	if (data->simple_cmds && data->simple_cmds[0])
+		len = count_pipes(data->simple_cmds[0]);
 	while (i < len)
 	{
 		node = data->simple_cmds[0];
@@ -55,10 +59,8 @@ void	free_simple_cmds(t_data *data)
 	data->simple_cmds = NULL;
 }
 
-void	free_data(t_data *data, t_simple_cmds *simple_cmd)
+void	free_data(t_data *data)
 {
-	(void)simple_cmd;
-	(void)data;
 	int	i;
 
 	i = 0;
@@ -84,7 +86,7 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 	else
 	{
 		exit_status = data->exit_status;
-		free_data(data, simple_cmd);
+		free_data(data);
 		ft_printf("exit\n");
 		exit(exit_status);
 	}
@@ -98,7 +100,7 @@ void	close_minishell(t_data *data)
 	if (data->simple_cmds)
 		free_simple_cmds(data);
 	free(data);
-	ft_printf("\n");
+	ft_printf("exit\n");
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }

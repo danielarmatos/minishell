@@ -6,17 +6,24 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/27 12:23:05 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/28 18:57:37 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_direct_path(t_simple_cmds *simple_cmds)
+void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 {
 	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, NULL) == -1)
 	{
+		(void)data;
 		ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
+		clear_data(data);
+		//free(data->prompt);
+		free(data->pwd);
+		free(data->oldpwd);
+		free(data);
+		// There are some leaks here
 		exit (1);
 	}
 }
@@ -53,12 +60,14 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 		temp = ft_strjoin(paths[i], "/");
 		name = ft_strjoin(temp, simple_cmds->cmds[0]);
 		found = execute_path(name, simple_cmds);
+		free(temp);
+		free(name);
 		if (found == 1)
 			break ;
 		i++;
 	}
 	if (found == 0)
-		execute_direct_path(simple_cmds);
+		execute_direct_path(data, simple_cmds);
 	return (found);
 }
 
@@ -66,8 +75,8 @@ int	executor(t_data *data, t_simple_cmds *simple_cmds)
 {
 	int		fd_in;
 
-	(void)data;
 	fd_in = dup(STDIN_FILENO);
+	expander(simple_cmds);
 	if (simple_cmds->next != NULL)
 		ft_pipes(data, simple_cmds);
 	else

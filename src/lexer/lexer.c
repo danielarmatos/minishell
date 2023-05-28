@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/27 12:55:47 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:19:11 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,58 @@ int	add_string_2(t_data *data, char *input, int i, int j)
 int	add_string(t_data *data, char *input, int i)
 {
 	int		quote;
+	char	quote_type;
+	int		j;
+
+	if (input[i] == '\"')
+	{
+		quote_type = 'd';
+		if (input[i + 1] == '\"' || input[i + 1] == '\0')
+			return (i + 1);
+	}
+	else if (input[i] == '\'')
+	{
+		quote_type = 's';
+		if (input[i + 1] == '\'' || input[i + 1] == '\0')
+			return (i + 1);
+	}
+	quote = check_quote(input, i);
+	j = i;
+	if (quote < 2 || (input[i] != '\"' && input[i] != '\''))
+		while (input[j] && input[j] != 32
+			&& !(input[j] >= 9 && input[j] <= 13) && input[j] != '|'
+			&& input[j] != '<' && input[j] != '>')
+				j++;
+	else
+	{
+		j++;
+		i++;
+		if (quote_type == 's')
+			while (input[j] && input[j] != '\'')
+				j++;
+		else
+			while (input[j] && input[j] != '\"')
+				j++;
+	}
+	add_string_2(data, input, i, j);
+	if (quote >= 2)
+		j++;
+	return (j - 1);
+}
+
+/*int	add_string(t_data *data, char *input, int i)
+{
+	int		quote;
+	int 	s_quote;
 	int		j;
 
 	quote = check_quote(input, i);
+	s_quote = check_single_quote(input, i);
 	if (input[i] == '\"')
-		if (input[i + 1] == ' ' || input[i + 1] == '\"' || input[i + 1] == '\0')
+		if (input[i + 1] == '\"' || input[i + 1] == '\0')
+			return (i + 1);
+	else if (input[i] == '\'')
+		if (input[i + 1] == '\'' || input[i + 1] == '\0')
 			return (i + 1);
 	j = i;
 	if (quote < 2 || input[i] != '\"')
@@ -57,7 +104,7 @@ int	add_string(t_data *data, char *input, int i)
 	if (quote >= 2)
 		j++;
 	return (j - 1);
-}
+}*/
 
 int	add_token(t_data *data, char *input, int i)
 {
@@ -91,18 +138,20 @@ void	print_lexer(t_data *data)
 {
 	t_lexer	*node;
 
+	if (!data->lexer[0])
+		return ;
 	node = data->lexer[0];
 	while (node->next != NULL)
 	{
 		if (node->str != NULL)
 			ft_printf("%i: %s\n", node->index, node->str);
-		else
+		else if (node->token != NULL)
 			ft_printf("\033[0;36m%i: %s\033[0m\n", node->index, node->token);
 		node = node->next;
 	}
 	if (node->str != NULL)
 		ft_printf("%i: %s\n", node->index, node->str);
-	else
+	else if (node->token != NULL)
 		ft_printf("\033[0;36m%i: %s\033[0m\n", node->index, node->token);
 }
 
@@ -131,6 +180,7 @@ int	lexical_analysis(t_data *data)
 		i++;
 	}
 	//print_lexer(data);
-	parsing(data);
+	if (data->lexer[0])
+		parsing(data);
 	return (1);
 }
