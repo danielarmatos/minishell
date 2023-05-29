@@ -6,13 +6,83 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:54:37 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/18 10:29:21 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:18:15 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	get_lexer_len(t_lexer *lexer)
+{
+	t_lexer	*node;
+	int		i;
+
+	i = 1;
+	node = lexer;
+	while (node->next != NULL)
+	{
+		node = node->next;
+		i++;
+	}
+	return (i);
+}
+
+/*
+int	check_single_quote(char *input, int i)
+{
+	int	quote;
+
+	quote = 0;
+	if (input[i] == '\'')
+	{
+		quote = 1;
+		i++;
+		while (input[i])
+		{
+			if (input[i] == '\'')
+				quote++;
+			i++;
+		}
+	}
+	if (quote % 2 != 0)
+		quote--;
+	return (quote);
+}
+*/
+
 int	check_quote(char *input, int i)
+{
+	int	quote;
+
+	quote = 0;
+	if (input[i] == '\"')
+	{
+		quote = 1;
+		i++;
+		while (input[i])
+		{
+			if (input[i] == '\"')
+				quote++;
+			i++;
+		}
+	}
+	else if (input[i] == '\'')
+	{
+		quote = 1;
+		i++;
+		while (input[i])
+		{
+			if (input[i] == '\'')
+				quote++;
+			i++;
+		}
+	}
+	if (quote % 2 != 0)
+		quote--;
+	return (quote);
+}
+
+/*int	check_quote(char *input, int i)
 {
 	int	quote;
 
@@ -31,7 +101,7 @@ int	check_quote(char *input, int i)
 	if (quote % 2 != 0)
 		quote--;
 	return (quote);
-}
+}*/
 
 t_lexer	*create_token_node(char *str)
 {

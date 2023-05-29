@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/26 15:57:20 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:15:20 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,16 @@ int				ft_env(t_data *data);
 int				ft_unset(t_data *data, t_simple_cmds *simple_cmds);
 void			ft_export(t_data *data, t_simple_cmds *simple_cmds);
 void			set_signals(void);
-int				execute(t_data *data, t_simple_cmds *cmd);
+int				executor(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
 int				check_identifier(char c);
 
 int				unset_error(t_simple_cmds *simple_cmd);
 
 int				lexical_analysis(t_data *data);
+int				get_lexer_len(t_lexer *lexer);
 int				check_quote(char *input, int i);
+int				check_single_quote(char *input, int i);
 void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
 t_lexer			*create_str_node(char *str);
@@ -77,7 +79,18 @@ char			*delete_quotes(char *str, char c);
 void			free_arr(char **split_arr);
 
 void			ft_pipes(t_data *data, t_simple_cmds *simple_cmds);
+void			close_pipes(int **pipe_fd, int id);
+int				count_pipes(t_simple_cmds *simple_cmds);
 int				execute_path(char *name, t_simple_cmds *simple_cmds);
-void			execute_direct_path(t_simple_cmds *simple_cmds);
+void			execute_direct_path(t_data *data, t_simple_cmds *simple_cmds);
+int				check_executable(t_data *data, t_simple_cmds *simple_cmds);
+int				check_builtins(t_data *data, t_simple_cmds *simple_cmd);
+
+void			close_minishell(t_data *data);
+void			free_lexer(t_data *data);
+void			free_simple_cmds(t_data *data);
+void			clear_data(t_data *data);
+
+void			expander(t_simple_cmds *simple_cmds);
 
 #endif

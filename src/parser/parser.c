@@ -6,13 +6,13 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/19 17:41:15 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:15:36 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void add_redirections(t_lexer *node)
+void	add_redirections(t_lexer *node)
 {
 	(void)node;
 }

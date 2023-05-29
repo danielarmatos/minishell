@@ -6,7 +6,7 @@
 #    By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 18:12:34 by dreis-ma          #+#    #+#              #
-#    Updated: 2023/05/26 16:19:53 by dmanuel-         ###   ########.fr        #
+#    Updated: 2023/05/28 19:04:26 by dreis-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,11 @@ DEPS = libft/libft.a
 
 SRC = src/main.c src/builtins/pwd.c \
 src/builtins/change_dir.c src/builtins/echo.c src/builtins/exit.c \
-src/signals.c src/builtins/env.c src/executable.c src/lexer/lexer.c \
+src/signals.c src/builtins/env.c src/executor/executor.c src/lexer/lexer.c \
 src/lexer/lexer_utils.c src/parser/parser.c src/parser/parser_utils.c \
 src/builtins/ft_export.c src/builtins/utils_builtins.c src/builtins/unset.c \
-src/error_free/error_builtins.c src/builtins/ft_export.c src/pipes/pipes.c
+src/error_free/error_builtins.c src/builtins/ft_export.c src/executor/pipes.c \
+src/executor/pipes_utils.c src/expander/expander.c
 
 OBJ = $(SRC:.c=.o)
 

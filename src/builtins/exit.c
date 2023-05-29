@@ -6,32 +6,74 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/19 12:48:36 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:19:29 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_data(t_data *data, t_simple_cmds *simple_cmd)
+void	free_lexer(t_data *data)
+{
+	int		len;
+	int		i;
+	t_lexer	*node;
+
+	i = 0;
+	len = 0;
+	if (data->lexer[0])
+		len = get_lexer_len(data->lexer[0]);
+	while (i < len)
+	{
+		node = data->lexer[0];
+		if (node->str != NULL)
+			free(node->str);
+		if (node->next)
+			data->lexer[0] = data->lexer[0]->next;
+		free(node);
+		i++;
+	}
+	free(data->lexer);
+	data->lexer = NULL;
+}
+
+void	free_simple_cmds(t_data *data)
+{
+	int				i;
+	int				len;
+	t_simple_cmds	*node;
+
+	i = 0;
+	len = 0;
+	if (data->simple_cmds && data->simple_cmds[0])
+		len = count_pipes(data->simple_cmds[0]);
+	while (i < len)
+	{
+		node = data->simple_cmds[0];
+		free(node->cmds);
+		if (node->next)
+			data->simple_cmds[0] = data->simple_cmds[0]->next;
+		free (node);
+		i++;
+	}
+	free(data->simple_cmds);
+	data->simple_cmds = NULL;
+}
+
+void	free_data(t_data *data)
 {
 	int	i;
 
 	i = 0;
 	free(data->prompt);
-	free(data->env);
 	free(data->pwd);
 	free(data->oldpwd);
+	data->prompt = NULL;
+	data->pwd = NULL;
+	data->oldpwd = NULL;
+	free_lexer(data);
+	free_simple_cmds(data);
 	free(data);
-	/*if (simple_cmd->cmds[0])
-	{
-		while (simple_cmd->cmds[i])
-		{
-			free(simple_cmd->cmds[i]);
-			i++;
-		}
-		free(simple_cmd->cmds);
-	}*/
-	//limpar data->simple_cmd;
+	rl_clear_history();
 	clear_history();
 }
 
@@ -44,7 +86,21 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 	else
 	{
 		exit_status = data->exit_status;
-		free_data(data, simple_cmd);
+		free_data(data);
+		ft_printf("exit\n");
 		exit(exit_status);
 	}
+}
+
+void	close_minishell(t_data *data)
+{
+	free(data->prompt);
+	free(data->pwd);
+	free(data->oldpwd);
+	if (data->simple_cmds)
+		free_simple_cmds(data);
+	free(data);
+	ft_printf("exit\n");
+	rl_clear_history();
+	exit(EXIT_SUCCESS);
 }
