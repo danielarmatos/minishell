@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/28 19:15:20 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/12 18:15:14 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@
 # include <signal.h>
 # include <sys/wait.h>
 
-typedef struct s_simple_cmds
-{
-	char					**cmds;
-	struct s_simple_cmds	*next;
-	struct s_simple_cmds	*prev;
-}		t_simple_cmds;
-
 typedef struct s_lexer
 {
 	int				index;
@@ -36,6 +29,14 @@ typedef struct s_lexer
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }		t_lexer;
+
+typedef struct s_simple_cmds
+{
+	char					**cmds;
+	struct s_simple_cmds	*next;
+	struct s_simple_cmds	*prev;
+	t_lexer					**redirections;
+}		t_simple_cmds;
 
 typedef struct s_data
 {
@@ -72,7 +73,7 @@ t_lexer			*create_str_node(char *str);
 size_t			equals(char *str);
 
 int				parsing(t_data *data);
-t_simple_cmds	*create_cmd_node(char **command);
+t_simple_cmds	*create_cmd_node(char **command, t_lexer **redirections);
 void			add_cmd_node(t_simple_cmds **simple_cmds, \
 							t_simple_cmds *new_node);
 char			*delete_quotes(char *str, char c);
@@ -92,5 +93,6 @@ void			free_simple_cmds(t_data *data);
 void			clear_data(t_data *data);
 
 void			expander(t_simple_cmds *simple_cmds);
+void			add_redirections(t_lexer *node, t_lexer **redirections);
 
 #endif
