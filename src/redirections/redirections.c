@@ -6,11 +6,22 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/12 18:18:06 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/12 20:21:43 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	execute_redirection(t_lexer *redirections)
+{
+	FILE *file;
+	int fd;
+	file = fopen(redirections->str, "w");
+	fd = open(redirections->str, O_WRONLY);
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (0);
+}
 
 t_lexer	*create_redirection_node(char *str, char *token)
 {

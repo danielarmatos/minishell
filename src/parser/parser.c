@@ -6,13 +6,11 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/12 18:27:55 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/12 18:30:06 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-
 
 int	add_simple_cmd(t_lexer *node, t_data *data, int i, int j)
 {
