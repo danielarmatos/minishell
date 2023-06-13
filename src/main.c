@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/28 18:42:12 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:44:51 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 	int	found;
 
 	found = 1;
+/*	if (simple_cmd->redirections[0])
+		execute_redirection(simple_cmd->redirections[0]);*/
 	if (ft_strncmp("pwd", simple_cmd->cmds[0], 4) == 0)
 		ft_pwd(data);
 	//else if (ft_strncmp("cd", input[0], 3) == 0)

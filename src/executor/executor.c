@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/12 20:20:40 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/13 19:39:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,22 +83,20 @@ int	executor(t_data *data, t_simple_cmds *simple_cmds)
 		ft_pipes(data, simple_cmds);
 	else
 	{
-		if (check_builtins(data, simple_cmds) == 0)
+		if (fork() == 0)
 		{
-			if (fork() == 0)
-			{
-				if (simple_cmds->redirections[0])
-					execute_redirection(simple_cmds->redirections[0]);
+			if (simple_cmds->redirections[0])
+				execute_redirection(simple_cmds->redirections[0]);
+			if (check_builtins(data, simple_cmds) == 0)
 				check_executable(data, simple_cmds);
-				dup2(fd_out, STDOUT_FILENO);
-				return (1);
-			}
-			else
-			{
-				close(fd_in);
-				while (waitpid(-1, NULL, WUNTRACED) != -1)
-					;
-			}
+			dup2(fd_out, STDOUT_FILENO);
+			exit(0);
+		}
+		else
+		{
+			close(fd_in);
+			while (waitpid(-1, NULL, WUNTRACED) != -1)
+				;
 		}
 	}
 	close(fd_in);
