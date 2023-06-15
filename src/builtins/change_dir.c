@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 11:38:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/19 16:18:30 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/15 15:26:11 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	change_path(t_data *data)
 {
 	char	*tmp;
 
+	ft_printf("Hello\n");
 	tmp = ft_strdup(data->pwd);
 	free(data->oldpwd);
 	data->oldpwd = tmp;

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/13 19:39:13 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:26:03 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	executor(t_data *data, t_simple_cmds *simple_cmds)
 
 	fd_in = dup(STDIN_FILENO);
 	fd_out = dup(STDOUT_FILENO);
-	expander(simple_cmds);
+	expander(data, simple_cmds);
 	if (simple_cmds->next != NULL)
 		ft_pipes(data, simple_cmds);
 	else
@@ -90,7 +90,9 @@ int	executor(t_data *data, t_simple_cmds *simple_cmds)
 			if (check_builtins(data, simple_cmds) == 0)
 				check_executable(data, simple_cmds);
 			dup2(fd_out, STDOUT_FILENO);
-			exit(0);
+			/*clear_data(data);
+			exit(0);*/
+			ft_exit_fork(data);
 		}
 		else
 		{
