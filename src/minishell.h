@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/12 18:15:14 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:39:18 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ void			clear_data(t_data *data);
 
 void			expander(t_simple_cmds *simple_cmds);
 void			add_redirections(t_lexer *node, t_lexer **redirections);
+int				execute_redirection(t_lexer *redirections);
 
 #endif

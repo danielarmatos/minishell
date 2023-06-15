@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/28 19:17:10 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/13 19:36:21 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	parent_process(t_data *data, t_simple_cmds *simple_cmds, int id, int **pipe
 				dup2(pipe_fd[id][1], STDOUT_FILENO);
 			dup2(pipe_fd[id - 1][0], STDIN_FILENO);
 			close_pipes(pipe_fd, id);
-			check_executable(data, simple_cmds);
+			if (simple_cmds->redirections[0])
+				execute_redirection(simple_cmds->redirections[0]);
+			if (check_builtins(data, simple_cmds) == 0)
+				check_executable(data, simple_cmds);
 			exit(0);
 		}
 	}
@@ -49,7 +52,10 @@ void	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 	{
 		dup2(pipe_fd[id][1], STDOUT_FILENO);
 		close_pipes(pipe_fd, id);
-		check_executable(data, simple_cmds);
+		if (simple_cmds->redirections[0])
+			execute_redirection(simple_cmds->redirections[0]);
+		if (check_builtins(data, simple_cmds) == 0)
+			check_executable(data, simple_cmds);
 		exit(0);
 	}
 	else

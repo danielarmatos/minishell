@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/28 18:57:37 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/13 19:39:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,26 +74,29 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 int	executor(t_data *data, t_simple_cmds *simple_cmds)
 {
 	int		fd_in;
+	int 	fd_out;
 
 	fd_in = dup(STDIN_FILENO);
+	fd_out = dup(STDOUT_FILENO);
 	expander(simple_cmds);
 	if (simple_cmds->next != NULL)
 		ft_pipes(data, simple_cmds);
 	else
 	{
-		if (check_builtins(data, simple_cmds) == 0)
+		if (fork() == 0)
 		{
-			if (fork() == 0)
-			{
+			if (simple_cmds->redirections[0])
+				execute_redirection(simple_cmds->redirections[0]);
+			if (check_builtins(data, simple_cmds) == 0)
 				check_executable(data, simple_cmds);
-				return (1);
-			}
-			else
-			{
-				close(fd_in);
-				while (waitpid(-1, NULL, WUNTRACED) != -1)
-					;
-			}
+			dup2(fd_out, STDOUT_FILENO);
+			exit(0);
+		}
+		else
+		{
+			close(fd_in);
+			while (waitpid(-1, NULL, WUNTRACED) != -1)
+				;
 		}
 	}
 	close(fd_in);
