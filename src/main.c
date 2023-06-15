@@ -29,14 +29,18 @@ int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 		execute_redirection(simple_cmd->redirections[0]);*/
 	if (ft_strncmp("pwd", simple_cmd->cmds[0], 4) == 0)
 		ft_pwd(data);
-	//else if (ft_strncmp("cd", input[0], 3) == 0)
-		//	ft_cd(data, input);
+	else if (ft_strncmp("cd", simple_cmd->cmds[0], 3) == 0)
+		ft_cd(data, simple_cmd);
 	else if (ft_strncmp("exit", simple_cmd->cmds[0], 5) == 0)
 		ft_exit(data, simple_cmd);
 	else if (ft_strncmp("echo", simple_cmd->cmds[0], 5) == 0)
 		ft_echo(data, simple_cmd);
 	else if (ft_strncmp("env", simple_cmd->cmds[0], 4) == 0)
 		ft_env(data);
+	else if (ft_strncmp("export", simple_cmd->cmds[0], 7) == 0)
+		ft_export(data, simple_cmd);
+	else if (ft_strncmp("unset", simple_cmd->cmds[0], 6) == 0)
+		ft_unset(data, simple_cmd);
 	else
 		found = 0;
 	return (found);

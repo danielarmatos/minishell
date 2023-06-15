@@ -6,13 +6,13 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:49:20 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/19 15:07:18 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:54:54 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-/*
-int	var_exist(t_data *data, char *str)
+
+static int	var_exist(t_data *data, char *str)
 {
 	int	i;
 
@@ -34,7 +34,7 @@ int	var_exist(t_data *data, char *str)
 	return (0);
 }
 
-int	parameter(char *str)
+static int	parameter(char *str)
 {
 	int	i;
 
@@ -54,7 +54,7 @@ int	parameter(char *str)
 	return (EXIT_SUCCESS);
 }
 
-char	**whileloop_add_var(char **arr, char **var, char *str)
+static char	**whileloop_add_var(char **arr, char **var, char *str)
 {
 	int	i;
 
@@ -78,7 +78,7 @@ char	**whileloop_add_var(char **arr, char **var, char *str)
 	return (var);
 }
 
-char	**add_var(char **arr, char *str)
+static char	**add_var(char **arr, char *str)
 {
 	char	**var;
 	size_t	i;
@@ -93,7 +93,6 @@ char	**add_var(char **arr, char *str)
 	var = ft_calloc(sizeof(char *), i + 2);
 	if (!var)
 		return (NULL);
-	i = 0;
 	whileloop_add_var(arr, var, str);
 	return (var);
 }
@@ -124,4 +123,3 @@ void	ft_export(t_data *data, t_simple_cmds *simple_cmds)
 		}
 	}
 }
-*/
