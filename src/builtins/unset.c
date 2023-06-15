@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-/*
+
 char	**whileloop_del_var(char **arr, char **ret, char *cmds)
 {
 	int	i;
@@ -34,6 +34,7 @@ char	**whileloop_del_var(char **arr, char **ret, char *cmds)
 		}
 		i++;
 	}
+	return (ret);
 }
 
 char	**del_var(char **arr, char *cmd)
@@ -65,4 +66,3 @@ int	ft_unset(t_data *data, t_simple_cmds *simple_cmds)
 	}
 	return (EXIT_SUCCESS);
 }
-*/
