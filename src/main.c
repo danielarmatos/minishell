@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/13 18:44:51 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:05:17 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ void	clear_data(t_data *data)
 	data->prompt = NULL;
 	free_lexer(data);
 	free_simple_cmds(data);
+	//free(data->pwd);
+	//free(data->oldpwd);
+	//free(data);
 }
 
 int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)

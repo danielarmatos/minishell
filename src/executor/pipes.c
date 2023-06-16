@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/13 19:36:21 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:29:51 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,11 @@ void	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 			execute_redirection(simple_cmds->redirections[0]);
 		if (check_builtins(data, simple_cmds) == 0)
 			check_executable(data, simple_cmds);
-		exit(0);
+		free(pipe_fd[0]);
+		free(pipe_fd[1]);
+		free(pipe_fd);
+		ft_exit_fork(data);
+		//exit(0);
 	}
 	else
 		parent_process(data, simple_cmds, id, pipe_fd, pid);
