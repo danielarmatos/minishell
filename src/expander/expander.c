@@ -6,11 +6,81 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/15 18:50:35 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:59:12 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*trim_str(char *result)
+{
+	int	i;
+
+	i = 0;
+	while (result[i] && result[i] != '\"')
+		i++;
+	result = ft_substr(result, 0, i);
+	ft_printf("RESULT2:\n%s\n\n", result);
+	return (result);
+}
+
+char	*d_quotes_expand_str(t_data *data, char *variable, char *input)
+{
+	int		j;
+	int		found;
+	char	**str;
+	char	*result;
+
+	j = 0;
+	found = 0;
+	while (data->env[j])
+	{
+		str = ft_split(data->env[j], '=');
+		if (ft_strncmp(variable, str[0], ft_strlen(str[0])) == 0)
+		{
+			found = 1;
+			break ;
+		}
+		j++;
+	}
+	if (found == 1)
+	{
+		result = str_replace(input, variable, str[1]);
+		return (trim_str(result));
+	}
+	free(str[0]);
+	return (NULL);
+}
+
+char	*d_quotes_expander(t_data *data, char *input, int i, int j)
+{
+	(void)data;
+	char	*variable;
+	//char 	*result;
+	int		f;
+
+	f = 0;
+	while (i <= j)
+	{
+		if (input[i] == '$')
+		{
+			f = i + 1;
+			while (i <= j && input[i] != ' ' && input[i] && input[i] != '\"')
+				i++;
+			break ;
+		}
+		i++;
+	}
+	if (f != 0)
+	{
+		variable = ft_substr(input, f, (i - f));
+	//	result = str_replace(d_quotes_expand_str(data, variable));
+		//return (result);
+		return (d_quotes_expand_str(data, variable, input));
+
+	}
+	return (NULL);
+}
 
 void	expand_str(t_data *data, t_simple_cmds *simple_cmds, int i)
 {

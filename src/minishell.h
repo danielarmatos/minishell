@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/15 18:26:07 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:25:17 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,11 @@ void			clear_data(t_data *data);
 void			expander(t_data *data, t_simple_cmds *simple_cmds);
 void			add_redirections(t_lexer *node, t_lexer **redirections);
 int				execute_redirection(t_lexer *redirections);
+char			*d_quotes_expander(t_data *data, char *input, int i, int j);
+char			*str_replace(char *str, char *variable, char *value);
 
-void 			ft_exit_fork(t_data *data);
+void			ft_exit_fork(t_data *data);
+void			free_data(t_data *data);
+void			free_redirections(t_simple_cmds *simple_cmd);
 
 #endif

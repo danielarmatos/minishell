@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/28 19:19:12 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/19 21:33:50 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,47 +64,28 @@ int	add_string(t_data *data, char *input, int i)
 			while (input[j] && input[j] != '\'')
 				j++;
 		else
+		{
 			while (input[j] && input[j] != '\"')
 				j++;
+			//input = d_quotes_expander(data, input, i, j);
+			if (d_quotes_expander(data, input, i, j) != NULL)
+			{
+				input = d_quotes_expander(data, input, i, j);
+				//ft_printf("HERE:\n%s\n%i\n%i\n", input, i, ft_strlen(input));
+				add_string_2(data, input, i, ft_strlen(input));
+			}
+			else
+				add_string_2(data, input, i, j);
+			if (quote >= 2)
+				j++;
+			return (j - 1);
+		}
 	}
 	add_string_2(data, input, i, j);
 	if (quote >= 2)
 		j++;
 	return (j - 1);
 }
-
-/*int	add_string(t_data *data, char *input, int i)
-{
-	int		quote;
-	int 	s_quote;
-	int		j;
-
-	quote = check_quote(input, i);
-	s_quote = check_single_quote(input, i);
-	if (input[i] == '\"')
-		if (input[i + 1] == '\"' || input[i + 1] == '\0')
-			return (i + 1);
-	else if (input[i] == '\'')
-		if (input[i + 1] == '\'' || input[i + 1] == '\0')
-			return (i + 1);
-	j = i;
-	if (quote < 2 || input[i] != '\"')
-		while (input[j] && input[j] != 32 && input[j] != '\"'
-			&& !(input[j] >= 9 && input[j] <= 13) && input[j] != '|'
-			&& input[j] != '<' && input[j] != '>')
-			j++;
-	else
-	{
-		j++;
-		i++;
-		while (input[j] && input[j] != '\"')
-			j++;
-	}
-	add_string_2(data, input, i, j);
-	if (quote >= 2)
-		j++;
-	return (j - 1);
-}*/
 
 int	add_token(t_data *data, char *input, int i)
 {

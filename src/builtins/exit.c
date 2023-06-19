@@ -12,30 +12,6 @@
 
 #include "../minishell.h"
 
-void	free_redirections(t_simple_cmds *simple_cmd)
-{
-	int		len;
-	int		i;
-	t_lexer	*node;
-
-	i = 0;
-	len = 0;
-	if (simple_cmd->redirections[0])
-		len = get_lexer_len(simple_cmd->redirections[0]);
-	while (i < len)
-	{
-		node = simple_cmd->redirections[0];
-		//if (node->str != NULL)
-		//	free(node->str);
-		if (node->next)
-			simple_cmd->redirections[0] = simple_cmd->redirections[0]->next;
-		free(node);
-		i++;
-	}
-	free(simple_cmd->redirections);
-	simple_cmd->redirections = NULL;
-}
-
 void	free_lexer(t_data *data)
 {
 	int		len;
@@ -115,16 +91,6 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 		ft_printf("exit\n");
 		exit(exit_status);
 	}
-}
-
-void	ft_exit_fork(t_data *data)
-{
-	int	exit_status;
-
-	exit_status = data->exit_status;
-	free_data(data);
-	exit(exit_status);
-
 }
 
 void	close_minishell(t_data *data)
