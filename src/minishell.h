@@ -50,7 +50,7 @@ typedef struct s_data
 }		t_data;
 
 int				ft_pwd(t_data *data);
-void			ft_cd(t_data *data, t_simple_cmds *simple_cmd);
+int				ft_cd(t_data *data, t_simple_cmds *simple_cmd);
 void			ft_exit(t_data *data, t_simple_cmds *simple_cmds);
 void			ft_echo(t_data *data, t_simple_cmds *simple_cmd);
 int				ft_env(t_data *data);
