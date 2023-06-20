@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/19 20:13:27 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:05:22 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, NULL) == -1)
 	{
 		(void)data;
-		ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
+		ft_printf("$: %s\n", simple_cmds->cmds[0]);
+		if (simple_cmds->cmds[0][0] == ' ')
+			ft_printf("\n");
+		else
+			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
 		clear_data(data);
 		//free(data->prompt);
 		free(data->pwd);
@@ -38,7 +42,9 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 	if (result == 0)
 	{
 		found = 1;
-		if (execve(name, simple_cmds->cmds, NULL) == -1)
+		if (simple_cmds->cmds[0][0] == ' ')
+			ft_printf("\n");
+		else if (execve(name, simple_cmds->cmds, NULL) == -1)
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
 	}
 	return (found);
@@ -98,7 +104,7 @@ int	executor(t_data *data, t_simple_cmds *simple_cmds)
 
 	fd_in = dup(STDIN_FILENO);
 	fd_out = dup(STDOUT_FILENO);
-	expander(data, simple_cmds);
+	//expander(data, simple_cmds);
 	if (simple_cmds->next != NULL)
 		ft_pipes(data, simple_cmds);
 	else

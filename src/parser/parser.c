@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/19 20:38:54 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/20 16:07:58 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	print_simple_cmds(t_data *data)
 		ft_printf("%s\n", node->cmds[i]);
 		i++;
 	}
+	ft_printf("\n");
 }
 
 int	parsing(t_data *data)

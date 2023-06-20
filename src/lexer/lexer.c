@@ -6,18 +6,17 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/19 21:33:50 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/20 16:48:16 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	add_string_2(t_data *data, char *input, int i, int j)
+int	add_string_2(t_data *data, char *input, int i, int j, char quote_type)
 {
 	char	*str;
 	int		x;
 
-	(void)data;
 	x = 0;
 	str = ft_calloc(((j - i) + 1), sizeof(char));
 	if (!str)
@@ -27,7 +26,7 @@ int	add_string_2(t_data *data, char *input, int i, int j)
 		str[x] = input[i + x];
 		x++;
 	}
-	add_node(data->lexer, create_str_node(str));
+	add_node(data->lexer, create_str_node(str, quote_type));
 	return (1);
 }
 
@@ -37,6 +36,7 @@ int	add_string(t_data *data, char *input, int i)
 	char	quote_type;
 	int		j;
 
+	quote_type = 'n';
 	if (input[i] == '\"')
 	{
 		quote_type = 'd';
@@ -67,21 +67,13 @@ int	add_string(t_data *data, char *input, int i)
 		{
 			while (input[j] && input[j] != '\"')
 				j++;
-			//input = d_quotes_expander(data, input, i, j);
-			if (d_quotes_expander(data, input, i, j) != NULL)
-			{
-				input = d_quotes_expander(data, input, i, j);
-				//ft_printf("HERE:\n%s\n%i\n%i\n", input, i, ft_strlen(input));
-				add_string_2(data, input, i, ft_strlen(input));
-			}
-			else
-				add_string_2(data, input, i, j);
+			add_string_2(data, input, i, j, quote_type);
 			if (quote >= 2)
 				j++;
 			return (j - 1);
 		}
 	}
-	add_string_2(data, input, i, j);
+	add_string_2(data, input, i, j, quote_type);
 	if (quote >= 2)
 		j++;
 	return (j - 1);
@@ -125,15 +117,30 @@ void	print_lexer(t_data *data)
 	while (node->next != NULL)
 	{
 		if (node->str != NULL)
-			ft_printf("%i: %s\n", node->index, node->str);
+		{
+			if (node->quote_type == 'd')
+				ft_printf("%i: %s : Double Quotes\n", node->index, node->str);
+			else if (node->quote_type == 's')
+				ft_printf("%i: %s : Single Quotes\n", node->index, node->str);
+			else
+				ft_printf("%i: %s\n", node->index, node->str);
+		}
 		else if (node->token != NULL)
 			ft_printf("\033[0;36m%i: %s\033[0m\n", node->index, node->token);
 		node = node->next;
 	}
 	if (node->str != NULL)
-		ft_printf("%i: %s\n", node->index, node->str);
+	{
+		if (node->quote_type == 'd')
+			ft_printf("%i: %s : Double Quotes\n", node->index, node->str);
+		else if (node->quote_type == 's')
+			ft_printf("%i: %s : Single Quotes\n", node->index, node->str);
+		else
+			ft_printf("%i: %s\n", node->index, node->str);
+	}
 	else if (node->token != NULL)
 		ft_printf("\033[0;36m%i: %s\033[0m\n", node->index, node->token);
+	ft_printf("\n");
 }
 
 int	lexical_analysis(t_data *data)
@@ -160,8 +167,11 @@ int	lexical_analysis(t_data *data)
 			i = add_string(data, input, i);
 		i++;
 	}
-	//print_lexer(data);
 	if (data->lexer[0])
+	{
+		expander(data, lexer[0]);
+		//print_lexer(data);
 		parsing(data);
+	}
 	return (1);
 }

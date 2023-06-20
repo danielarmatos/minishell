@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/19 20:25:17 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/20 16:47:35 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_lexer
 	int				index;
 	char			*str;
 	char			*token;
+	char			quote_type;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }		t_lexer;
@@ -70,7 +71,7 @@ int				check_quote(char *input, int i);
 int				check_single_quote(char *input, int i);
 void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
-t_lexer			*create_str_node(char *str);
+t_lexer			*create_str_node(char *str, char quote_type);
 size_t			equals(char *str);
 
 int				parsing(t_data *data);
@@ -93,7 +94,8 @@ void			free_lexer(t_data *data);
 void			free_simple_cmds(t_data *data);
 void			clear_data(t_data *data);
 
-void			expander(t_data *data, t_simple_cmds *simple_cmds);
+//void			expander(t_data *data, t_simple_cmds *simple_cmds);
+void			expander(t_data *data, t_lexer *node);
 void			add_redirections(t_lexer *node, t_lexer **redirections);
 int				execute_redirection(t_lexer *redirections);
 char			*d_quotes_expander(t_data *data, char *input, int i, int j);
