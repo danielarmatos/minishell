@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/20 16:47:35 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:22:36 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int				execute_path(char *name, t_simple_cmds *simple_cmds);
 void			execute_direct_path(t_data *data, t_simple_cmds *simple_cmds);
 int				check_executable(t_data *data, t_simple_cmds *simple_cmds);
 int				check_builtins(t_data *data, t_simple_cmds *simple_cmd);
+int				check_invalid_prompt(t_lexer *lexer);
+int				check_lexer(t_data *data);
 
 void			close_minishell(t_data *data);
 void			free_lexer(t_data *data);
@@ -96,8 +98,9 @@ void			clear_data(t_data *data);
 
 //void			expander(t_data *data, t_simple_cmds *simple_cmds);
 void			expander(t_data *data, t_lexer *node);
+char			*expand_str(t_data *data, char *str);
 void			add_redirections(t_lexer *node, t_lexer **redirections);
-int				execute_redirection(t_lexer *redirections);
+int				execute_redirection(t_data *data, t_lexer *redirections);
 char			*d_quotes_expander(t_data *data, char *input, int i, int j);
 char			*str_replace(char *str, char *variable, char *value);
 

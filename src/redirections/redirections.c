@@ -6,13 +6,13 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/19 20:30:28 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/22 21:26:14 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_here_doc(t_lexer *redirections)
+void	execute_here_doc(t_data *data, t_lexer *redirections)
 {
 	int		fd;
 	char	*str;
@@ -24,6 +24,8 @@ void	execute_here_doc(t_lexer *redirections)
 		if (ft_strncmp(str, redirections->str,
 				ft_strlen(redirections->str) + 1) == 0)
 			break ;
+		if (ft_strchr(str, '$') != 0)
+			str = expand_str(data, str);
 		ft_putendl_fd(str, fd);
 	}
 	close(fd);
@@ -33,22 +35,28 @@ void	execute_here_doc(t_lexer *redirections)
 	remove("temp_file");
 }
 
-int	redirect_input(t_lexer *redirections)
+int	redirect_input(t_data *data, t_lexer *redirections)
 {
 	int	fd;
 
 	if (redirections->token[0] == '<' && redirections->token[1] == '<')
-		execute_here_doc(redirections);
+		execute_here_doc(data, redirections);
 	else
 	{
 		fd = open(redirections->str, O_RDONLY);
+		if (fd == -1)
+		{
+			ft_printf("minishell: %s: No such file or directory\n",
+					  redirections->str);
+			return (0);
+		}
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
-	return (0);
+	return (1);
 }
 
-int	execute_redirection(t_lexer *redirections)
+int	execute_redirection(t_data *data, t_lexer *redirections)
 {
 	int	fd;
 
@@ -64,10 +72,11 @@ int	execute_redirection(t_lexer *redirections)
 			close(fd);
 		}
 		if (redirections->token[0] == '<')
-			redirect_input(redirections);
+			if (redirect_input(data, redirections) == 0)
+				return (0);
 		redirections = redirections->next;
 	}
-	return (0);
+	return (1);
 }
 
 t_lexer	*create_redirection_node(char *str, char *token)

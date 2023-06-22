@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/15 18:05:17 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:34:55 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ int	main(int argc, char **argv, char **envp)
 		data->exit_status = EXIT_SUCCESS;
 		if (data->prompt != NULL)
 			add_history(data->prompt);
-		lexical_analysis(data);
-		if (data->lexer[0])
-			executor(data, data->simple_cmds[0]);
-		clear_data(data);
+		if (lexical_analysis(data) == 1)
+		{
+			if (data->lexer[0])
+				executor(data, data->simple_cmds[0]);
+			clear_data(data);
+		}
 	}
 }

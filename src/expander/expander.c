@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/20 19:19:27 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/22 19:48:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,29 @@ char	*find_value(char *input)
 	return (NULL);
 }
 
-void	expand_str(t_data *data, t_lexer *node)
+char	*expand_str(t_data *data, char *str)
+{
+	int		j;
+	int		found;
+	char	*variable;
+	char	*result;
+	char	*value;
+
+	value = find_value(str);
+	j = 0;
+	found = 0;
+	variable = find_variable(data, value);
+	if (variable)
+	{
+		result = str_replace(str, value, variable);
+		str = result;
+	}
+	else
+		str = ft_strdup("");
+	return (str);
+}
+
+void	expand_node(t_data *data, t_lexer *node)
 {
 	int		j;
 	int		found;
@@ -87,14 +109,16 @@ void	expander(t_data *data, t_lexer *node)
 	len = get_lexer_len(data->lexer[0]);
 	while (i < len)
 	{
+		if (node->token)
+			if (node->token[0] == '<' && node->token[1] == '<')
+				if (node->next)
+					node->next->quote_type = 's';
 		if (node->quote_type != 's')
 		{
 			if (node->str)
 			{
 				while (ft_strchr(node->str, '$') != 0)
-				{
-					expand_str(data, node);
-				}
+					expand_node(data, node);
 			}
 		}
 		if (node->next)
