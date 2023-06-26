@@ -21,7 +21,6 @@ void	change_path(t_data *data)
 	data->oldpwd = tmp;
 	free(data->pwd);
 	data->pwd = getcwd(NULL, 0);
-	ft_printf("%s", data->pwd);
 }
 
 void	add_path_env(t_data *data)
@@ -41,7 +40,7 @@ void	add_path_env(t_data *data)
 		else if (!ft_strncmp(data->env[i], "OLDPWD=", 7) && data->oldpwd)
 		{
 			tmp = ft_strjoin("OLDPWD=", data->oldpwd);
-			free (data->env[i]);
+			free(data->env[i]);
 			data->env[i] = tmp;
 		}
 		i++;

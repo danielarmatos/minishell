@@ -46,6 +46,22 @@ int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 	return (found);
 }
 
+void	init_env(t_data *data, char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	data->env = ft_calloc(i + 1, sizeof(char *));
+	i = 0;
+	while (envp[i])
+	{
+		data->env[i] = ft_strdup(envp[i]);
+		i++;
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -53,7 +69,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	data = malloc(sizeof(t_data));
-	data->env = envp;
+	init_env(data, envp);
 	data->simple_cmds = NULL;
 	data->lexer = NULL;
 	find_pwd(data);
