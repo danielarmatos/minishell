@@ -6,67 +6,120 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/15 18:50:35 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/22 19:48:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	expand_str(t_data *data, t_simple_cmds *simple_cmds, int i)
+char	*find_variable(t_data *data, char *value)
 {
-	int		j;
-	int		found;
 	char	**str;
-	char 	*variable;
+	int		j;
 
 	j = 0;
-	found = 0;
-	variable = simple_cmds->cmds[i];
-	variable++;
 	while (data->env[j])
 	{
 		str = ft_split(data->env[j], '=');
-		if (ft_strncmp(variable, str[0], ft_strlen(str[0])) == 0)
-		{
-			found = 1;
-			break ;
-		}
+		if (ft_strncmp(value, str[0], ft_strlen(str[0]) + 1) == 0)
+			return (str[1]);
 		j++;
 	}
-	if (found == 1)
-	{
-		//free(simple_cmds->cmds[i]);
-		simple_cmds->cmds[i] = str[1];
-	}
-	free(str[0]);
-	/*else
-	{
-		free(str[0]);
-		free(str[1]);
-		free(str);
-	}*/
+	return (NULL);
 }
 
-void	expander(t_data *data, t_simple_cmds *simple_cmds)
+char	*find_value(char *input)
+{
+	char	*variable;
+	int		f;
+	int		i;
+
+	f = 0;
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '$')
+		{
+			f = i + 1;
+			while (input[i] && input[i] != ' ')
+				i++;
+			break ;
+		}
+		i++;
+	}
+	if (f != 0)
+	{
+		variable = ft_substr(input, f, (i - f));
+		return (variable);
+	}
+	return (NULL);
+}
+
+char	*expand_str(t_data *data, char *str)
+{
+	int		j;
+	int		found;
+	char	*variable;
+	char	*result;
+	char	*value;
+
+	value = find_value(str);
+	j = 0;
+	found = 0;
+	variable = find_variable(data, value);
+	if (variable)
+	{
+		result = str_replace(str, value, variable);
+		str = result;
+	}
+	else
+		str = ft_strdup("");
+	return (str);
+}
+
+void	expand_node(t_data *data, t_lexer *node)
+{
+	int		j;
+	int		found;
+	char	*variable;
+	char	*result;
+	char	*value;
+
+	value = find_value(node->str);
+	j = 0;
+	found = 0;
+	variable = find_variable(data, value);
+	if (variable)
+	{
+		result = str_replace(node->str, value, variable);
+		node->str = result;
+	}
+	else
+		node->str = ft_strdup("");
+}
+
+void	expander(t_data *data, t_lexer *node)
 {
 	int				i;
 	int				j;
 	int				len;
-	t_simple_cmds	*node;
 
 	i = 0;
 	j = 0;
-	len = 0;
-	if (simple_cmds)
-		len = count_pipes(simple_cmds);
-	node = simple_cmds;
+	len = get_lexer_len(data->lexer[0]);
 	while (i < len)
 	{
-		while (node->cmds[j])
+		if (node->token)
+			if (node->token[0] == '<' && node->token[1] == '<')
+				if (node->next)
+					node->next->quote_type = 's';
+		if (node->quote_type != 's')
 		{
-			if (node->cmds[j][0] == '$' && node->cmds[j][1])
-				expand_str(data, node, j);
-			j++;
+			if (node->str)
+			{
+				while (ft_strchr(node->str, '$') != 0)
+					expand_node(data, node);
+			}
 		}
 		if (node->next)
 			node = node->next;

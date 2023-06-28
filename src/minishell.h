@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/15 18:26:07 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:25:12 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_lexer
 	int				index;
 	char			*str;
 	char			*token;
+	char			quote_type;
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }		t_lexer;
@@ -66,11 +67,12 @@ int				export_error(char *c);
 
 int				lexical_analysis(t_data *data);
 int				get_lexer_len(t_lexer *lexer);
+void			print_lexer(t_data *data);
 int				check_quote(char *input, int i);
 int				check_single_quote(char *input, int i);
 void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
-t_lexer			*create_str_node(char *str);
+t_lexer			*create_str_node(char *str, char quote_type);
 size_t			equals(char *str);
 
 int				parsing(t_data *data);
@@ -87,16 +89,26 @@ int				execute_path(char *name, t_simple_cmds *simple_cmds);
 void			execute_direct_path(t_data *data, t_simple_cmds *simple_cmds);
 int				check_executable(t_data *data, t_simple_cmds *simple_cmds);
 int				check_builtins(t_data *data, t_simple_cmds *simple_cmd);
+int				check_invalid_prompt(t_lexer *lexer);
+int				check_lexer(t_data *data);
 
 void			close_minishell(t_data *data);
 void			free_lexer(t_data *data);
 void			free_simple_cmds(t_data *data);
 void			clear_data(t_data *data);
 
-void			expander(t_data *data, t_simple_cmds *simple_cmds);
+//void			expander(t_data *data, t_simple_cmds *simple_cmds);
+void			expander(t_data *data, t_lexer *node);
+char			*find_variable(t_data *data, char *value);
+char			*expand_str(t_data *data, char *str);
 void			add_redirections(t_lexer *node, t_lexer **redirections);
-int				execute_redirection(t_lexer *redirections);
+int				execute_redirection(t_data *data, t_lexer *redirections);
+char			*d_quotes_expander(t_data *data, char *input, int i, int j);
+char			*str_replace(char *str, char *variable, char *value);
+char			*str_replace_2(char *str, char *variable, char *value);
 
-void 			ft_exit_fork(t_data *data);
+void			ft_exit_fork(t_data *data);
+void			free_data(t_data *data);
+void			free_redirections(t_simple_cmds *simple_cmd);
 
 #endif

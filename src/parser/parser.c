@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/15 17:30:10 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/20 16:07:58 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,6 @@ void	print_simple_cmds(t_data *data)
 			i++;
 		}
 		i = 0;
-	/*	while (node->redirections[0] != NULL)
-		{
-			ft_printf("Redirection: %s * %s\n", node->redirections[0]->token, node->redirections[0]->str);
-			node->redirections[0] = node->redirections[0]->next;
-		}*/
 		node = node->next;
 		ft_printf("\033[0;36m|\n\033[0m");
 	}
@@ -102,6 +97,7 @@ void	print_simple_cmds(t_data *data)
 		ft_printf("%s\n", node->cmds[i]);
 		i++;
 	}
+	ft_printf("\n");
 }
 
 int	parsing(t_data *data)
