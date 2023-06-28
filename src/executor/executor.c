@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/22 21:35:48 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:12:34 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 
 	(void)data;
 	i = 0;
-	paths = ft_split(getenv("PATH"), ':');
+	//paths = ft_split(getenv("PATH"), ':');
+	paths = ft_split(find_variable(data, "PATH"), ':');
 	while (paths[i])
 	{
 		temp = ft_strjoin(paths[i], "/");
@@ -75,6 +76,35 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 		execute_direct_path(data, simple_cmds);
 	return (found);
 }
+
+/*int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
+{
+	if (simple_cmds->redirections[0])
+	{
+		if (fork() == 0)
+		{
+			if (execute_redirection(data, simple_cmds->redirections[0]) == 0)
+			{
+				ft_exit_fork(data);
+				return (0);
+			}
+			if (check_builtins(data, simple_cmds) == 0)
+				check_executable(data, simple_cmds);
+			dup2(fd_out, STDOUT_FILENO);
+			ft_exit_fork(data);
+		}
+		else
+		{
+			close(fd_in);
+			while (waitpid(-1, NULL, WUNTRACED) != -1)
+				;
+		}
+	}
+	else
+		if (check_builtins(data, simple_cmds) == 0)
+			check_executable(data, simple_cmds);
+	return (0);
+}*/
 
 int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 {
@@ -111,7 +141,15 @@ int	executor(t_data *data, t_simple_cmds *simple_cmds)
 	if (simple_cmds->next != NULL)
 		ft_pipes(data, simple_cmds);
 	else
-		executor_2(data, simple_cmds, fd_in, fd_out);
+	{
+		if (!simple_cmds->redirections[0])
+		{
+			if (check_builtins(data, simple_cmds) == 0)
+				executor_2(data, simple_cmds, fd_in, fd_out);
+		}
+		else
+			executor_2(data, simple_cmds, fd_in, fd_out);
+	}
 	close(fd_in);
 	return (0);
 }

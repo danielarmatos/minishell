@@ -6,11 +6,33 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/22 20:06:45 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 20:12:15 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*replace_quotes(char *str)
+{
+	char	*temp1;
+	char	*temp2;
+
+	while (1)
+	{
+
+		temp1 = ft_strnstr(str, "\"\"", ft_strlen(str));
+		temp2 = ft_strnstr(str, "\'\'", ft_strlen(str));
+
+		if (temp1 == NULL && temp2 == NULL)
+			break ;
+		if (temp1 != NULL)
+			str = str_replace_2(str, "\"\"", "");
+		if (temp2 != NULL)
+			str = str_replace_2(str, "\'\'", "");
+
+	}
+	return (str);
+}
 
 int	add_string_2(t_data *data, char *input, int i, int j, char quote_type)
 {
@@ -26,6 +48,7 @@ int	add_string_2(t_data *data, char *input, int i, int j, char quote_type)
 		str[x] = input[i + x];
 		x++;
 	}
+	str = replace_quotes(str);
 	add_node(data->lexer, create_str_node(str, quote_type));
 	return (1);
 }
@@ -53,9 +76,9 @@ int	add_string(t_data *data, char *input, int i)
 	j = i;
 	if (quote < 2 || (input[i] != '\"' && input[i] != '\''))
 		while (input[j] && input[j] != 32
-			&& !(input[j] >= 9 && input[j] <= 13) && input[j] != '|'
-			&& input[j] != '<' && input[j] != '>')
-				j++;
+			   && !(input[j] >= 9 && input[j] <= 13) && input[j] != '|'
+			   && input[j] != '<' && input[j] != '>')
+			j++;
 	else
 	{
 		j++;
@@ -163,7 +186,7 @@ int	lexical_analysis(t_data *data)
 		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
 			i = add_token(data, input, i);
 		else if (input[i] && (input[i] != '|' && input[i] != '<'
-				&& input[i] != '>'))
+							  && input[i] != '>'))
 			i = add_string(data, input, i);
 		i++;
 	}

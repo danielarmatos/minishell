@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/19 20:05:12 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:28:54 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 			dup2(pipe_fd[id - 1][0], STDIN_FILENO);
 			close_pipes(pipe_fd, id);
 			if (s_cmds->redirections[0])
-				execute_redirection(s_cmds->redirections[0]);
+				execute_redirection(data, s_cmds->redirections[0]);
 			if (check_builtins(data, s_cmds) == 0)
 				check_executable(data, s_cmds);
 			exit(0);
@@ -55,7 +55,7 @@ void	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 		dup2(pipe_fd[id][1], STDOUT_FILENO);
 		close_pipes(pipe_fd, id);
 		if (simple_cmds->redirections[0])
-			execute_redirection(simple_cmds->redirections[0]);
+			execute_redirection(data, simple_cmds->redirections[0]);
 		if (check_builtins(data, simple_cmds) == 0)
 			check_executable(data, simple_cmds);
 		free(pipe_fd[0]);
