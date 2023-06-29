@@ -97,7 +97,7 @@ static char	**add_var(char **arr, char *str)
 	return (var);
 }
 
-void	ft_export(t_data *data, t_simple_cmds *simple_cmds)
+int	ft_export(t_data *data, t_simple_cmds *simple_cmds)
 {
 	char	**temp;
 	int		i;
@@ -122,4 +122,5 @@ void	ft_export(t_data *data, t_simple_cmds *simple_cmds)
 			i++;
 		}
 	}
+	return (EXIT_SUCCESS);
 }
