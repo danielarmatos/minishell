@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/05/28 19:19:29 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:42:44 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	free_simple_cmds(t_data *data)
 	{
 		node = data->simple_cmds[0];
 		free(node->cmds);
+		free_redirections(node);
 		if (node->next)
 			data->simple_cmds[0] = data->simple_cmds[0]->next;
 		free (node);
