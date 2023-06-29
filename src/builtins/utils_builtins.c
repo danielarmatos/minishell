@@ -56,3 +56,13 @@ char	*delete_quotes(char *str, char c)
 	}
 	return (str);
 }
+
+int	env_count(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->env[i])
+		i++;
+	return (i);
+}

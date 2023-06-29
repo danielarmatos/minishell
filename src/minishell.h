@@ -64,6 +64,8 @@ int				check_identifier(char c);
 
 int				unset_error(t_simple_cmds *simple_cmd);
 int				export_error(char *c);
+int				env_count(t_data *data);
+void			export_env(t_data *data);
 
 int				lexical_analysis(t_data *data);
 int				get_lexer_len(t_lexer *lexer);
