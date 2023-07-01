@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/22 21:26:14 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:25:21 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	execute_here_doc(t_data *data, t_lexer *redirections)
 		if (ft_strncmp(str, redirections->str,
 				ft_strlen(redirections->str) + 1) == 0)
 			break ;
-		if (ft_strchr(str, '$') != 0)
-			str = expand_str(data, str);
+		while (ft_strchr(str, '$') != 0)
+			str = expander(data, str, 0);
 		ft_putendl_fd(str, fd);
 	}
 	close(fd);
@@ -47,7 +47,7 @@ int	redirect_input(t_data *data, t_lexer *redirections)
 		if (fd == -1)
 		{
 			ft_printf("minishell: %s: No such file or directory\n",
-					  redirections->str);
+				redirections->str);
 			return (0);
 		}
 		dup2(fd, STDIN_FILENO);

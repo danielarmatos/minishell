@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/20 16:07:58 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:40:05 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ int	add_simple_cmd(t_lexer *node, t_data *data, int i, int j)
 				node = node->next;
 		}
 		else
-		{
-			command[x] = node->str;
-			x++;
-		}
+			command[x++] = node->str;
 		node = node->next;
 	}
 	command[x] = NULL;

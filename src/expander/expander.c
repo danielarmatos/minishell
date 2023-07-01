@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/22 19:48:13 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:16:08 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,28 @@ char	*find_variable(t_data *data, char *value)
 	return (NULL);
 }
 
-char	*find_value(char *input)
+char	*find_value(char *input, int i)
 {
 	char	*variable;
 	int		f;
-	int		i;
 
-	f = 0;
-	i = 0;
 	while (input[i])
 	{
 		if (input[i] == '$')
-		{
-			f = i + 1;
-			while (input[i] && input[i] != ' ')
-				i++;
 			break ;
-		}
 		i++;
 	}
-	if (f != 0)
+	i++;
+	f = i;
+	while (input[i])
 	{
-		variable = ft_substr(input, f, (i - f));
-		return (variable);
+		if (input[i] == ' ' || input[i] == '\'' || input[i] == '\"'
+			|| input[i] == '$')
+			break ;
+		i++;
 	}
-	return (NULL);
+	variable = ft_substr(input, f, (i - f));
+	return (variable);
 }
 
 char	*expand_str(t_data *data, char *str)
@@ -63,7 +60,7 @@ char	*expand_str(t_data *data, char *str)
 	char	*result;
 	char	*value;
 
-	value = find_value(str);
+	value = find_value(str, 0);
 	j = 0;
 	found = 0;
 	variable = find_variable(data, value);
@@ -77,52 +74,41 @@ char	*expand_str(t_data *data, char *str)
 	return (str);
 }
 
-void	expand_node(t_data *data, t_lexer *node)
+int	check_here_doc(t_data *data)
 {
+	int		len;
 	int		j;
-	int		found;
-	char	*variable;
-	char	*result;
-	char	*value;
+	t_lexer	*node;
 
-	value = find_value(node->str);
-	j = 0;
-	found = 0;
-	variable = find_variable(data, value);
-	if (variable)
-	{
-		result = str_replace(node->str, value, variable);
-		node->str = result;
-	}
-	else
-		node->str = ft_strdup("");
-}
-
-void	expander(t_data *data, t_lexer *node)
-{
-	int				i;
-	int				j;
-	int				len;
-
-	i = 0;
-	j = 0;
+	if (!data->lexer[0])
+		return (1);
+	node = data->lexer[0];
 	len = get_lexer_len(data->lexer[0]);
-	while (i < len)
+	j = 0;
+	while (j < len)
 	{
-		if (node->token)
-			if (node->token[0] == '<' && node->token[1] == '<')
-				if (node->next)
-					node->next->quote_type = 's';
-		if (node->quote_type != 's')
-		{
-			if (node->str)
-			{
-				while (ft_strchr(node->str, '$') != 0)
-					expand_node(data, node);
-			}
-		}
 		if (node->next)
 			node = node->next;
-		i++;
+		j++;
 	}
+	if (node->token)
+		if (node->token[0] == '<' && node->token[1] == '<')
+			return (0);
+	return (1);
+}
+
+char	*expander(t_data *data, char *input, int i)
+{
+	char	*value;
+	char	*variable;
+
+	if (check_here_doc(data) == 0)
+		return (input);
+	value = find_value(input, i);
+	variable = find_variable(data, value);
+	if (variable)
+		input = str_replace(input, value, variable);
+	else
+		input = ft_strdup("");
+	return (input);
 }

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/20 18:42:44 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/01 15:17:17 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	free_data(t_data *data)
 	free(data->prompt);
 	free(data->pwd);
 	free(data->oldpwd);
+	free(data->env);
+	data->env = NULL;
 	data->prompt = NULL;
 	data->pwd = NULL;
 	data->oldpwd = NULL;
@@ -95,9 +97,18 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 
 void	close_minishell(t_data *data)
 {
+	int	i;
+
+	i = 0;
 	free(data->prompt);
 	free(data->pwd);
 	free(data->oldpwd);
+	while (data->env[i])
+	{
+		free(data->env[i]);
+		i++;
+	}
+	free(data->env);
 	if (data->simple_cmds)
 		free_simple_cmds(data);
 	free(data);
