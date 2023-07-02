@@ -6,27 +6,32 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/01 19:40:05 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:27:01 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	add_simple_cmd(t_lexer *node, t_data *data, int i, int j)
+char	**create_command(int i, int j)
 {
 	int		size;
 	char	**command;
-	int		x;
-	t_lexer	**redirections;
 
-	redirections = malloc(sizeof(t_lexer));
-	if (!redirections)
-		return (0);
-	(*redirections) = 0;
 	size = j - i + 2;
 	command = malloc(sizeof(char *) * size);
 	if (!command)
 		return (0);
+	return (command);
+}
+
+int	add_simple_cmd(t_lexer *node, t_data *data, int i, int j)
+{
+	char	**command;
+	int		x;
+	t_lexer	**redirections;
+
+	redirections = create_redirections();
+	command = create_command(i, j);
 	x = 0;
 	while ((i + x) <= j)
 	{
@@ -107,6 +112,5 @@ int	parsing(t_data *data)
 	(*simple_cmds) = 0;
 	data->simple_cmds = simple_cmds;
 	check_pipes(data);
-	//print_simple_cmds(data);
 	return (0);
 }

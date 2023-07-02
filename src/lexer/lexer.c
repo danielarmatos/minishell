@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/01 19:59:24 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:14:09 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*remove_quotes(char *input)
 int	add_string_2(t_data *data, char *input, int i, int j)
 {
 	char	*str;
+	char	*str2;
 	int		x;
 
 	x = 0;
@@ -51,11 +52,11 @@ int	add_string_2(t_data *data, char *input, int i, int j)
 		str[x] = input[i + x];
 		x++;
 	}
-	str = count_quotes(data, str);
-	if (str == 0)
+	str2 = count_quotes(data, str);
+	if (str2 == 0)
 		return (-1);
-	str = remove_quotes(str);
-	add_node(data->lexer, create_str_node(str));
+	str2 = remove_quotes(str2);
+	add_node(data->lexer, create_str_node(str2));
 	return (1);
 }
 
@@ -66,12 +67,12 @@ int	add_string(t_data *data, char *input, int i)
 
 	j = i;
 	quote_type = 'n';
-	//this while cant have the && if we are inside a quote
-	while (input[j] && input[j] != '|' && input[j] != '<' && input[j] != '>')
+	while (input[j])
 	{
 		if (quote_type == 'n' && (input[j] == '\'' || input[j] == '\"'))
 			quote_type = input[j++];
-		if (quote_type == 'n' && input[j] == ' ')
+		if (quote_type == 'n' && (input[j] == ' ' || input[j] == '|'
+				|| input[j] == '<' || input[j] == '>'))
 			break ;
 		if (quote_type != 'n' && input[j] == quote_type
 			&& (input[j + 1] == ' ' || input[j + 1] == '\0'))

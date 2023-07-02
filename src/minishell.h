@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/01 19:41:48 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:26:56 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void			ft_echo(t_data *data, t_simple_cmds *simple_cmd);
 int				ft_env(t_data *data);
 int				ft_unset(t_data *data, t_simple_cmds *simple_cmds);
 int				ft_export(t_data *data, t_simple_cmds *simple_cmds);
-void			set_signals(void);
+void			set_signals(int i);
 int				executor(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
 int				check_identifier(char c);
@@ -77,6 +77,7 @@ t_lexer			*create_str_node(char *str);
 size_t			equals(char *str);
 
 int				parsing(t_data *data);
+t_lexer			**create_redirections(void);
 t_simple_cmds	*create_cmd_node(char **command, t_lexer **redirections);
 void			add_cmd_node(t_simple_cmds **simple_cmds, \
 							t_simple_cmds *new_node);
@@ -106,6 +107,7 @@ int				execute_redirection(t_data *data, t_lexer *redirections);
 char			*d_quotes_expander(t_data *data, char *input, int i, int j);
 char			*str_replace(char *str, char *variable, char *value);
 char			*str_replace_2(char *str, char *variable, char *value);
+void			free_str(char **str);
 
 void			ft_exit_fork(t_data *data);
 void			free_data(t_data *data);

@@ -6,13 +6,12 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/01 19:15:33 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:53:59 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// There are some leaks in this function
 void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 {
 	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, NULL) == -1)
@@ -58,9 +57,10 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 	int		found;
 	int		i;
 
-	(void)data;
 	i = 0;
-	paths = ft_split(find_variable(data, "PATH"), ':');
+	temp = find_variable(data, "PATH");
+	paths = ft_split(temp, ':');
+	free(temp);
 	while (paths[i])
 	{
 		temp = ft_strjoin(paths[i], "/");
@@ -72,6 +72,7 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 			break ;
 		i++;
 	}
+	free_str(paths);
 	if (found == 0)
 		execute_direct_path(data, simple_cmds);
 	return (found);
@@ -96,6 +97,7 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 	}
 	else
 	{
+		set_signals(1);
 		close(fd_in);
 		while (waitpid(-1, NULL, WUNTRACED) != -1)
 			;

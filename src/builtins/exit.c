@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/01 15:17:17 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:14:25 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ void	free_data(t_data *data)
 	free(data->prompt);
 	free(data->pwd);
 	free(data->oldpwd);
-	free(data->env);
-	data->env = NULL;
 	data->prompt = NULL;
 	data->pwd = NULL;
 	data->oldpwd = NULL;
@@ -83,12 +81,23 @@ void	free_data(t_data *data)
 void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 {
 	int	exit_status;
+	int	i;
 
+	i = 0;
 	if (simple_cmd->cmds && simple_cmd->cmds[0][4] != '\0')
 		ft_printf("minishell: command not found: %s\n", simple_cmd->cmds[0]);
 	else
 	{
 		exit_status = data->exit_status;
+		if (data->env)
+		{
+			while (data->env[i])
+			{
+				free(data->env[i]);
+				i++;
+			}
+			free(data->env);
+		}
 		free_data(data);
 		ft_printf("exit\n");
 		exit(exit_status);
@@ -103,12 +112,15 @@ void	close_minishell(t_data *data)
 	free(data->prompt);
 	free(data->pwd);
 	free(data->oldpwd);
-	while (data->env[i])
+	if (data->env)
 	{
-		free(data->env[i]);
-		i++;
+		while (data->env[i])
+		{
+			free(data->env[i]);
+			i++;
+		}
+		free(data->env);
 	}
-	free(data->env);
 	if (data->simple_cmds)
 		free_simple_cmds(data);
 	free(data);

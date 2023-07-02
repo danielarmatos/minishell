@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/01 19:26:36 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:12:04 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	data->simple_cmds = NULL;
 	data->lexer = NULL;
 	find_pwd(data);
-	set_signals();
+	set_signals(0);
 	while (1)
 	{
 		data->prompt = readline("Minishell$ ");

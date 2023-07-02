@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/01 19:16:08 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 18:16:09 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,25 @@
 char	*find_variable(t_data *data, char *value)
 {
 	char	**str;
+	char	*variable;
 	int		j;
 
 	j = 0;
+	variable = NULL;
 	while (data->env[j])
 	{
 		str = ft_split(data->env[j], '=');
 		if (ft_strncmp(value, str[0], ft_strlen(str[0]) + 1) == 0)
-			return (str[1]);
+		{
+			variable = ft_strdup(str[1]);
+			free_str(str);
+			break ;
+		}
 		j++;
+		free_str(str);
 	}
+	if (variable)
+		return (variable);
 	return (NULL);
 }
 
@@ -54,24 +63,20 @@ char	*find_value(char *input, int i)
 
 char	*expand_str(t_data *data, char *str)
 {
-	int		j;
-	int		found;
 	char	*variable;
-	char	*result;
 	char	*value;
+	char	*str2;
 
 	value = find_value(str, 0);
-	j = 0;
-	found = 0;
 	variable = find_variable(data, value);
 	if (variable)
-	{
-		result = str_replace(str, value, variable);
-		str = result;
-	}
+		str2 = str_replace(str, value, variable);
 	else
-		str = ft_strdup("");
-	return (str);
+		str2 = ft_strdup("");
+	free(value);
+	free(variable);
+	free(str);
+	return (str2);
 }
 
 int	check_here_doc(t_data *data)
@@ -101,14 +106,18 @@ char	*expander(t_data *data, char *input, int i)
 {
 	char	*value;
 	char	*variable;
+	char	*input2;
 
 	if (check_here_doc(data) == 0)
 		return (input);
 	value = find_value(input, i);
 	variable = find_variable(data, value);
 	if (variable)
-		input = str_replace(input, value, variable);
+		input2 = str_replace(input, value, variable);
 	else
-		input = ft_strdup("");
-	return (input);
+		input2 = ft_strdup("");
+	free(value);
+	free(variable);
+	free(input);
+	return (input2);
 }
