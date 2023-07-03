@@ -104,7 +104,7 @@ int	ft_export(t_data *data, t_simple_cmds *simple_cmds)
 
 	i = 1;
 	if (!simple_cmds->cmds[1] || simple_cmds->cmds[1][0] == '\0')
-		ft_env(data);
+		export_env(data);
 	else
 	{
 		while (simple_cmds->cmds[i])
