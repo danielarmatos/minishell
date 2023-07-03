@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 16:28:54 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:36:39 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,20 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 	}
 }
 
-void	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
+int	c_process_1(t_data *data, t_simple_cmds *simple_cmds)
+{
+	if (simple_cmds->redirections[0])
+	{
+		if (execute_redirection(data, simple_cmds->redirections[0]) == 0)
+		{
+			ft_exit_fork(data);
+			return (0);
+		}
+	}
+	return (1);
+}
+
+int	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 {
 	int		id;
 	pid_t	pid;
@@ -52,10 +65,10 @@ void	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 	pid = fork();
 	if (pid == 0)
 	{
+		if (c_process_1(data, simple_cmds) == 0)
+			return (0);
 		dup2(pipe_fd[id][1], STDOUT_FILENO);
 		close_pipes(pipe_fd, id);
-		if (simple_cmds->redirections[0])
-			execute_redirection(data, simple_cmds->redirections[0]);
 		if (check_builtins(data, simple_cmds) == 0)
 			check_executable(data, simple_cmds);
 		free(pipe_fd[0]);
@@ -65,6 +78,7 @@ void	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 	}
 	else
 		p_process(data, simple_cmds, id, pipe_fd);
+	return (0);
 }
 
 void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:23:06 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/19 20:25:52 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:09:32 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,15 @@
 void	ft_exit_fork(t_data *data)
 {
 	int	exit_status;
+	int	i;
 
+	i = 0;
+	while (data->env[i])
+	{
+		free(data->env[i]);
+		i++;
+	}
+	free(data->env);
 	exit_status = data->exit_status;
 	free_data(data);
 	exit(exit_status);

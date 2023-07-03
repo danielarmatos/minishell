@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   change_dir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
+/*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 11:38:48 by dmanuel-          #+#    #+#             */
 /*   Updated: 2023/06/29 10:35:30 by dmanuel-         ###   ########.fr       */

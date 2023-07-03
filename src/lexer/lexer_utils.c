@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:54:37 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/20 19:24:08 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:22:05 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_lexer	*create_token_node(char *str)
 	return (node);
 }
 
-t_lexer	*create_str_node(char *str, char quote_type)
+t_lexer	*create_str_node(char *str)
 {
 	t_lexer	*node;
 
@@ -51,7 +51,7 @@ t_lexer	*create_str_node(char *str, char quote_type)
 	node->token = NULL;
 	node->next = NULL;
 	node->prev = NULL;
-	node->quote_type = quote_type;
+	node->quote_type = 's';
 	return (node);
 }
 
@@ -70,4 +70,26 @@ void	add_node(t_lexer **lexer, t_lexer *new_node)
 	}
 	else
 		(*lexer) = new_node;
+}
+
+void	print_lexer(t_data *data)
+{
+	t_lexer	*node;
+
+	if (!data->lexer[0])
+		return ;
+	node = data->lexer[0];
+	while (node->next != NULL)
+	{
+		if (node->str != NULL)
+			ft_printf("%i: %s\n", node->index, node->str);
+		else if (node->token != NULL)
+			ft_printf("\033[0;36m%i: %s\033[0m\n", node->index, node->token);
+		node = node->next;
+	}
+	if (node->str != NULL)
+		ft_printf("%i: %s\n", node->index, node->str);
+	else if (node->token != NULL)
+		ft_printf("\033[0;36m%i: %s\033[0m\n", node->index, node->token);
+	ft_printf("\n");
 }

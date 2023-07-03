@@ -6,7 +6,7 @@
 /*   By: dmanuel- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 10:15:23 by dmanuel-          #+#    #+#             */
-/*   Updated: 2022/11/25 11:10:08 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:27:27 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*ft_read(int fd, char *save)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes == -1)
-		{	
+		{
 			free(buffer);
 			free(save);
 			return (NULL);
