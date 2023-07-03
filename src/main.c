@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/22 20:34:55 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:12:04 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ void	clear_data(t_data *data)
 	data->prompt = NULL;
 	free_lexer(data);
 	free_simple_cmds(data);
-	//free(data->pwd);
-	//free(data->oldpwd);
-	//free(data);
 }
 
 int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
@@ -28,8 +25,6 @@ int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 	int	found;
 
 	found = 1;
-/*	if (simple_cmd->redirections[0])
-		execute_redirection(simple_cmd->redirections[0]);*/
 	if (ft_strncmp("pwd", simple_cmd->cmds[0], 4) == 0)
 		ft_pwd(data);
 	else if (ft_strncmp("cd", simple_cmd->cmds[0], 3) == 0)
@@ -76,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	data->simple_cmds = NULL;
 	data->lexer = NULL;
 	find_pwd(data);
-	set_signals();
+	set_signals(0);
 	while (1)
 	{
 		data->prompt = readline("Minishell$ ");

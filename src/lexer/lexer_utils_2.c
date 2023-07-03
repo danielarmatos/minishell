@@ -6,17 +6,58 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:14:44 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/28 18:53:58 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:13:56 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int validate_tokens(t_data *data)
+int	check_odd_quotes(int quote_count, char quote_type)
 {
-	int	len;
-	int	i;
-	t_lexer *node;
+	if ((quote_count % 2) != 0)
+	{
+		ft_printf("minishell: unexpected EOF while looking for matching `%c'\n",
+			quote_type);
+		return (0);
+	}
+	else
+		return (1);
+}
+
+char	*count_quotes(t_data *data, char *str)
+{
+	int		j;
+	int		quote_count;
+	char	quote_type;
+
+	quote_count = 0;
+	quote_type = 'n';
+	j = -1;
+	while (str[++j])
+	{
+		if (quote_type == 'n' && (str[j] == '\'' || str[j] == '\"'))
+		{
+			quote_type = str[j++];
+			quote_count++;
+		}
+		if (quote_type != 'n' && str[j] == quote_type)
+		{
+			quote_type = 'n';
+			quote_count++;
+		}
+		if (str[j] == '$' && quote_type != '\'')
+			str = expander(data, str, j);
+	}
+	if (check_odd_quotes(quote_count, quote_type) == 0)
+		return (0);
+	return (str);
+}
+
+int	validate_tokens(t_data *data)
+{
+	int		len;
+	int		i;
+	t_lexer	*node;
 
 	node = data->lexer[0];
 	i = 0;
@@ -37,69 +78,24 @@ int validate_tokens(t_data *data)
 	return (1);
 }
 
-int check_lexer(t_data *data)
+int	check_lexer(t_data *data)
 {
 	if (data->lexer[0])
 	{
-
 		if (!data->lexer[0]->next)
+		{
 			if (data->lexer[0]->token)
 			{
 				ft_printf("minishell: syntax error near unexpected "
-						  "token `%c'\n", data->lexer[0]->token[0]);
+					"token `%c'\n", data->lexer[0]->token[0]);
 				return (0);
 			}
+		}
 		if (validate_tokens(data) == 0)
 			return (0);
-		expander(data, data->lexer[0]);
-		//print_lexer(data);
 		parsing(data);
 		return (1);
 	}
 	else
 		return (0);
-}
-
-int	single_quote(char *input, int i)
-{
-	int	quote;
-
-	quote = 1;
-	i++;
-	while (input[i])
-	{
-		if (input[i] == '\'')
-			quote++;
-		i++;
-	}
-	return (quote);
-}
-
-int	double_quote(char *input, int i)
-{
-	int	quote;
-
-	quote = 1;
-	i++;
-	while (input[i])
-	{
-		if (input[i] == '\"')
-			quote++;
-		i++;
-	}
-	return (quote);
-}
-
-int	check_quote(char *input, int i)
-{
-	int	quote;
-
-	quote = 0;
-	if (input[i] == '\"')
-		quote = double_quote(input, i);
-	else if (input[i] == '\'')
-		quote = single_quote(input, i);
-	if (quote % 2 != 0)
-		quote--;
-	return (quote);
 }

@@ -12,6 +12,17 @@
 
 #include "../minishell.h"
 
+t_lexer	**create_redirections(void)
+{
+	t_lexer	**redirections;
+
+	redirections = malloc(sizeof(t_lexer));
+	if (!redirections)
+		return (0);
+	(*redirections) = 0;
+	return (redirections);
+}
+
 t_simple_cmds	*create_cmd_node(char **command, t_lexer **redirections)
 {
 	t_simple_cmds	*node;

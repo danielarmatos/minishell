@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:25:56 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/24 12:25:56 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/06/30 20:49:43 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*delete_quotes(char *str, char c)
 			j = 0;
 			while (str[i + j] == c)
 				j++;
-			ft_strlcpy(&str[i], &str[i + j], strlen(str) - i);
+			ft_strlcpy(&str[i], &str[i + j], ft_strlen(str) - i);
 		}
 		i++;
 	}
