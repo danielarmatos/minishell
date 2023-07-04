@@ -33,11 +33,9 @@ char	**env_cpy(char **dup, int count)
 
 	i = 0;
 	sorting = 0;
-	sorting = malloc(sizeof(char) * (900));
 	while (i <= count)
 	{
 		j = i + 1;
-		printf("%s %s %i", dup[i], "\n", i);
 		while (j <= count)
 		{
 			if (strcmp(dup[i], dup[j]) > 0)
@@ -50,8 +48,6 @@ char	**env_cpy(char **dup, int count)
 		}
 		i++;
 	}
-	printf("%s", "env done\n");
-	//free (sorting);
 	return (dup);
 }
 
