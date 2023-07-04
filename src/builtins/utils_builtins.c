@@ -64,5 +64,6 @@ int	env_count(t_data *data)
 	i = 0;
 	while (data->env[i])
 		i++;
+	i = i - 1;
 	return (i);
 }

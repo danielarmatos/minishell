@@ -33,11 +33,11 @@ char	**env_cpy(char **dup, int count)
 
 	i = 0;
 	sorting = 0;
-	sorting = malloc(sizeof(char) * (500));
+	sorting = malloc(sizeof(char) * (900));
 	while (i < count)
 	{
 		j = i + 1;
-		printf("%s", "env cpy\n");
+		printf("%s %s %i", dup[i], "\n", i);
 		while (j < count)
 		{
 			if (strcmp(dup[i], dup[j]) > 0)
@@ -50,8 +50,8 @@ char	**env_cpy(char **dup, int count)
 		}
 		i++;
 	}
-	printf("%s", "env cpy\n");
-	free (sorting);
+	printf("%s", "env done\n");
+	//free (sorting);
 	return (dup);
 }
 
@@ -77,9 +77,11 @@ void	print_export_env(char **dup)
 	int	i;
 
 	i = 0;
+	printf("%s", "env print\n");
 	while (dup[i])
 	{
-		printf("declare -x %s", dup[i]);
+		printf("declare -x %s %s", dup[i], "\n");
+		i++;
 	}
 }
 
