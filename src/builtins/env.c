@@ -58,7 +58,7 @@ char	**dup_env(t_data *data, char **dup)
 	i = 0;
 	while (data->env[i])
 		i++;
-	dup = ft_calloc(i + 2, sizeof(char *));
+	dup = ft_calloc(i + 1, sizeof(char *));
 	i = 0;
 	while (data->env[i])
 	{
@@ -73,7 +73,6 @@ void	print_export_env(char **dup)
 	int	i;
 
 	i = 0;
-	printf("%s", "env print\n");
 	while (dup[i])
 	{
 		printf("declare -x %s %s", dup[i], "\n");
@@ -91,4 +90,5 @@ void	export_env(t_data *data)
 	count = env_count(data);
 	dup = env_cpy(dup, count);
 	print_export_env(dup);
+	free_arr(dup);
 }
