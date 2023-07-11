@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 14:41:42 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/11 10:25:55 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/03 12:31:11 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ char	**env_cpy(char **dup, int count)
 
 	i = 0;
 	sorting = 0;
-	while (i < count)
+	while (i <= count)
 	{
 		j = i + 1;
-		while (j < count)
+		while (j <= count)
 		{
 			if (strcmp(dup[i], dup[j]) > 0)
 			{
-				strcpy(sorting, dup[i]);
-				strcpy(dup[i], dup[j]);
-				strcpy(dup[j], sorting);
+				sorting = dup[i];
+				dup[i] = dup[j];
+				dup[j] = sorting;
 			}
 			j++;
 		}
@@ -75,7 +75,8 @@ void	print_export_env(char **dup)
 	i = 0;
 	while (dup[i])
 	{
-		printf("declare -x %s", dup[i]);
+		printf("declare -x %s %s", dup[i], "\n");
+		i++;
 	}
 }
 
@@ -89,4 +90,5 @@ void	export_env(t_data *data)
 	count = env_count(data);
 	dup = env_cpy(dup, count);
 	print_export_env(dup);
+	free_arr(dup);
 }

@@ -126,5 +126,5 @@ void	close_minishell(t_data *data)
 	free(data);
 	ft_printf("exit\n");
 	rl_clear_history();
-	exit(EXIT_SUCCESS);
+	exit(data->exit_status);
 }
