@@ -70,4 +70,5 @@ void	free_arr(char **split_arr)
 		i++;
 	}
 	free(split_arr);
+	//split_arr = 0;
 }
