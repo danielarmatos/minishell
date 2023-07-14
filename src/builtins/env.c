@@ -71,11 +71,29 @@ char	**dup_env(t_data *data, char **dup)
 void	print_export_env(char **dup)
 {
 	int	i;
+	int	j;
+	int	eq;
 
 	i = 0;
+	j = 0;
 	while (dup[i])
 	{
-		printf("declare -x %s %s", dup[i], "\n");
+		write(1, "declare -x ", 11);
+		eq = 0;
+		while (dup[i][j])
+		{
+			write(1, &dup[i][j], 1);
+			if (dup[i][j] == 61 && eq == 0)
+			{
+				write(1, "\"", 1);
+				eq = 1;
+			}
+			j++;
+		}
+		if (eq == 1)
+			write(1, "\"", 1);
+		write(1, "\n", 1);
+		j = 0;
 		i++;
 	}
 }
