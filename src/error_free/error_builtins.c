@@ -19,8 +19,7 @@ int	unset_error(t_simple_cmds *simple_cmd)
 	i = 0;
 	if (!simple_cmd->cmds[1])
 	{
-		ft_putendl_fd("Minishell: unset: not enough arguments", STDOUT_FILENO);
-		return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
 	}
 	while (simple_cmd->cmds[1][i])
 	{

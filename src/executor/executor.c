@@ -26,6 +26,7 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 		clear_data(data);
 		free(data->pwd);
 		free(data->oldpwd);
+		free_arr(data->env);
 		free(data);
 		exit (1);
 	}
