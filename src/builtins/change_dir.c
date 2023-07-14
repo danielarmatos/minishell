@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 11:38:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/06/29 10:35:30 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/14 17:21:51 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,16 @@ int	ft_cd(t_data *data, t_simple_cmds *simple_cmd)
 		path = chdir(simple_cmd->cmds[1]);
 		if (path != 0)
 		{
-			ft_printf("cd: no path\n");
+			ft_printf("minishell: cd: No such file or directory\n");
 		}
 	}
 	if (path != 0)
-		return (EXIT_FAILURE);
+	{
+		exit_status = 1;
+		return (exit_status);
+	}
+	exit_status = 0;
 	change_path(data);
 	add_path_env(data);
-	return (EXIT_SUCCESS);
+	return (exit_status);
 }

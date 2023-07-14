@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:04:33 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/24 10:52:43 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:15:06 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,5 @@ void	ft_echo(t_data *data, t_simple_cmds *simple_cmd)
 	write_line(i, simple_cmd->cmds, STDOUT_FILENO);
 	if (n == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	exit_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:49:20 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/06/30 15:40:59 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:41:58 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@ int	ft_export(t_data *data, t_simple_cmds *simple_cmds)
 			i++;
 		}
 	}
-	return (EXIT_SUCCESS);
+	exit_status = 0;
+	return (exit_status);
 }

@@ -14,7 +14,6 @@
 
 void	ft_exit_fork(t_data *data)
 {
-	int	exit_status;
 	int	i;
 
 	i = 0;
@@ -24,7 +23,6 @@ void	ft_exit_fork(t_data *data)
 		i++;
 	}
 	free(data->env);
-	exit_status = data->exit_status;
 	free_data(data);
 	exit(exit_status);
 }

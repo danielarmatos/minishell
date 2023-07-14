@@ -6,7 +6,7 @@
 /*   By: dmanuel- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:19:09 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/05/26 13:05:51 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:48:50 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	ft_unset(t_data *data, t_simple_cmds *simple_cmds)
 {
 	char	**tmp;
 
+	exit_status = 0;
 	if (unset_error(simple_cmds) == 1)
 		return (EXIT_FAILURE);
 	else

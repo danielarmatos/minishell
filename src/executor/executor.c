@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:53:59 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/14 19:56:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,23 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 {
 	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, NULL) == -1)
 	{
-		(void)data;
 		if (simple_cmds->cmds[0][0] == ' ')
 			ft_printf("\n");
 		if (simple_cmds->cmds[0][0] == 0)
 			ft_printf("\n");
 		else
+		{
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
+			exit_status = 127;
+		}
+
 		clear_data(data);
 		free(data->pwd);
 		free(data->oldpwd);
 		free_arr(data->env);
 		free(data);
-		exit (1);
+		exit_status = 127;
+		exit (exit_status);
 	}
 }
 
@@ -45,7 +49,11 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 		if (simple_cmds->cmds[0][0] == ' ')
 			ft_printf("\n");
 		else if (execve(name, simple_cmds->cmds, NULL) == -1)
+		{
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
+			exit_status = 127;
+		}
+
 	}
 	return (found);
 }
@@ -100,8 +108,10 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 	{
 		set_signals(1);
 		close(fd_in);
-		while (waitpid(-1, NULL, WUNTRACED) != -1)
+		while (waitpid(-1, &exit_status, WUNTRACED) != -1)
 			;
+		//exit_status = WEXITSTATUS(exit_stat);
+		exit_status = exit_status / 256;
 	}
 	return (0);
 }

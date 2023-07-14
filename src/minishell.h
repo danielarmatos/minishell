@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:26:56 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:12:46 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <stdbool.h>
+
+extern int exit_status;
 
 typedef struct s_lexer
 {
@@ -46,7 +48,6 @@ typedef struct s_data
 	char					*pwd;
 	char					*oldpwd;
 	char					*prompt;
-	int						exit_status;
 	struct s_lexer			**lexer;
 	struct s_simple_cmds	**simple_cmds;
 }		t_data;

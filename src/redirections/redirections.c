@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:15:28 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:03:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	redirect_input(t_data *data, t_lexer *redirections)
 		{
 			ft_printf("minishell: %s: No such file or directory\n",
 				redirections->str);
+			exit_status = 1;
 			return (0);
 		}
 		dup2(fd, STDIN_FILENO);

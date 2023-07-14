@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:36:39 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:21:02 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 				execute_redirection(data, s_cmds->redirections[0]);
 			if (check_builtins(data, s_cmds) == 0)
 				check_executable(data, s_cmds);
-			exit(0);
+			//ft_exit_fork(data);
+			exit(exit_status);
 		}
 	}
 }
@@ -93,8 +94,9 @@ void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 		return ;
 	create_pipes(data, simple_cmds, pipe_fd);
 	close_pipes(pipe_fd, pipe_count);
-	while (waitpid(-1, NULL, 0) != -1)
+	while (waitpid(-1, &exit_status, 0) != -1)
 		;
+	exit_status = exit_status / 256;
 	i = 0;
 	while (i < pipe_count)
 	{
