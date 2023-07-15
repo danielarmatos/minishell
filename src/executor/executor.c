@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/14 19:56:13 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/15 18:39:50 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,18 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
 			exit_status = 127;
 		}
-
 		clear_data(data);
 		free(data->pwd);
 		free(data->oldpwd);
 		free_arr(data->env);
-		free(data);
 		exit_status = 127;
+		if (data->pipe_fd)
+		{
+			free(data->pipe_fd[0]);
+			free(data->pipe_fd[1]);
+			free(data->pipe_fd);
+		}
+		free(data);
 		exit (exit_status);
 	}
 }
@@ -53,7 +58,6 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
 			exit_status = 127;
 		}
-
 	}
 	return (found);
 }
@@ -68,6 +72,11 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 
 	i = 0;
 	temp = find_variable(data, "PATH");
+	if (temp == NULL)
+	{
+		execute_direct_path(data, simple_cmds);
+		return (0);
+	}
 	paths = ft_split(temp, ':');
 	free(temp);
 	while (paths[i])

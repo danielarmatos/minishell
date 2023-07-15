@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/14 19:42:37 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/15 19:48:47 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,17 @@ static void	handle_signals(int sig)
 	}
 }
 
+//This function is for the ctrl-C inside a <<
 static void	handle_signals_2(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_printf("\b\b  \b\b");
+		/*ft_printf("\b\b  \b\b");
 		ft_printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		exit_status = 130;*/
 	}
 	else if (sig == SIGQUIT)
 	{

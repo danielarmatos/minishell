@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/14 16:12:46 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/15 18:22:38 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_data
 	char					*prompt;
 	struct s_lexer			**lexer;
 	struct s_simple_cmds	**simple_cmds;
+	int						**pipe_fd;
 }		t_data;
 
 int				ft_pwd(t_data *data);
