@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 19:48:47 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/16 18:23:38 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
     SIGQUIT - ctrl-\ does nothing
 */
 
-static void	handle_signals(int sig)
+static void	handle_signals(int sig, siginfo_t *info, void *context)
 {
+	(void) info;
+	(void) context;
 	if (sig == SIGINT)
 	{
 		ft_printf("\b\b  \b\b");
@@ -35,69 +37,54 @@ static void	handle_signals(int sig)
 	}
 }
 
-//This function is for the ctrl-C inside a <<
-static void	handle_signals_2(int sig)
+void	handle_heredoc_signals(int sig, void *data)
 {
-	if (sig == SIGINT)
+	static t_data	*static_data;
+
+	if (!static_data && data)
+		static_data = (t_data *)data;
+	if (static_data)
 	{
-		/*ft_printf("\b\b  \b\b");
-		ft_printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		exit_status = 130;*/
+		if (sig == SIGINT)
+		{
+			ft_printf("\n");
+			set_signals(0);
+			close(static_data->fd);
+			static_data->fd = open("temp_file", O_RDONLY);
+			dup2(static_data->fd, STDIN_FILENO);
+			close(static_data->fd);
+			remove("temp_file");
+			exit_status = 130;
+			rl_redisplay();
+			rl_redisplay();
+			ft_printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b\b");
+			ft_exit_fork(static_data);
+		}
 	}
-	else if (sig == SIGQUIT)
+	if (sig == SIGQUIT)
 	{
 		ft_printf("\b\b  \b\b");
 		rl_redisplay();
 	}
 }
 
-/*void	set_signals(t_data *data, int i)
+static void	handle(int sig, siginfo_t *info, void *context)
 {
-	struct sigaction	signal;
+	(void) info;
+	(void) context;
+	handle_heredoc_signals(sig, 0);
+}
 
-	if (i == 0)
-		signal.sa_handler = &handle_signals;
-	else
-		signal.sa_handler = &handle_signals_2;
-	signal.sa_flags = 0;
+void set_signals(int i)
+{
+	struct sigaction signal;
+
+	signal.sa_flags = SA_SIGINFO;
 	sigemptyset(&signal.sa_mask);
-	sigaction(SIGINT, &signal, NULL);
-	sigaction(SIGQUIT, &signal, NULL);
-}*/
-
-void	set_signals(t_data *data, int i)
-{
-	struct sigaction	signal;
-
 	if (i == 0)
 		signal.sa_sigaction = &handle_signals;
 	else
-		signal.sa_sigaction = &handle_signals_2;
-	signal.sa_flags = SA_SIGINFO;
-	sigemptyset(&signal.sa_mask);
+		signal.sa_sigaction = &handle;
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
-	sigemptyset(&signal.sa_mask);
-	signal.sa_flags = SA_SIGINFO;
-	signal.sa_sigaction = &handle_signals;
-	signal.sa_mask = signal.sa_mask;
-	signal.sa_flags |= SA_SIGINFO;
-	signal.sa_restorer = NULL;
-	signal.sa_sigaction = &handle_signals;
-
-	// Pass the address of myData to the signal handler via si_value
-	signal.sa_sigaction = &handle_signals;
-	sigemptyset(&signal.sa_mask);
-	sigaddset(&signal.sa_mask, SIGINT);
-	sigaddset(&signal.sa_mask, SIGQUIT);
-	signal.sa_flags = SA_SIGINFO;
-	signal.sa_sigaction = &handle_signals;
-	sigaction(SIGINT, &signal, NULL);
-	sigaction(SIGQUIT, &signal, NULL);
-
-	// Rest of your code
-	// ...
 }
