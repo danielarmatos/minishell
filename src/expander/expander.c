@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 18:16:09 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:59:39 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,12 @@ char	*expander(t_data *data, char *input, int i)
 	if (variable)
 		input2 = str_replace(input, value, variable);
 	else
-		input2 = ft_strdup("");
+	{
+		if (ft_strncmp("?", value, 2) == 0)
+			input2 = ft_itoa(exit_status);
+		else
+			input2 = ft_strdup("");
+	}
 	free(value);
 	free(variable);
 	free(input);

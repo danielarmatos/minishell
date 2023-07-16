@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:14:44 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:13:56 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:58:43 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	check_odd_quotes(int quote_count, char quote_type)
 	{
 		ft_printf("minishell: unexpected EOF while looking for matching `%c'\n",
 			quote_type);
+		exit_status = 2;
 		return (0);
 	}
 	else
@@ -46,7 +47,11 @@ char	*count_quotes(t_data *data, char *str)
 			quote_count++;
 		}
 		if (str[j] == '$' && quote_type != '\'')
+		{
 			str = expander(data, str, j);
+			if (str[0] == '\0')
+				break;
+		}
 	}
 	if (check_odd_quotes(quote_count, quote_type) == 0)
 		return (0);
@@ -69,6 +74,7 @@ int	validate_tokens(t_data *data)
 			if (!node->next)
 			{
 				ft_printf("minishell: syntax error\n");
+				exit_status = 2;
 				return (0);
 			}
 		}
@@ -88,6 +94,7 @@ int	check_lexer(t_data *data)
 			{
 				ft_printf("minishell: syntax error near unexpected "
 					"token `%c'\n", data->lexer[0]->token[0]);
+				exit_status = 2;
 				return (0);
 			}
 		}

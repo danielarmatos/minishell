@@ -6,11 +6,13 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:12:04 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/15 18:30:20 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int exit_status;
 
 void	clear_data(t_data *data)
 {
@@ -70,14 +72,15 @@ int	main(int argc, char **argv, char **envp)
 	init_env(data, envp);
 	data->simple_cmds = NULL;
 	data->lexer = NULL;
+	data->pipe_fd = NULL;
 	find_pwd(data);
 	set_signals(0);
+	exit_status = 0;
 	while (1)
 	{
 		data->prompt = readline("Minishell$ ");
 		if (!data->prompt)
 			close_minishell(data);
-		data->exit_status = EXIT_SUCCESS;
 		if (data->prompt != NULL)
 			add_history(data->prompt);
 		if (lexical_analysis(data) == 1)

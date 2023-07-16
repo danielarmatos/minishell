@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:16:27 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/06/20 11:05:46 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/14 17:04:49 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ int	find_pwd(t_data *data)
 int	ft_pwd(t_data *data)
 {
 	ft_putendl_fd(data->pwd, STDOUT_FILENO);
-	return (EXIT_SUCCESS);
+	exit_status = 0;
+	return (exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:14:09 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/15 17:45:44 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ int	lexical_analysis(t_data *data)
 		if (i == -1)
 			return (0);
 		i++;
+		if (i > ((int) ft_strlen(input)))
+			break ;
 	}
 	return (check_lexer(data));
 }
