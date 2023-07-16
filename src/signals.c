@@ -54,7 +54,7 @@ static void	handle_signals_2(int sig)
 	}
 }
 
-void	set_signals(int i)
+/*void	set_signals(t_data *data, int i)
 {
 	struct sigaction	signal;
 
@@ -66,4 +66,38 @@ void	set_signals(int i)
 	sigemptyset(&signal.sa_mask);
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
+}*/
+
+void	set_signals(t_data *data, int i)
+{
+	struct sigaction	signal;
+
+	if (i == 0)
+		signal.sa_sigaction = &handle_signals;
+	else
+		signal.sa_sigaction = &handle_signals_2;
+	signal.sa_flags = SA_SIGINFO;
+	sigemptyset(&signal.sa_mask);
+	sigaction(SIGINT, &signal, NULL);
+	sigaction(SIGQUIT, &signal, NULL);
+	sigemptyset(&signal.sa_mask);
+	signal.sa_flags = SA_SIGINFO;
+	signal.sa_sigaction = &handle_signals;
+	signal.sa_mask = signal.sa_mask;
+	signal.sa_flags |= SA_SIGINFO;
+	signal.sa_restorer = NULL;
+	signal.sa_sigaction = &handle_signals;
+
+	// Pass the address of myData to the signal handler via si_value
+	signal.sa_sigaction = &handle_signals;
+	sigemptyset(&signal.sa_mask);
+	sigaddset(&signal.sa_mask, SIGINT);
+	sigaddset(&signal.sa_mask, SIGQUIT);
+	signal.sa_flags = SA_SIGINFO;
+	signal.sa_sigaction = &handle_signals;
+	sigaction(SIGINT, &signal, NULL);
+	sigaction(SIGQUIT, &signal, NULL);
+
+	// Rest of your code
+	// ...
 }

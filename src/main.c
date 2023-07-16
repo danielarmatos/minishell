@@ -74,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 	data->lexer = NULL;
 	data->pipe_fd = NULL;
 	find_pwd(data);
-	set_signals(0);
+	set_signals(data, 0);
 	exit_status = 0;
 	while (1)
 	{
