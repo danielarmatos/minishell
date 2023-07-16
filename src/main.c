@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 18:30:20 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/16 17:18:37 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	main(int argc, char **argv, char **envp)
 	data->simple_cmds = NULL;
 	data->lexer = NULL;
 	data->pipe_fd = NULL;
+	data->fd = 0;
 	find_pwd(data);
 	set_signals(0);
 	exit_status = 0;

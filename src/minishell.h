@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 18:22:38 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/16 17:18:23 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_data
 	struct s_lexer			**lexer;
 	struct s_simple_cmds	**simple_cmds;
 	int						**pipe_fd;
+	int 					fd;
 }		t_data;
 
 int				ft_pwd(t_data *data);
@@ -61,6 +62,7 @@ int				ft_env(t_data *data);
 int				ft_unset(t_data *data, t_simple_cmds *simple_cmds);
 int				ft_export(t_data *data, t_simple_cmds *simple_cmds);
 void			set_signals(int i);
+void			handle_heredoc_signals(int sig, void *data);
 int				executor(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
 int				check_identifier(char c);

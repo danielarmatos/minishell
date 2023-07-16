@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 18:39:50 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/16 18:52:30 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 		close(fd_in);
 		while (waitpid(-1, &exit_status, WUNTRACED) != -1)
 			;
-		//exit_status = WEXITSTATUS(exit_stat);
 		exit_status = exit_status / 256;
+		set_signals(0);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 15:59:39 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/16 18:40:52 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,17 @@ char	*find_value(char *input, int i)
 	}
 	i++;
 	f = i;
-	while (input[i])
+	if (input[i] != '?')
 	{
-		if (input[i] == ' ' || input[i] == '\'' || input[i] == '\"'
-			|| input[i] == '$')
-			break ;
-		i++;
+		while (input[i])
+		{
+			if (ft_isalnum(input[i]) == 0)
+				break ;
+			i++;
+		}
 	}
+	else
+		i++;
 	variable = ft_substr(input, f, (i - f));
 	return (variable);
 }
