@@ -62,9 +62,9 @@ void	free_simple_cmds(t_data *data)
 
 void	free_data(t_data *data)
 {
-	int	i;
+	//int	i;
 
-	i = 0;
+	//i = 0;
 	free(data->prompt);
 	free(data->pwd);
 	free(data->oldpwd);

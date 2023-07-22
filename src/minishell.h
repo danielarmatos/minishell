@@ -46,6 +46,7 @@ typedef struct s_data
 {
 	char					**env;
 	char					*pwd;
+	int					exporting;
 	char					*oldpwd;
 	char					*prompt;
 	struct s_lexer			**lexer;

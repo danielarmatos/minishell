@@ -12,9 +12,10 @@
 
 #include "../minishell.h"
 
-char	*remove_quotes(char *input)
+char	*remove_quotes(char *input, t_data *data)
 {
 	int		j;
+	int		k;
 	char	quote_type;
 
 	quote_type = 'n';
@@ -25,12 +26,14 @@ char	*remove_quotes(char *input)
 		{
 			quote_type = input[j];
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
+			k = j;
 			j++;
 		}
 		if (quote_type != 'n' && input[j] == quote_type)
 		{
 			quote_type = 'n';
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
+			if 
 		}
 		j--;
 	}
@@ -55,7 +58,7 @@ int	add_string_2(t_data *data, char *input, int i, int j)
 	str2 = count_quotes(data, str);
 	if (str2 == 0)
 		return (-1);
-	str2 = remove_quotes(str2);
+	str2 = remove_quotes(str2, data);
 	add_node(data->lexer, create_str_node(str2));
 	return (1);
 }
