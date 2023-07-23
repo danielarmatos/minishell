@@ -15,10 +15,11 @@
 char	*remove_quotes(char *input, t_data *data)
 {
 	int		j;
-	int		k;
+	//int		k;
 	char	quote_type;
 
 	quote_type = 'n';
+	data->exporting = 0;
 	j = (ft_strlen(input) - 1);
 	while (j >= 0)
 	{
@@ -26,14 +27,15 @@ char	*remove_quotes(char *input, t_data *data)
 		{
 			quote_type = input[j];
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
-			k = j;
+			//k = j;
 			j++;
 		}
 		if (quote_type != 'n' && input[j] == quote_type)
 		{
 			quote_type = 'n';
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
-			if 
+			/*if (k == j)
+				data->exporting = 1;*/
 		}
 		j--;
 	}
