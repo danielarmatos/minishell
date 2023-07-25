@@ -6,18 +6,20 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 17:45:44 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:42:41 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*remove_quotes(char *input)
+char	*remove_quotes(char *input, t_data *data)
 {
 	int		j;
+	int		k;
 	char	quote_type;
 
 	quote_type = 'n';
+	data->exporting = 0;
 	j = (ft_strlen(input) - 1);
 	while (j >= 0)
 	{
@@ -25,12 +27,15 @@ char	*remove_quotes(char *input)
 		{
 			quote_type = input[j];
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
+			k = j;
 			j++;
 		}
 		if (quote_type != 'n' && input[j] == quote_type)
 		{
 			quote_type = 'n';
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
+			if (k == j + 1)
+				data->exporting = 1;
 		}
 		j--;
 	}
@@ -55,7 +60,7 @@ int	add_string_2(t_data *data, char *input, int i, int j)
 	str2 = count_quotes(data, str);
 	if (str2 == 0)
 		return (-1);
-	str2 = remove_quotes(str2);
+	str2 = remove_quotes(str2, data);
 	add_node(data->lexer, create_str_node(str2));
 	return (1);
 }
