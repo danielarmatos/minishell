@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/25 12:42:31 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/25 18:28:52 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_data
 	struct s_simple_cmds	**simple_cmds;
 	int						**pipe_fd;
 	int						fd;
+	int 					interactive;
 }		t_data;
 
 int				ft_pwd(t_data *data);

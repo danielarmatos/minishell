@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 18:47:51 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/25 20:12:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ int	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 	int		id;
 	pid_t	pid;
 
+	set_signals(1);
+	data->interactive = 1;
+	handle_heredoc_signals(0, data);
 	id = 0;
 	pipe_fd[id] = malloc(sizeof(int) * 2);
 	pipe(pipe_fd[id]);
@@ -104,6 +107,7 @@ void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 	while (waitpid(-1, &exit_status, 0) != -1)
 		;
 	exit_status = exit_status / 256;
+	//ft_printf("ola\n");
 	i = 0;
 	while (i < pipe_count)
 	{

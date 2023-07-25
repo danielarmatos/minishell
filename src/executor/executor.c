@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/16 18:52:30 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/25 20:03:29 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 {
 	int	result;
 	int	found;
+	//int	status;
 
 	found = 0;
 	result = access(name, F_OK);
@@ -58,6 +59,17 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
 			exit_status = 127;
 		}
+		/*else
+		{
+			ft_printf("here\n");
+			status = execve(name, simple_cmds->cmds, NULL);
+			ft_printf("status: %i\n", status);
+			if (status == -1)
+			{
+				ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
+				exit_status = 127;
+			}
+		}*/
 	}
 	return (found);
 }
@@ -98,8 +110,10 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 
 int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 {
+	(void)fd_in;
 	if (fork() == 0)
 	{
+		//set_signals(2);
 		if (simple_cmds->redirections[0])
 		{
 			if (execute_redirection(data, simple_cmds->redirections[0]) == 0)
@@ -115,11 +129,15 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 	}
 	else
 	{
-		set_signals(1);
+		if (simple_cmds->redirections[0] == NULL)
+			set_signals(2);
 		close(fd_in);
-		while (waitpid(-1, &exit_status, WUNTRACED) != -1)
+		while (waitpid(-1, &exit_status, WNOHANG) == 0)
 			;
-		exit_status = exit_status / 256;
+		exit_status = WEXITSTATUS(exit_status);
+		//exit_status = exit_status / 256;
+		/*if (!exit_status == 0)
+			error_status(data, exit_status, 0);*/
 		set_signals(0);
 	}
 	return (0);

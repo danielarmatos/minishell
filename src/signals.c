@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/16 18:23:38 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/25 20:09:49 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,31 @@ static void	handle_signals(int sig, siginfo_t *info, void *context)
 	}
 }
 
+static void	handle_interactive_signals(int sig, siginfo_t *info, void *context)
+{
+	(void) info;
+	(void) context;
+	//ft_printf("handle_interactive_signals\n");
+	if (sig == SIGINT)
+		ft_printf("\n");
+	else if (sig == SIGQUIT)
+	{
+		ft_printf("\b\b  \b\b");
+		rl_redisplay();
+		ft_printf("^\\Quit (core dumped)\n");
+	}
+}
+
 void	handle_heredoc_signals(int sig, void *data)
 {
 	static t_data	*static_data;
 
 	if (!static_data && data)
 		static_data = (t_data *)data;
+	//ft_printf("handle_heredoc_signals\n");
 	if (static_data)
 	{
+		//ft_printf("data exists\n");
 		if (sig == SIGINT)
 		{
 			ft_printf("\n");
@@ -60,12 +77,40 @@ void	handle_heredoc_signals(int sig, void *data)
 			ft_printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b\b");
 			ft_exit_fork(static_data);
 		}
+	/*	else if (sig == SIGINT && static_data->interactive == 0)
+		{
+			ft_printf("\n");
+			set_signals(0);
+			rl_redisplay();
+			ft_exit_fork(static_data);
+		}*/
+		/*else if (sig == SIGINT && static_data->interactive != 0)
+		{
+			//ft_printf("ola\n");
+			ft_printf("\n");
+			set_signals(0);
+			rl_redisplay();
+		}*/
+		else if (sig == SIGQUIT)
+		{
+			ft_printf("\b\b  \b\b");
+			rl_redisplay();
+		}
 	}
-	if (sig == SIGQUIT)
+	/*else
 	{
-		ft_printf("\b\b  \b\b");
-		rl_redisplay();
-	}
+		ft_printf("data does not exist\n");
+		if (sig == SIGINT)
+			ft_printf("\n");
+		else if (sig == SIGQUIT)
+		{
+			ft_printf("\b\b  \b\b");
+			rl_redisplay();
+			ft_printf("^\\Quit (core dumped)\n");
+		}
+	}*/
+
+
 }
 
 static void	handle(int sig, siginfo_t *info, void *context)
@@ -83,8 +128,10 @@ void set_signals(int i)
 	sigemptyset(&signal.sa_mask);
 	if (i == 0)
 		signal.sa_sigaction = &handle_signals;
-	else
+	else if (i == 1)
 		signal.sa_sigaction = &handle;
+	else if (i == 2)
+		signal.sa_sigaction = &handle_interactive_signals;
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
 }
