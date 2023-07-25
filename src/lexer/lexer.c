@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 17:45:44 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:42:41 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*remove_quotes(char *input, t_data *data)
 {
 	int		j;
-	//int		k;
+	int		k;
 	char	quote_type;
 
 	quote_type = 'n';
@@ -27,15 +27,15 @@ char	*remove_quotes(char *input, t_data *data)
 		{
 			quote_type = input[j];
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
-			//k = j;
+			k = j;
 			j++;
 		}
 		if (quote_type != 'n' && input[j] == quote_type)
 		{
 			quote_type = 'n';
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
-			/*if (k == j)
-				data->exporting = 1;*/
+			if (k == j + 1)
+				data->exporting = 1;
 		}
 		j--;
 	}

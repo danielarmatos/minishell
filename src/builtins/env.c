@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 14:41:42 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/07/03 12:31:11 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:05:31 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,15 @@ void	export_env(t_data *data)
 	char	**dup;
 	int		count;
 
-	dup = 0;
-	dup = dup_env(data, dup);
-	count = env_count(data);
-	dup = env_cpy(dup, count);
-	print_export_env(dup);
-	free_arr(dup);
+	if (data->exporting == 0)
+	{
+		dup = 0;
+		dup = dup_env(data, dup);
+		count = env_count(data);
+		dup = env_cpy(dup, count);
+		print_export_env(dup);
+		free_arr(dup);
+	}
+	else
+		error_status(data, 3, "export");
 }

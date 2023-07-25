@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/16 17:18:23 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:42:31 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 
-extern int exit_status;
+extern int	exit_status;
 
 typedef struct s_lexer
 {
@@ -46,13 +46,13 @@ typedef struct s_data
 {
 	char					**env;
 	char					*pwd;
-	int					exporting;
+	int						exporting;
 	char					*oldpwd;
 	char					*prompt;
 	struct s_lexer			**lexer;
 	struct s_simple_cmds	**simple_cmds;
 	int						**pipe_fd;
-	int 					fd;
+	int						fd;
 }		t_data;
 
 int				ft_pwd(t_data *data);
@@ -72,6 +72,7 @@ int				unset_error(t_simple_cmds *simple_cmd);
 int				export_error(char *c);
 int				env_count(t_data *data);
 void			export_env(t_data *data);
+int				error_status(t_data *data, int error, char *string);
 
 int				lexical_analysis(t_data *data);
 int				get_lexer_len(t_lexer *lexer);
