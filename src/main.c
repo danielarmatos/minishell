@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/25 18:52:20 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 16:25:38 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 	int	found;
 
 	found = 1;
+	if (!simple_cmd)
+		return (0);
+	if (!simple_cmd->cmds)
+		return (0);
+	if (!simple_cmd->cmds[0])
+		return (0);
 	if (ft_strncmp("pwd", simple_cmd->cmds[0], 4) == 0)
 		ft_pwd(data);
 	else if (ft_strncmp("cd", simple_cmd->cmds[0], 3) == 0)
@@ -70,17 +76,16 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	data = malloc(sizeof(t_data));
 	init_env(data, envp);
-	data->simple_cmds = NULL;
-	data->lexer = NULL;
-	data->pipe_fd = NULL;
-	data->fd = 0;
-	data->interactive = 0;
 	find_pwd(data);
-	set_signals(0);
 	exit_status = 0;
 	while (1)
 	{
+		data->simple_cmds = NULL;
+		data->lexer = NULL;
+		data->fd = 0;
 		data->interactive = 0;
+		data->pipe_fd = NULL;
+		set_signals(0);
 		data->prompt = readline("Minishell$ ");
 		if (!data->prompt)
 			close_minishell(data);
@@ -90,7 +95,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (data->lexer[0])
 				executor(data, data->simple_cmds[0]);
-			clear_data(data);
 		}
+		clear_data(data);
 	}
 }

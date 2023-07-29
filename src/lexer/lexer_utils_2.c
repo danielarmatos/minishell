@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:14:44 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 15:58:43 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 14:28:11 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	*count_quotes(t_data *data, char *str)
 		{
 			quote_type = str[j++];
 			quote_count++;
+			if (str[j] == '\0')
+				break;
 		}
 		if (quote_type != 'n' && str[j] == quote_type)
 		{

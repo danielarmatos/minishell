@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/25 19:25:09 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:51:47 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	execute_here_doc(t_data *data, t_lexer *redirections)
 	int		fd;
 	char	*str;
 
+	data->interactive = 0;
 	set_signals(1);
 	handle_heredoc_signals(0, data);
 	fd = open("temp_file", O_CREAT | O_RDWR | O_TRUNC, 0644);

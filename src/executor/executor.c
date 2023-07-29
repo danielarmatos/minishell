@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/25 20:03:29 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:29:33 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 			ft_printf("\n");
 		else
 		{
-			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
+			ft_putstr_fd(simple_cmds->cmds[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
 			exit_status = 127;
 		}
 		clear_data(data);
@@ -35,6 +36,7 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 			free(data->pipe_fd[0]);
 			free(data->pipe_fd[1]);
 			free(data->pipe_fd);
+		//	data->pipe_fd = NULL;
 		}
 		free(data);
 		exit (exit_status);
@@ -45,7 +47,6 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 {
 	int	result;
 	int	found;
-	//int	status;
 
 	found = 0;
 	result = access(name, F_OK);
@@ -56,20 +57,10 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 			ft_printf("\n");
 		else if (execve(name, simple_cmds->cmds, NULL) == -1)
 		{
-			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
+			ft_putstr_fd(simple_cmds->cmds[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
 			exit_status = 127;
 		}
-		/*else
-		{
-			ft_printf("here\n");
-			status = execve(name, simple_cmds->cmds, NULL);
-			ft_printf("status: %i\n", status);
-			if (status == -1)
-			{
-				ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
-				exit_status = 127;
-			}
-		}*/
 	}
 	return (found);
 }
@@ -83,6 +74,8 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 	int		i;
 
 	i = 0;
+	if (!simple_cmds->cmds[0])
+		return (0);
 	temp = find_variable(data, "PATH");
 	if (temp == NULL)
 	{

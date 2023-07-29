@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:41:43 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:27:01 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 13:02:56 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int	parsing(t_data *data)
 	(*simple_cmds) = 0;
 	data->simple_cmds = simple_cmds;
 	check_pipes(data);
+	//print_simple_cmds(data);
 	return (0);
 }
