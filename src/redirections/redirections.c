@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 15:51:47 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 17:40:32 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	execute_here_doc(t_data *data, t_lexer *redirections)
 	while (1)
 	{
 		str = readline("> ");
-		//ft_printf("result: %s, %s\n", str, redirections->str);
+		if (!str)
+			break ;
 		if (ft_strncmp(str, redirections->str,
 				ft_strlen(redirections->str) + 1) == 0)
 			break ;

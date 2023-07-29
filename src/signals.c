@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 16:54:02 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 18:14:36 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,16 @@ void	handle_heredoc_signals(int sig, void *data)
 			rl_redisplay();
 			exit_status = 130;
 		}
-		else if (sig == SIGQUIT)
+		else if (sig == SIGQUIT && static_data->interactive == 0)
 		{
 			ft_printf("\b\b  \b\b");
 			rl_redisplay();
+		}
+		else if (sig == SIGQUIT && static_data->interactive == 1)
+		{
+			ft_printf("\b\b  \b\b");
+			rl_redisplay();
+			ft_printf("^\\Quit (core dumped)\n");
 		}
 	}
 }

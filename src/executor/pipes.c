@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 15:18:10 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 17:28:58 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 
 	while (s_cmds->next != NULL)
 	{
+		/*while (waitpid(-1, &exit_status, WNOHANG) == 0)
+			;
+		exit_status = WEXITSTATUS(exit_status);*/
 		id++;
 		s_cmds = s_cmds->next;
 		if (s_cmds->next != NULL)
@@ -46,6 +49,12 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 			ft_exit_fork(data);
 			exit(exit_status);
 		}
+		/*else
+		{
+			while (waitpid(-1, &exit_status, WNOHANG) == 0)
+				;
+			exit_status = WEXITSTATUS(exit_status);
+		}*/
 	}
 }
 
@@ -108,6 +117,8 @@ void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 	while (waitpid(-1, &exit_status, 0) != -1)
 		;
 	exit_status = exit_status / 256;
+	while (waitpid(-1, 0, 0) != -1)
+		;
 	i = 0;
 	while (i < pipe_count)
 	{

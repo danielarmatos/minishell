@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 14:31:18 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 19:31:54 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ int	add_string_2(t_data *data, char *input, int i, int j)
 	str2 = count_quotes(data, str);
 	if (str2 == 0)
 	{
-		free(str);
+		if (str)
+			free(str);
 		return (-1);
 	}
-
 	str2 = remove_quotes(str2, data);
 	add_node(data->lexer, create_str_node(str2));
 	return (1);
