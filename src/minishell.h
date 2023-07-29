@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/25 18:28:52 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 20:05:01 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 
-extern int	exit_status;
+extern int	g_exit_status;
 
 typedef struct s_lexer
 {
@@ -53,7 +53,7 @@ typedef struct s_data
 	struct s_simple_cmds	**simple_cmds;
 	int						**pipe_fd;
 	int						fd;
-	int 					interactive;
+	int						interactive;
 }		t_data;
 
 int				ft_pwd(t_data *data);
@@ -75,10 +75,10 @@ int				env_count(t_data *data);
 void			export_env(t_data *data);
 int				error_status(t_data *data, int error, char *string);
 
-int				lexical_analysis(t_data *data);
+int				lexical_analysis(t_data *data, char *input);
 int				get_lexer_len(t_lexer *lexer);
 void			print_lexer(t_data *data);
-char			*count_quotes(t_data *data, char *str);
+char			*count_quotes(t_data *data, char *str, char quote_type);
 int				check_odd_quotes(int quote_count, char quote_type);
 void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
@@ -98,6 +98,7 @@ void			close_pipes(int **pipe_fd, int id);
 int				count_pipes(t_simple_cmds *simple_cmds);
 int				execute_path(char *name, t_simple_cmds *simple_cmds);
 void			execute_direct_path(t_data *data, t_simple_cmds *simple_cmds);
+void			free_direct_path(t_data *data);
 int				check_executable(t_data *data, t_simple_cmds *simple_cmds);
 int				check_builtins(t_data *data, t_simple_cmds *simple_cmd);
 int				check_invalid_prompt(t_lexer *lexer);

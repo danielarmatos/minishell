@@ -32,6 +32,6 @@ int	find_pwd(t_data *data)
 int	ft_pwd(t_data *data)
 {
 	ft_putendl_fd(data->pwd, STDOUT_FILENO);
-	exit_status = 0;
-	return (exit_status);
+	g_exit_status = 0;
+	return (g_exit_status);
 }

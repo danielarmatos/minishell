@@ -121,7 +121,7 @@ char	*expander(t_data *data, char *input, int i)
 	else
 	{
 		if (ft_strncmp("?", value, 2) == 0)
-			input2 = ft_itoa(exit_status);
+			input2 = ft_itoa(g_exit_status);
 		else
 			input2 = ft_strdup("");
 	}

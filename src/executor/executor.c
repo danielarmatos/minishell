@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 15:29:33 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 20:05:28 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,10 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 		{
 			ft_putstr_fd(simple_cmds->cmds[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
-			exit_status = 127;
+			g_exit_status = 127;
 		}
-		clear_data(data);
-		free(data->pwd);
-		free(data->oldpwd);
-		free_arr(data->env);
-		exit_status = 127;
-		if (data->pipe_fd)
-		{
-			free(data->pipe_fd[0]);
-			free(data->pipe_fd[1]);
-			free(data->pipe_fd);
-		//	data->pipe_fd = NULL;
-		}
-		free(data);
-		exit (exit_status);
+		free_direct_path(data);
+		exit (g_exit_status);
 	}
 }
 
@@ -59,7 +47,7 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 		{
 			ft_putstr_fd(simple_cmds->cmds[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
-			exit_status = 127;
+			g_exit_status = 127;
 		}
 	}
 	return (found);
@@ -106,7 +94,6 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 	(void)fd_in;
 	if (fork() == 0)
 	{
-		//set_signals(2);
 		if (simple_cmds->redirections[0])
 		{
 			if (execute_redirection(data, simple_cmds->redirections[0]) == 0)
@@ -125,12 +112,9 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 		if (simple_cmds->redirections[0] == NULL)
 			set_signals(2);
 		close(fd_in);
-		while (waitpid(-1, &exit_status, WNOHANG) == 0)
+		while (waitpid(-1, &g_exit_status, WNOHANG) == 0)
 			;
-		exit_status = WEXITSTATUS(exit_status);
-		//exit_status = exit_status / 256;
-		/*if (!exit_status == 0)
-			error_status(data, exit_status, 0);*/
+		g_exit_status = WEXITSTATUS(g_exit_status);
 		set_signals(0);
 	}
 	return (0);

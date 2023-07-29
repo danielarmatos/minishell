@@ -6,13 +6,13 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 16:25:38 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 19:42:15 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int exit_status;
+int	g_exit_status;
 
 void	clear_data(t_data *data)
 {
@@ -22,17 +22,11 @@ void	clear_data(t_data *data)
 	free_simple_cmds(data);
 }
 
-int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
+int	check_builtins_2(t_data *data, t_simple_cmds *simple_cmd)
 {
 	int	found;
 
 	found = 1;
-	if (!simple_cmd)
-		return (0);
-	if (!simple_cmd->cmds)
-		return (0);
-	if (!simple_cmd->cmds[0])
-		return (0);
 	if (ft_strncmp("pwd", simple_cmd->cmds[0], 4) == 0)
 		ft_pwd(data);
 	else if (ft_strncmp("cd", simple_cmd->cmds[0], 3) == 0)
@@ -50,6 +44,18 @@ int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 	else
 		found = 0;
 	return (found);
+}
+
+int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
+{
+	if (!simple_cmd)
+		return (0);
+	else if (!simple_cmd->cmds)
+		return (0);
+	else if (!simple_cmd->cmds[0])
+		return (0);
+	else
+		return (check_builtins_2(data, simple_cmd));
 }
 
 void	init_env(t_data *data, char **envp)
@@ -77,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 	data = malloc(sizeof(t_data));
 	init_env(data, envp);
 	find_pwd(data);
-	exit_status = 0;
+	g_exit_status = 0;
 	while (1)
 	{
 		data->simple_cmds = NULL;
@@ -91,11 +97,9 @@ int	main(int argc, char **argv, char **envp)
 			close_minishell(data);
 		if (data->prompt != NULL)
 			add_history(data->prompt);
-		if (lexical_analysis(data) == 1)
-		{
+		if (lexical_analysis(data, data->prompt) == 1)
 			if (data->lexer[0])
 				executor(data, data->simple_cmds[0]);
-		}
 		clear_data(data);
 	}
 }

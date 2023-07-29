@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 18:14:36 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 19:47:07 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	handle_signals(int sig, siginfo_t *info, void *context)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		exit_status = 130;
+		g_exit_status = 130;
 	}
 	else if (sig == SIGQUIT)
 	{
@@ -68,7 +68,7 @@ void	handle_heredoc_signals(int sig, void *data)
 			dup2(static_data->fd, STDIN_FILENO);
 			close(static_data->fd);
 			remove("temp_file");
-			exit_status = 130;
+			g_exit_status = 130;
 			rl_redisplay();
 			rl_redisplay();
 			ft_printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b\b");
@@ -80,7 +80,7 @@ void	handle_heredoc_signals(int sig, void *data)
 			rl_replace_line("", 0);
 			set_signals(0);
 			rl_redisplay();
-			exit_status = 130;
+			g_exit_status = 130;
 		}
 		else if (sig == SIGQUIT && static_data->interactive == 0)
 		{
@@ -103,9 +103,9 @@ static void	handle(int sig, siginfo_t *info, void *context)
 	handle_heredoc_signals(sig, 0);
 }
 
-void set_signals(int i)
+void	set_signals(int i)
 {
-	struct sigaction signal;
+	struct sigaction	signal;
 
 	signal.sa_flags = SA_SIGINFO;
 	sigemptyset(&signal.sa_mask);

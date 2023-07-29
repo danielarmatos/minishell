@@ -85,7 +85,7 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 	i = 0;
 	if (simple_cmd->cmds && simple_cmd->cmds[0][4] != '\0')
 	{
-		exit_status = 1;
+		g_exit_status = 1;
 		ft_printf("minishell: command not found: %s\n", simple_cmd->cmds[0]);
 	}
 	else
@@ -102,7 +102,7 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 		free_data(data);
 		ft_printf("exit\n");
 	}
-	exit(exit_status);
+	exit(g_exit_status);
 }
 
 void	close_minishell(t_data *data)
@@ -127,5 +127,5 @@ void	close_minishell(t_data *data)
 	free(data);
 	ft_printf("exit\n");
 	rl_clear_history();
-	exit(exit_status);
+	exit(g_exit_status);
 }

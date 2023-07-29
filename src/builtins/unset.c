@@ -56,7 +56,7 @@ int	ft_unset(t_data *data, t_simple_cmds *simple_cmds)
 {
 	char	**tmp;
 
-	exit_status = 0;
+	g_exit_status = 0;
 	if (unset_error(simple_cmds) == 1)
 		return (EXIT_FAILURE);
 	else if (data->exporting == 1)

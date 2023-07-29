@@ -60,7 +60,7 @@ int	redirect_input(t_data *data, t_lexer *redirections, int o_input)
 		{
 			ft_printf("minishell: %s: No such file or directory\n",
 				redirections->str);
-			exit_status = 1;
+			g_exit_status = 1;
 			return (0);
 		}
 		dup2(fd, STDIN_FILENO);

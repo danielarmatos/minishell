@@ -22,7 +22,7 @@ int	ft_env(t_data *data)
 		ft_putendl_fd(data->env[i], STDOUT_FILENO);
 		i++;
 	}
-	exit_status = 0;
+	g_exit_status = 0;
 	return (0);
 }
 

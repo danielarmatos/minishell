@@ -24,7 +24,7 @@ void	ft_exit_fork(t_data *data)
 	}
 	free(data->env);
 	free_data(data);
-	exit(exit_status);
+	exit(g_exit_status);
 }
 
 void	free_redirections(t_simple_cmds *simple_cmd)
