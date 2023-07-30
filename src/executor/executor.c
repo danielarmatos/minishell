@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 20:05:28 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 20:07:50 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,9 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 	int		i;
 
 	i = 0;
-	if (!simple_cmds->cmds[0])
+	paths = search_paths(data, simple_cmds);
+	if (paths == NULL)
 		return (0);
-	temp = find_variable(data, "PATH");
-	if (temp == NULL)
-	{
-		execute_direct_path(data, simple_cmds);
-		return (0);
-	}
-	paths = ft_split(temp, ':');
-	free(temp);
 	while (paths[i])
 	{
 		temp = ft_strjoin(paths[i], "/");
@@ -91,16 +84,13 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 
 int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 {
-	(void)fd_in;
 	if (fork() == 0)
 	{
-		if (simple_cmds->redirections[0])
+		if (simple_cmds->redirections[0]
+			&& (execute_redirection(data, simple_cmds->redirections[0]) == 0))
 		{
-			if (execute_redirection(data, simple_cmds->redirections[0]) == 0)
-			{
-				ft_exit_fork(data);
-				return (0);
-			}
+			ft_exit_fork(data);
+			return (0);
 		}
 		if (check_builtins(data, simple_cmds) == 0)
 			check_executable(data, simple_cmds);

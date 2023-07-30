@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:14:44 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 19:44:07 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 20:17:14 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int	check_odd_quotes(int quote_count, char quote_type)
 		return (1);
 }
 
-char	*count_quotes(t_data *data, char *str, char quote_type)
+char	*count_quotes(t_data *data, char *temp_str, char quote_type, int j)
 {
-	int		j;
 	int		quote_count;
+	char	*str;
 
+	str = ft_strdup(temp_str);
 	quote_count = 0;
-	j = -1;
-	while (str[++j])
+	while (str[j])
 	{
 		if (quote_type == 'n' && (str[j] == '\'' || str[j] == '\"'))
 		{
@@ -51,10 +51,16 @@ char	*count_quotes(t_data *data, char *str, char quote_type)
 			str = expander(data, str, j);
 			if (str[0] == '\0')
 				break ;
+			if ((size_t) j >= (ft_strlen(str) - 1))
+				j = 0;
 		}
+		j++;
 	}
 	if (check_odd_quotes(quote_count, quote_type) == 0)
+	{
+		free(str);
 		return (0);
+	}
 	return (str);
 }
 

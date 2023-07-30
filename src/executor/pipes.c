@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 20:01:47 by dreis-ma         ###   ########.fr       */
+/*   Created: 2023/07/30 19:30:37 by dreis-ma          #+#    #+#             */
+/*   Updated: 2023/07/30 20:09:55 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	free_pipe_fd(int **pipe_fd)
 
 void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 {
-	int	pid;
-
 	while (s_cmds->next != NULL)
 	{
 		id++;
@@ -32,8 +30,7 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 			pipe_fd[id] = malloc(sizeof(int) * 2);
 			pipe(pipe_fd[id]);
 		}
-		pid = fork();
-		if (pid == 0)
+		if (fork() == 0)
 		{
 			if (pipe_fd[id])
 				dup2(pipe_fd[id][1], STDOUT_FILENO);

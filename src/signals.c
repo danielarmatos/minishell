@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 19:47:07 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:40:53 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,32 +67,15 @@ void	handle_heredoc_signals(int sig, void *data)
 			static_data->fd = open("temp_file", O_RDONLY);
 			dup2(static_data->fd, STDIN_FILENO);
 			close(static_data->fd);
-			remove("temp_file");
+			remove_file(static_data);
 			g_exit_status = 130;
 			rl_redisplay();
 			rl_redisplay();
 			ft_printf("\b\b\b\b\b\b\b\b\b\b\b           \b\b\b\b\b\b\b\b\b\b\b\b");
 			ft_exit_fork(static_data);
 		}
-		else if (sig == SIGINT && static_data->interactive == 1)
-		{
-			ft_printf("\n");
-			rl_replace_line("", 0);
-			set_signals(0);
-			rl_redisplay();
-			g_exit_status = 130;
-		}
-		else if (sig == SIGQUIT && static_data->interactive == 0)
-		{
-			ft_printf("\b\b  \b\b");
-			rl_redisplay();
-		}
-		else if (sig == SIGQUIT && static_data->interactive == 1)
-		{
-			ft_printf("\b\b  \b\b");
-			rl_redisplay();
-			ft_printf("^\\Quit (core dumped)\n");
-		}
+		else
+			handle_heredoc_signals_2(static_data, sig);
 	}
 }
 

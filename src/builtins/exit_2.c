@@ -6,11 +6,19 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:23:06 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 18:47:20 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:35:17 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	clear_data(t_data *data)
+{
+	free(data->prompt);
+	data->prompt = NULL;
+	free_lexer(data);
+	free_simple_cmds(data);
+}
 
 void	ft_exit_fork(t_data *data)
 {

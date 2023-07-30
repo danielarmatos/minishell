@@ -6,13 +6,13 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 17:40:32 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:45:19 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_here_doc(t_data *data, t_lexer *redirections)
+void	execute_here_doc(t_data *data, t_lexer *redir)
 {
 	int		fd;
 	char	*str;
@@ -26,9 +26,11 @@ void	execute_here_doc(t_data *data, t_lexer *redirections)
 	{
 		str = readline("> ");
 		if (!str)
+		{
+			ft_printf("\b\b  \b\b");
 			break ;
-		if (ft_strncmp(str, redirections->str,
-				ft_strlen(redirections->str) + 1) == 0)
+		}
+		if (ft_strncmp(str, redir->str, ft_strlen(redir->str) + 1) == 0)
 			break ;
 		while (ft_strchr(str, '$') != 0)
 			str = expander(data, str, 0);
@@ -36,12 +38,7 @@ void	execute_here_doc(t_data *data, t_lexer *redirections)
 		free(str);
 		str = NULL;
 	}
-	set_signals(0);
-	close(fd);
-	fd = open("temp_file", O_RDONLY);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	remove("temp_file");
+	execute_here_doc_2(data, fd);
 }
 
 int	redirect_input(t_data *data, t_lexer *redirections, int o_input)

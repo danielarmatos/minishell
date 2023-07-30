@@ -6,21 +6,13 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 19:42:15 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:36:27 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_exit_status;
-
-void	clear_data(t_data *data)
-{
-	free(data->prompt);
-	data->prompt = NULL;
-	free_lexer(data);
-	free_simple_cmds(data);
-}
 
 int	check_builtins_2(t_data *data, t_simple_cmds *simple_cmd)
 {
@@ -74,6 +66,29 @@ void	init_env(t_data *data, char **envp)
 	}
 }
 
+void	main_loop(t_data *data)
+{
+	while (1)
+	{
+		data->simple_cmds = NULL;
+		data->lexer = NULL;
+		data->fd = 0;
+		data->interactive = 0;
+		data->pipe_fd = NULL;
+		set_signals(0);
+		data->prompt = readline("Minishell$ ");
+		set_signals(1);
+		if (!data->prompt)
+			close_minishell(data);
+		if (data->prompt != NULL)
+			add_history(data->prompt);
+		if (lexical_analysis(data, data->prompt) == 1)
+			if (data->lexer[0])
+				executor(data, data->simple_cmds[0]);
+		clear_data(data);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -84,22 +99,5 @@ int	main(int argc, char **argv, char **envp)
 	init_env(data, envp);
 	find_pwd(data);
 	g_exit_status = 0;
-	while (1)
-	{
-		data->simple_cmds = NULL;
-		data->lexer = NULL;
-		data->fd = 0;
-		data->interactive = 0;
-		data->pipe_fd = NULL;
-		set_signals(0);
-		data->prompt = readline("Minishell$ ");
-		if (!data->prompt)
-			close_minishell(data);
-		if (data->prompt != NULL)
-			add_history(data->prompt);
-		if (lexical_analysis(data, data->prompt) == 1)
-			if (data->lexer[0])
-				executor(data, data->simple_cmds[0]);
-		clear_data(data);
-	}
+	main_loop(data);
 }
