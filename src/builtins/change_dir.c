@@ -16,14 +16,12 @@ void	change_path(t_data *data)
 {
 	char	*tmp;
 
-	tmp = 0;
 	tmp = ft_strdup(data->pwd);
-	if (data->oldpwd)
-		free(data->oldpwd);
+	free(data->oldpwd);
 	data->oldpwd = tmp;
-	if (data->pwd)
-		free(data->pwd);
-	data->pwd = getcwd(NULL, 0);
+	free(data->pwd);
+	free(tmp);
+	data->pwd = getcwd(NULL, sizeof(NULL));
 }
 
 void	add_path_env(t_data *data)

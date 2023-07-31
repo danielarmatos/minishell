@@ -93,7 +93,7 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 		ft_printf("exit\n");
 		if (simple_cmd->cmds[1] && simple_cmd->cmds[1][0] >= '0' && \
 			simple_cmd->cmds[1][0] <= '9')
-			exit_status = simple_cmd->cmds[1][0];
+			g_exit_status = simple_cmd->cmds[1][0];
 			
 	}
 	exit(g_exit_status);
