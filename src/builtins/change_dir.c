@@ -20,7 +20,8 @@ void	change_path(t_data *data)
 	free(data->oldpwd);
 	data->oldpwd = tmp;
 	free(data->pwd);
-	data->pwd = getcwd(NULL, 0);
+	free(tmp);
+	data->pwd = getcwd(NULL, sizeof(NULL));
 }
 
 void	add_path_env(t_data *data)
