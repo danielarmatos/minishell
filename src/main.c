@@ -96,6 +96,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	data = malloc(sizeof(t_data));
+	data->og_ioput[0] = dup(STDIN_FILENO);
+	data->og_ioput[1] = dup(STDOUT_FILENO);
 	init_env(data, envp);
 	find_pwd(data);
 	g_exit_status = 0;

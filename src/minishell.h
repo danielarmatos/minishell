@@ -54,6 +54,7 @@ typedef struct s_data
 	int						**pipe_fd;
 	int						fd;
 	int						interactive;
+	int						og_ioput[2];
 }		t_data;
 
 int				ft_pwd(t_data *data);
