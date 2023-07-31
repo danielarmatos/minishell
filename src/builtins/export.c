@@ -122,6 +122,6 @@ int	ft_export(t_data *data, t_simple_cmds *simple_cmds)
 			i++;
 		}
 	}
-	exit_status = 0;
-	return (exit_status);
+	g_exit_status = 0;
+	return (g_exit_status);
 }

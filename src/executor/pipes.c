@@ -5,17 +5,22 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/27 10:20:13 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/25 20:12:13 by dreis-ma         ###   ########.fr       */
+/*   Created: 2023/07/30 19:30:37 by dreis-ma          #+#    #+#             */
+/*   Updated: 2023/07/30 20:09:55 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	free_pipe_fd(int **pipe_fd)
+{
+	free(pipe_fd[0]);
+	free(pipe_fd[1]);
+	free(pipe_fd);
+}
+
 void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 {
-	int	pid;
-
 	while (s_cmds->next != NULL)
 	{
 		id++;
@@ -25,26 +30,20 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 			pipe_fd[id] = malloc(sizeof(int) * 2);
 			pipe(pipe_fd[id]);
 		}
-		pid = fork();
-		if (pid == 0)
+		if (fork() == 0)
 		{
 			if (pipe_fd[id])
 				dup2(pipe_fd[id][1], STDOUT_FILENO);
 			dup2(pipe_fd[id - 1][0], STDIN_FILENO);
 			close_pipes(pipe_fd, id);
-			data->pipe_fd = pipe_fd;
 			if (s_cmds->redirections[0])
 				execute_redirection(data, s_cmds->redirections[0]);
 			if (check_builtins(data, s_cmds) == 0)
 				check_executable(data, s_cmds);
 			if (pipe_fd)
-			{
-				free(pipe_fd[0]);
-				free(pipe_fd[1]);
-				free(pipe_fd);
-			}
+				free_pipe_fd(pipe_fd);
 			ft_exit_fork(data);
-			exit(exit_status);
+			exit(g_exit_status);
 		}
 	}
 }
@@ -73,6 +72,7 @@ int	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 	id = 0;
 	pipe_fd[id] = malloc(sizeof(int) * 2);
 	pipe(pipe_fd[id]);
+	data->pipe_fd = pipe_fd;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -82,9 +82,7 @@ int	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
 		close_pipes(pipe_fd, id);
 		if (check_builtins(data, simple_cmds) == 0)
 			check_executable(data, simple_cmds);
-		free(pipe_fd[0]);
-		free(pipe_fd[1]);
-		free(pipe_fd);
+		free_pipe_fd(pipe_fd);
 		ft_exit_fork(data);
 	}
 	else
@@ -104,10 +102,11 @@ void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 		return ;
 	create_pipes(data, simple_cmds, pipe_fd);
 	close_pipes(pipe_fd, pipe_count);
-	while (waitpid(-1, &exit_status, 0) != -1)
+	while (waitpid(-1, &g_exit_status, 0) != -1)
 		;
-	exit_status = exit_status / 256;
-	//ft_printf("ola\n");
+	g_exit_status = g_exit_status / 256;
+	while (waitpid(-1, 0, 0) != -1)
+		;
 	i = 0;
 	while (i < pipe_count)
 	{

@@ -6,19 +6,17 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/25 12:42:41 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/30 20:11:49 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*remove_quotes(char *input, t_data *data)
+char	*remove_quotes(char *input, t_data *data, char quote_type)
 {
 	int		j;
 	int		k;
-	char	quote_type;
 
-	quote_type = 'n';
 	data->exporting = 0;
 	j = (ft_strlen(input) - 1);
 	while (j >= 0)
@@ -57,25 +55,30 @@ int	add_string_2(t_data *data, char *input, int i, int j)
 		str[x] = input[i + x];
 		x++;
 	}
-	str2 = count_quotes(data, str);
+	str2 = count_quotes(data, str, 'n', 0);
 	if (str2 == 0)
+	{
+		if (str)
+			free(str);
 		return (-1);
-	str2 = remove_quotes(str2, data);
+	}
+	if (str)
+		free(str);
+	str2 = remove_quotes(str2, data, 'n');
 	add_node(data->lexer, create_str_node(str2));
 	return (1);
 }
 
-int	add_string(t_data *data, char *input, int i)
+int	add_string(t_data *data, char *input, int i, char quote_type)
 {
 	int		j;
-	char	quote_type;
 
 	j = i;
-	quote_type = 'n';
 	while (input[j])
 	{
 		if (quote_type == 'n' && (input[j] == '\'' || input[j] == '\"'))
-			quote_type = input[j++];
+			if (input[j + 1] != '\0')
+				quote_type = input[j++];
 		if (quote_type == 'n' && (input[j] == ' ' || input[j] == '|'
 				|| input[j] == '<' || input[j] == '>'))
 			break ;
@@ -122,13 +125,11 @@ int	add_token(t_data *data, char *input, int i)
 	return (j);
 }
 
-int	lexical_analysis(t_data *data)
+int	lexical_analysis(t_data *data, char *input)
 {
 	t_lexer	**lexer;
 	int		i;
-	char	*input;
 
-	input = data->prompt;
 	i = 0;
 	lexer = malloc(sizeof(t_lexer *));
 	if (!lexer)
@@ -143,7 +144,7 @@ int	lexical_analysis(t_data *data)
 			i = add_token(data, input, i);
 		else if (input[i] && (input[i] != '|' && input[i] != '<'
 				&& input[i] != '>'))
-			i = add_string(data, input, i);
+			i = add_string(data, input, i, 'n');
 		if (i == -1)
 			return (0);
 		i++;

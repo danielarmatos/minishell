@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 14:41:42 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/07/25 11:05:31 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:47:34 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_env(t_data *data)
 		ft_putendl_fd(data->env[i], STDOUT_FILENO);
 		i++;
 	}
-	exit_status = 0;
+	g_exit_status = 0;
 	return (0);
 }
 
@@ -69,14 +69,10 @@ char	**dup_env(t_data *data, char **dup)
 	return (dup);
 }
 
-void	print_export_env(char **dup)
+void	print_export_env(char **dup, int i, int j)
 {
-	int	i;
-	int	j;
 	int	eq;
 
-	i = 0;
-	j = 0;
 	while (dup[i])
 	{
 		write(1, "declare -x ", 11);
@@ -110,7 +106,7 @@ void	export_env(t_data *data)
 		dup = dup_env(data, dup);
 		count = env_count(data);
 		dup = env_cpy(dup, count);
-		print_export_env(dup);
+		print_export_env(dup, 0, 0);
 		free_arr(dup);
 	}
 	else

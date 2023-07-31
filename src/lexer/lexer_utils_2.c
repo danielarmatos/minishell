@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:14:44 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/15 15:58:43 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 20:17:14 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,28 @@ int	check_odd_quotes(int quote_count, char quote_type)
 	{
 		ft_printf("minishell: unexpected EOF while looking for matching `%c'\n",
 			quote_type);
-		exit_status = 2;
+		g_exit_status = 2;
 		return (0);
 	}
 	else
 		return (1);
 }
 
-char	*count_quotes(t_data *data, char *str)
+char	*count_quotes(t_data *data, char *temp_str, char quote_type, int j)
 {
-	int		j;
 	int		quote_count;
-	char	quote_type;
+	char	*str;
 
+	str = ft_strdup(temp_str);
 	quote_count = 0;
-	quote_type = 'n';
-	j = -1;
-	while (str[++j])
+	while (str[j])
 	{
 		if (quote_type == 'n' && (str[j] == '\'' || str[j] == '\"'))
 		{
 			quote_type = str[j++];
 			quote_count++;
+			if (str[j] == '\0')
+				break ;
 		}
 		if (quote_type != 'n' && str[j] == quote_type)
 		{
@@ -50,11 +50,17 @@ char	*count_quotes(t_data *data, char *str)
 		{
 			str = expander(data, str, j);
 			if (str[0] == '\0')
-				break;
+				break ;
+			if ((size_t) j >= (ft_strlen(str) - 1))
+				j = 0;
 		}
+		j++;
 	}
 	if (check_odd_quotes(quote_count, quote_type) == 0)
+	{
+		free(str);
 		return (0);
+	}
 	return (str);
 }
 
@@ -74,7 +80,7 @@ int	validate_tokens(t_data *data)
 			if (!node->next)
 			{
 				ft_printf("minishell: syntax error\n");
-				exit_status = 2;
+				g_exit_status = 2;
 				return (0);
 			}
 		}
@@ -94,7 +100,7 @@ int	check_lexer(t_data *data)
 			{
 				ft_printf("minishell: syntax error near unexpected "
 					"token `%c'\n", data->lexer[0]->token[0]);
-				exit_status = 2;
+				g_exit_status = 2;
 				return (0);
 			}
 		}

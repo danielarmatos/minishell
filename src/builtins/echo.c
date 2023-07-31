@@ -46,5 +46,5 @@ void	ft_echo(t_data *data, t_simple_cmds *simple_cmd)
 	write_line(i, simple_cmd->cmds, STDOUT_FILENO);
 	if (n == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	exit_status = 0;
+	g_exit_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/14 18:34:13 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:35:49 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,22 @@ void	free_lexer(t_data *data)
 
 	i = 0;
 	len = 0;
-	if (data->lexer[0])
-		len = get_lexer_len(data->lexer[0]);
-	while (i < len)
+	if (data->lexer)
 	{
-		node = data->lexer[0];
-		if (node->str != NULL)
-			free(node->str);
-		if (node->next)
-			data->lexer[0] = data->lexer[0]->next;
-		free(node);
-		i++;
+		if (data->lexer[0])
+			len = get_lexer_len(data->lexer[0]);
+		while (i < len)
+		{
+			node = data->lexer[0];
+			if (node->str != NULL)
+				free(node->str);
+			if (node->next)
+				data->lexer[0] = data->lexer[0]->next;
+			free(node);
+			i++;
+		}
+		free(data->lexer);
 	}
-	free(data->lexer);
 	data->lexer = NULL;
 }
 
@@ -62,9 +65,6 @@ void	free_simple_cmds(t_data *data)
 
 void	free_data(t_data *data)
 {
-	//int	i;
-
-	//i = 0;
 	free(data->prompt);
 	free(data->pwd);
 	free(data->oldpwd);
@@ -82,7 +82,7 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 {
 	if (simple_cmd->cmds && simple_cmd->cmds[0][4] != '\0')
 	{
-		exit_status = 1;
+		g_exit_status = 1;
 		ft_printf("minishell: command not found: %s\n", simple_cmd->cmds[0]);
 	}
 	else
@@ -96,7 +96,7 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 			exit_status = simple_cmd->cmds[1][0];
 			
 	}
-	exit(exit_status);
+	exit(g_exit_status);
 }
 
 void	close_minishell(t_data *data)
@@ -121,5 +121,5 @@ void	close_minishell(t_data *data)
 	free(data);
 	ft_printf("exit\n");
 	rl_clear_history();
-	exit(exit_status);
+	exit(g_exit_status);
 }
