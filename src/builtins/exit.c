@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/29 15:35:49 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/31 22:07:23 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ void	free_data(t_data *data)
 
 void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 {
+	int i;
+
+	i = 0;
 	if (simple_cmd->cmds && simple_cmd->cmds[0][4] != '\0')
 	{
 		g_exit_status = 1;
@@ -87,14 +90,20 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 	}
 	else
 	{
-		if (data->env)
-			free_arr(data->env);
-		free_data(data);
-		ft_printf("exit\n");
 		if (simple_cmd->cmds[1] && simple_cmd->cmds[1][0] >= '0' && \
 			simple_cmd->cmds[1][0] <= '9')
 			g_exit_status = simple_cmd->cmds[1][0];
-			
+		if (data->env)
+		{
+			while (data->env[i])
+			{
+				free(data->env[i]);
+				i++;
+			}
+			free(data->env);
+		}
+		free_data(data);
+		ft_printf("exit\n");
 	}
 	exit(g_exit_status);
 }
