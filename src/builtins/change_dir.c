@@ -16,10 +16,13 @@ void	change_path(t_data *data)
 {
 	char	*tmp;
 
+	tmp = 0;
 	tmp = ft_strdup(data->pwd);
-	free(data->oldpwd);
+	if (data->oldpwd)
+		free(data->oldpwd);
 	data->oldpwd = tmp;
-	free(data->pwd);
+	if (data->pwd)
+		free(data->pwd);
 	data->pwd = getcwd(NULL, 0);
 }
 

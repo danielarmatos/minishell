@@ -80,9 +80,6 @@ void	free_data(t_data *data)
 
 void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 {
-	int	i;
-
-	i = 0;
 	if (simple_cmd->cmds && simple_cmd->cmds[0][4] != '\0')
 	{
 		exit_status = 1;
@@ -91,16 +88,13 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 	else
 	{
 		if (data->env)
-		{
-			while (data->env[i])
-			{
-				free(data->env[i]);
-				i++;
-			}
-			free(data->env);
-		}
+			free_arr(data->env);
 		free_data(data);
 		ft_printf("exit\n");
+		if (simple_cmd->cmds[1] && simple_cmd->cmds[1][0] >= '0' && \
+			simple_cmd->cmds[1][0] <= '9')
+			exit_status = simple_cmd->cmds[1][0];
+			
 	}
 	exit(exit_status);
 }
