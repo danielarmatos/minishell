@@ -18,6 +18,8 @@ void	clear_data(t_data *data)
 	data->prompt = NULL;
 	free_lexer(data);
 	free_simple_cmds(data);
+	dup2(data->og_ioput[0], STDIN_FILENO);
+	dup2(data->og_ioput[1], STDOUT_FILENO);
 }
 
 void	ft_exit_fork(t_data *data)
