@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/25 12:42:31 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/07/30 20:13:38 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 
-extern int	exit_status;
+extern int	g_exit_status;
 
 typedef struct s_lexer
 {
@@ -53,6 +53,7 @@ typedef struct s_data
 	struct s_simple_cmds	**simple_cmds;
 	int						**pipe_fd;
 	int						fd;
+	int						interactive;
 }		t_data;
 
 int				ft_pwd(t_data *data);
@@ -64,6 +65,8 @@ int				ft_unset(t_data *data, t_simple_cmds *simple_cmds);
 int				ft_export(t_data *data, t_simple_cmds *simple_cmds);
 void			set_signals(int i);
 void			handle_heredoc_signals(int sig, void *data);
+void			handle_heredoc_signals_2(t_data *static_data, int sig);
+void			execute_here_doc_2(t_data *data, int fd);
 int				executor(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
 int				check_identifier(char c);
@@ -74,10 +77,11 @@ int				env_count(t_data *data);
 void			export_env(t_data *data);
 int				error_status(t_data *data, int error, char *string);
 
-int				lexical_analysis(t_data *data);
+int				lexical_analysis(t_data *data, char *input);
 int				get_lexer_len(t_lexer *lexer);
 void			print_lexer(t_data *data);
-char			*count_quotes(t_data *data, char *str);
+char			*count_quotes(t_data *data, char *temp_str, \
+						char quote_type, int j);
 int				check_odd_quotes(int quote_count, char quote_type);
 void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
@@ -97,6 +101,8 @@ void			close_pipes(int **pipe_fd, int id);
 int				count_pipes(t_simple_cmds *simple_cmds);
 int				execute_path(char *name, t_simple_cmds *simple_cmds);
 void			execute_direct_path(t_data *data, t_simple_cmds *simple_cmds);
+void			free_direct_path(t_data *data);
+char			**search_paths(t_data *data, t_simple_cmds *simple_cmds);
 int				check_executable(t_data *data, t_simple_cmds *simple_cmds);
 int				check_builtins(t_data *data, t_simple_cmds *simple_cmd);
 int				check_invalid_prompt(t_lexer *lexer);
@@ -120,5 +126,6 @@ void			free_str(char **str);
 void			ft_exit_fork(t_data *data);
 void			free_data(t_data *data);
 void			free_redirections(t_simple_cmds *simple_cmd);
+void			remove_file(t_data *data);
 
 #endif

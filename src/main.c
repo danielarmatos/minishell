@@ -6,23 +6,15 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/16 17:18:37 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:36:27 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int exit_status;
+int	g_exit_status;
 
-void	clear_data(t_data *data)
-{
-	free(data->prompt);
-	data->prompt = NULL;
-	free_lexer(data);
-	free_simple_cmds(data);
-}
-
-int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
+int	check_builtins_2(t_data *data, t_simple_cmds *simple_cmd)
 {
 	int	found;
 
@@ -46,6 +38,18 @@ int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
 	return (found);
 }
 
+int	check_builtins(t_data *data, t_simple_cmds *simple_cmd)
+{
+	if (!simple_cmd)
+		return (0);
+	else if (!simple_cmd->cmds)
+		return (0);
+	else if (!simple_cmd->cmds[0])
+		return (0);
+	else
+		return (check_builtins_2(data, simple_cmd));
+}
+
 void	init_env(t_data *data, char **envp)
 {
 	int	i;
@@ -62,6 +66,29 @@ void	init_env(t_data *data, char **envp)
 	}
 }
 
+void	main_loop(t_data *data)
+{
+	while (1)
+	{
+		data->simple_cmds = NULL;
+		data->lexer = NULL;
+		data->fd = 0;
+		data->interactive = 0;
+		data->pipe_fd = NULL;
+		set_signals(0);
+		data->prompt = readline("Minishell$ ");
+		set_signals(1);
+		if (!data->prompt)
+			close_minishell(data);
+		if (data->prompt != NULL)
+			add_history(data->prompt);
+		if (lexical_analysis(data, data->prompt) == 1)
+			if (data->lexer[0])
+				executor(data, data->simple_cmds[0]);
+		clear_data(data);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -70,25 +97,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	data = malloc(sizeof(t_data));
 	init_env(data, envp);
-	data->simple_cmds = NULL;
-	data->lexer = NULL;
-	data->pipe_fd = NULL;
-	data->fd = 0;
 	find_pwd(data);
-	set_signals(0);
-	exit_status = 0;
-	while (1)
-	{
-		data->prompt = readline("Minishell$ ");
-		if (!data->prompt)
-			close_minishell(data);
-		if (data->prompt != NULL)
-			add_history(data->prompt);
-		if (lexical_analysis(data) == 1)
-		{
-			if (data->lexer[0])
-				executor(data, data->simple_cmds[0]);
-			clear_data(data);
-		}
-	}
+	g_exit_status = 0;
+	main_loop(data);
 }

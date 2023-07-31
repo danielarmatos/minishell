@@ -20,7 +20,8 @@ void	change_path(t_data *data)
 	free(data->oldpwd);
 	data->oldpwd = tmp;
 	free(data->pwd);
-	data->pwd = getcwd(NULL, 0);
+	free(tmp);
+	data->pwd = getcwd(NULL, sizeof(NULL));
 }
 
 void	add_path_env(t_data *data)
@@ -97,11 +98,11 @@ int	ft_cd(t_data *data, t_simple_cmds *simple_cmd)
 	}
 	if (path != 0)
 	{
-		exit_status = 1;
-		return (exit_status);
+		g_exit_status = 1;
+		return (g_exit_status);
 	}
-	exit_status = 0;
+	g_exit_status = 0;
 	change_path(data);
 	add_path_env(data);
-	return (exit_status);
+	return (g_exit_status);
 }

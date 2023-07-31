@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/16 18:52:30 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/07/30 20:07:50 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,12 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 			ft_printf("\n");
 		else
 		{
-			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
-			exit_status = 127;
+			ft_putstr_fd(simple_cmds->cmds[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+			g_exit_status = 127;
 		}
-		clear_data(data);
-		free(data->pwd);
-		free(data->oldpwd);
-		free_arr(data->env);
-		exit_status = 127;
-		if (data->pipe_fd)
-		{
-			free(data->pipe_fd[0]);
-			free(data->pipe_fd[1]);
-			free(data->pipe_fd);
-		}
-		free(data);
-		exit (exit_status);
+		free_direct_path(data);
+		exit (g_exit_status);
 	}
 }
 
@@ -55,8 +45,9 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 			ft_printf("\n");
 		else if (execve(name, simple_cmds->cmds, NULL) == -1)
 		{
-			ft_printf("%s: command not found\n", simple_cmds->cmds[0]);
-			exit_status = 127;
+			ft_putstr_fd(simple_cmds->cmds[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+			g_exit_status = 127;
 		}
 	}
 	return (found);
@@ -71,14 +62,9 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 	int		i;
 
 	i = 0;
-	temp = find_variable(data, "PATH");
-	if (temp == NULL)
-	{
-		execute_direct_path(data, simple_cmds);
+	paths = search_paths(data, simple_cmds);
+	if (paths == NULL)
 		return (0);
-	}
-	paths = ft_split(temp, ':');
-	free(temp);
 	while (paths[i])
 	{
 		temp = ft_strjoin(paths[i], "/");
@@ -100,13 +86,11 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 {
 	if (fork() == 0)
 	{
-		if (simple_cmds->redirections[0])
+		if (simple_cmds->redirections[0]
+			&& (execute_redirection(data, simple_cmds->redirections[0]) == 0))
 		{
-			if (execute_redirection(data, simple_cmds->redirections[0]) == 0)
-			{
-				ft_exit_fork(data);
-				return (0);
-			}
+			ft_exit_fork(data);
+			return (0);
 		}
 		if (check_builtins(data, simple_cmds) == 0)
 			check_executable(data, simple_cmds);
@@ -115,11 +99,12 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 	}
 	else
 	{
-		set_signals(1);
+		if (simple_cmds->redirections[0] == NULL)
+			set_signals(2);
 		close(fd_in);
-		while (waitpid(-1, &exit_status, WUNTRACED) != -1)
+		while (waitpid(-1, &g_exit_status, WNOHANG) == 0)
 			;
-		exit_status = exit_status / 256;
+		g_exit_status = WEXITSTATUS(g_exit_status);
 		set_signals(0);
 	}
 	return (0);

@@ -59,22 +59,22 @@ int	error_status2(t_data *data, int error, char *string)
 		printf("%s", "Minishell: ");
 		printf("%s", string);
 		printf("%s", ": not a valid identifier\n");
-		exit_status = 1;
+		g_exit_status = 1;
 	}
 	else if (error == 4)
 	{
 		printf("%s", "Minishell: ");
 		printf("%s", string);
 		printf("%s", ": numeric argument required\n");
-		exit_status = 2;
+		g_exit_status = 2;
 	}
 	else if (error == 5)
 	{
 		printf("%s", "Error: syntax error near unexpected token `");
 		printf("%s %s", string, "\n");
-		exit_status = 2;
+		g_exit_status = 2;
 	}
-	return (exit_status);
+	return (g_exit_status);
 }
 
 int	error_status(t_data *data, int error, char *string)
@@ -85,21 +85,21 @@ int	error_status(t_data *data, int error, char *string)
 		if (string)
 			printf("%s", string);
 		perror(" \b");
-		exit_status = 1;
+		g_exit_status = 1;
 	}
 	else if (error == 1)
 	{
 		printf("%s", "Minishell: ");
 		printf("%s", string);
 		printf("%s", ": not enough arguments\n");
-		exit_status = 1;
+		g_exit_status = 1;
 	}
 	else if (error == 2)
 	{
 		printf("%s", "Minishell: ");
 		printf("%s", string);
 		printf("%s", ": too many arguments\n");
-		exit_status = 1;
+		g_exit_status = 1;
 	}
 	return (error_status2(data, error, string));
 }
