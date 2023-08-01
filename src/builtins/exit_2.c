@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:23:06 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:35:17 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:00:36 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,16 @@ void	free_redirections(t_simple_cmds *simple_cmd)
 	}
 	free(simple_cmd->redirections);
 	simple_cmd->redirections = NULL;
+}
+
+int	digits_only(const char *s)
+{
+	if (!s)
+		return (0);
+	while (*s)
+	{
+		if (ft_isdigit(*s++) == 0)
+			return (0);
+	}
+	return (1);
 }
