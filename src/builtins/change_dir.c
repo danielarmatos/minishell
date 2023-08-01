@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 11:38:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/07/14 17:21:51 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:44:50 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ void	change_path(t_data *data)
 	free(data->oldpwd);
 	data->oldpwd = tmp;
 	free(data->pwd);
-	free(tmp);
-	data->pwd = getcwd(NULL, sizeof(NULL));
+	data->pwd = getcwd(NULL, 0);
 }
 
 void	add_path_env(t_data *data)
@@ -55,7 +54,7 @@ char	*find_path(char *str, t_data *data)
 	i = 0;
 	while (data->env[i])
 	{
-		if (!ft_strncmp((data->env[i]), str, ft_strlen(str)))
+		if (!ft_strncmp(data->env[i], str, ft_strlen(str)))
 			return (ft_substr(data->env[i], ft_strlen(str), \
 					ft_strlen(data->env[i]) - ft_strlen(str)));
 		i++;
@@ -63,20 +62,26 @@ char	*find_path(char *str, t_data *data)
 	return (NULL);
 }
 
-int	specific_path(t_data *data, char *str)
+int	specific_path(t_data *data, char *str, int print)
 {
 	char	*tmp;
 	int		path;
 
-	tmp = ft_strdup(find_path(str, data));
-	path = chdir(tmp);
-	free(tmp);
-	if (path != 0)
+	tmp = find_path(str, data);
+	if (tmp == NULL)
+		path = 0;
+	else
+		path = chdir(tmp);
+	if (print == 1 && path != 0)
+		printf("%s\n", tmp);
+	if (path != 0 || tmp == NULL)
 	{
 		str = ft_substr(str, 0, ft_strlen(str) - 1);
 		ft_putstr_fd(str, STDERR_FILENO);
+		free(str);
 		ft_putendl_fd(" not set", STDERR_FILENO);
 	}
+	free(tmp);
 	return (path);
 }
 
@@ -85,16 +90,14 @@ int	ft_cd(t_data *data, t_simple_cmds *simple_cmd)
 	int	path;
 
 	if (!simple_cmd->cmds[1])
-		path = specific_path(data, "HOME=");
+		path = specific_path(data, "HOME=", 0);
 	else if (ft_strncmp(simple_cmd->cmds[1], "-", 1) == 0)
-		path = specific_path(data, "OLDPWD=");
+		path = specific_path(data, "OLDPWD=", 1);
 	else
 	{
 		path = chdir(simple_cmd->cmds[1]);
 		if (path != 0)
-		{
 			ft_printf("minishell: cd: No such file or directory\n");
-		}
 	}
 	if (path != 0)
 	{
