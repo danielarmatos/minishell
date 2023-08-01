@@ -92,7 +92,7 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 		ft_printf("exit\n");
 		if (simple_cmd->cmds[1] && digits_only(simple_cmd->cmds[1]) == 1)
 			g_exit_status = ft_atoi(simple_cmd->cmds[1]);
-		else
+		else if (simple_cmd->cmds[1] && digits_only(simple_cmd->cmds[1]) == 0)
 		{
 			ft_printf("exit: numeric argument required\n");
 			g_exit_status = 2;
