@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:01:27 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:17:52 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:51:19 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ char	*str_replace(char *str, char *variable, char *value)
 	char	*temp3;
 	char	*temp4;
 
+	//if (str == NULL || variable == NULL || value == NULL)
+	//	return (0);
+	if (value == NULL)
+		ft_printf("hello\n");
+	ft_printf("%s, %s, %s.\n", str, variable, value);
 	temp = ft_strnstr(str, variable, ft_strlen(str));
 	temp3 = ft_substr(str, 0, (ft_strlen(str) - ft_strlen(temp) - 1));
 	temp4 = ft_strjoin(temp3, value);

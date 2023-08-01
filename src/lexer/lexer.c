@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 20:11:49 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:34:12 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ int	add_token(t_data *data, char *input, int i)
 		str = ">";
 	else
 		return (j);
+	if (input[j + 1] == '|' || input[j + 1] == '>' || input[j + 1] == '<')
+	{
+		ft_printf("minishell: syntax error near unexpected "
+				  "token `%c'\n", input[j]);
+		return (-1);
+	}
 	add_node(data->lexer, create_token_node(str));
 	return (j);
 }
