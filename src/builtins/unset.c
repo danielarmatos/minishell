@@ -22,7 +22,6 @@ char	**whileloop_del_var(char **arr, char **ret, char *cmds)
 	while (arr[i] != NULL)
 	{
 		if (!(ft_strncmp(arr[i], cmds, equals(arr[i]) - 1) == 0 \
-			&& cmds[equals(arr[i])] == '\0' \
 			&& arr[i][ft_strlen(cmds)] == '='))
 		{
 			ret[j] = ft_strdup(arr[i]);
