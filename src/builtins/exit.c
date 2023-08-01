@@ -80,6 +80,9 @@ void	free_data(t_data *data)
 
 void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 {
+	int i;
+
+	i = 0;
 	if (simple_cmd->cmds && simple_cmd->cmds[0][4] != '\0')
 	{
 		g_exit_status = 1;
@@ -88,7 +91,14 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 	else
 	{
 		if (data->env)
-			free_arr(data->env);
+		{
+			while (data->env[i])
+			{
+				free(data->env[i]);
+				i++;
+			}
+			free(data->env);
+		}
 		ft_printf("exit\n");
 		if (simple_cmd->cmds[1] && digits_only(simple_cmd->cmds[1]) == 1)
 			g_exit_status = ft_atoi(simple_cmd->cmds[1]);

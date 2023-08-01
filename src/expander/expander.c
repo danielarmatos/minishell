@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:33:54 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:58:53 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char	*expander(t_data *data, char *input, int i)
 		return (input);
 	value = find_value(input, i);
 	variable = find_variable(data, value);
-	if (variable)
+	if (variable && value)
 		input2 = str_replace(input, value, variable);
 	else
 	{
@@ -126,7 +126,20 @@ char	*expander(t_data *data, char *input, int i)
 			input2 = str_replace(input, value, variable);
 		}
 		else
-			input2 = str_replace(input, value, "");
+		{
+			if (value)
+			{
+				ft_printf("enters here 01: %s\n", value);
+				input2 = str_replace(input, value, "");
+			}
+
+			else
+			{
+				ft_printf("enters here 02\n");
+				input2 = ft_strdup("");
+			}
+		}
+
 	}
 	free(value);
 	free(variable);
