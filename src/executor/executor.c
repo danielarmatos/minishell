@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/01 16:36:14 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 20:46:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 {
-	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, NULL) == -1)
+	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, data->env) == -1)
 	{
 		if (simple_cmds->cmds[0][0] == ' ')
 			ft_printf("\n");

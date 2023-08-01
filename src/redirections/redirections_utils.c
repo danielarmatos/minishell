@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:08:01 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:43:52 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 20:08:07 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ void	remove_file(t_data *data)
 
 void	execute_here_doc_2(t_data *data, int fd)
 {
+	(void) data;
 	set_signals(0);
 	close(fd);
 	fd = open("temp_file", O_RDONLY);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
-	remove_file(data);
+	unlink("temp_file");
 }
