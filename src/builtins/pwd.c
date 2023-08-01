@@ -20,10 +20,11 @@ int	find_pwd(t_data *data)
 	while (data->env[i])
 	{
 		if (!ft_strncmp(data->env[i], "PWD=", 4))
-			data->pwd = ft_substr(data->env[i], 4, ft_strlen(data->env[i]) - 4);
-		if (!ft_strncmp(data->env[i], "OLDPWD", 6))
-			data->oldpwd = ft_substr(data->env[i], 6, \
-			ft_strlen(data->env[i]) - 6);
+			data->pwd = ft_substr(data->env[i], 4, \
+			ft_strlen(data->env[i]) - 4);
+		if (!ft_strncmp(data->env[i], "OLDPWD=", 7))
+			data->oldpwd = ft_substr(data->env[i], 7, \
+			ft_strlen(data->env[i]) - 7);
 		i++;
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 20:13:38 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:00:36 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void			execute_here_doc_2(t_data *data, int fd);
 int				executor(t_data *data, t_simple_cmds *cmd);
 int				find_pwd(t_data *data);
 int				check_identifier(char c);
+int				digits_only(const char *s);
 
 int				unset_error(t_simple_cmds *simple_cmd);
 int				export_error(char *c);

@@ -6,7 +6,7 @@
 /*   By: dmanuel- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:19:09 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/07/25 12:42:37 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/01 12:45:34 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	**whileloop_del_var(char **arr, char **ret, char *cmds)
 	while (arr[i] != NULL)
 	{
 		if (!(ft_strncmp(arr[i], cmds, equals(arr[i]) - 1) == 0 \
+			&& cmds[equals(arr[i])] == '\0' \
 			&& arr[i][ft_strlen(cmds)] == '='))
 		{
 			ret[j] = ft_strdup(arr[i]);

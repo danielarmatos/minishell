@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 14:41:42 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/07/30 19:47:34 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 09:53:03 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_env(t_data *data)
 		i++;
 	}
 	g_exit_status = 0;
-	return (0);
+	return (g_exit_status);
 }
 
 char	**env_cpy(char **dup, int count)
@@ -39,7 +39,7 @@ char	**env_cpy(char **dup, int count)
 		j = i + 1;
 		while (j <= count)
 		{
-			if (strcmp(dup[i], dup[j]) > 0)
+			if (ft_strcmp(dup[i], dup[j]) > 0)
 			{
 				sorting = dup[i];
 				dup[i] = dup[j];
