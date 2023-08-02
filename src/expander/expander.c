@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:33:54 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 22:08:02 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,13 @@ char	*find_variable(t_data *data, char *value)
 	variable = NULL;
 	while (data->env[j])
 	{
+		if (data->env[j] == NULL)
+			return (NULL);
+		if (data->env[j][ft_strlen(data->env[j]) - 1] == '=')
+			return (NULL);
 		str = ft_split(data->env[j], '=');
+		if (!str[1])
+			return (NULL);
 		if (ft_strncmp(value, str[0], ft_strlen(str[0]) + 1) == 0)
 		{
 			variable = ft_strdup(str[1]);
@@ -39,7 +45,6 @@ char	*find_variable(t_data *data, char *value)
 
 char	*find_value(char *input, int i)
 {
-	char	*variable;
 	int		f;
 
 	while (input[i])
@@ -61,8 +66,9 @@ char	*find_value(char *input, int i)
 	}
 	else
 		i++;
-	variable = ft_substr(input, f, (i - f));
-	return (variable);
+	if (i == f)
+		return (NULL);
+	return (ft_substr(input, f, (i - f)));
 }
 
 char	*expand_str(t_data *data, char *str)
@@ -72,6 +78,12 @@ char	*expand_str(t_data *data, char *str)
 	char	*str2;
 
 	value = find_value(str, 0);
+	if (!value)
+	{
+		free(str);
+		str2 = ft_strdup("");
+		return (str2);
+	}
 	variable = find_variable(data, value);
 	if (variable)
 		str2 = str_replace(str, value, variable);
@@ -115,6 +127,12 @@ char	*expander(t_data *data, char *input, int i)
 	if (check_here_doc(data) == 0)
 		return (input);
 	value = find_value(input, i);
+	if (!value)
+	{
+		free(input);
+		input2 = ft_strdup("");
+		return (input2);
+	}
 	variable = find_variable(data, value);
 	if (variable)
 		input2 = str_replace(input, value, variable);

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:45:19 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:52:12 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void	execute_here_doc(t_data *data, t_lexer *redir)
 	execute_here_doc_2(data, fd);
 }
 
-int	redirect_input(t_data *data, t_lexer *redirections, int o_input)
+int	redirect_input(t_data *data, t_lexer *redirections)
 {
 	int	fd;
 
 	if (redirections->token[0] == '<' && redirections->token[1] == '<')
 	{
-		dup2(o_input, STDIN_FILENO);
+		dup2(data->og_ioput[0], STDIN_FILENO);
 		execute_here_doc(data, redirections);
 	}
 	else
@@ -69,9 +69,7 @@ int	redirect_input(t_data *data, t_lexer *redirections, int o_input)
 int	execute_redirection(t_data *data, t_lexer *redirections)
 {
 	int	fd;
-	int	o_input;
 
-	o_input = dup(STDIN_FILENO);
 	while (redirections)
 	{
 		if (redirections->token[0] == '>')
@@ -84,7 +82,7 @@ int	execute_redirection(t_data *data, t_lexer *redirections)
 			close(fd);
 		}
 		if (redirections->token[0] == '<')
-			if (redirect_input(data, redirections, o_input) == 0)
+			if (redirect_input(data, redirections) == 0)
 				return (0);
 		redirections = redirections->next;
 	}

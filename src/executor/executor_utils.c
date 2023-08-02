@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 20:02:52 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 20:01:55 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 20:49:30 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ char	**search_paths(t_data *data, t_simple_cmds *simple_cmds)
 
 void	free_direct_path(t_data *data)
 {
+	int	i;
+
+	i = 0;
 	clear_data(data);
 	free(data->pwd);
 	free(data->oldpwd);
@@ -39,8 +42,11 @@ void	free_direct_path(t_data *data)
 	g_exit_status = 127;
 	if (data->pipe_fd)
 	{
-		free(data->pipe_fd[0]);
-		free(data->pipe_fd[1]);
+		while (data->pipe_fd[i])
+		{
+			free(data->pipe_fd[i]);
+			i++;
+		}
 		free(data->pipe_fd);
 	}
 	free(data);

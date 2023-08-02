@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:36:27 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 19:26:54 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	main_loop(t_data *data)
 		data->simple_cmds = NULL;
 		data->lexer = NULL;
 		data->fd = 0;
-		data->interactive = 0;
+		data->interactive = 1;
 		data->pipe_fd = NULL;
 		set_signals(0);
 		data->prompt = readline("Minishell$ ");
@@ -96,6 +96,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	data = malloc(sizeof(t_data));
+	data->og_ioput[0] = dup(STDIN_FILENO);
+	data->og_ioput[1] = dup(STDOUT_FILENO);
 	init_env(data, envp);
 	find_pwd(data);
 	g_exit_status = 0;

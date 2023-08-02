@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:14:44 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 20:17:14 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 22:27:05 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,13 @@ int	validate_tokens(t_data *data)
 			if (!node->next)
 			{
 				ft_printf("minishell: syntax error\n");
+				g_exit_status = 2;
+				return (0);
+			}
+			else if (node->next->token)
+			{
+				ft_printf("minishell: syntax error near unexpected "
+					"token `%c'\n", node->next->token[0]);
 				g_exit_status = 2;
 				return (0);
 			}
