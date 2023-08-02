@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/01 16:35:26 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/01 20:18:38 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void			free_arr(char **split_arr);
 void			ft_pipes(t_data *data, t_simple_cmds *simple_cmds);
 void			close_pipes(int **pipe_fd, int id);
 int				count_pipes(t_simple_cmds *simple_cmds);
-int				execute_path(t_data *data, char *name,  \
+int				execute_path(t_data *data, char *name, \
 							t_simple_cmds *simple_cmds);
 void			execute_direct_path(t_data *data, t_simple_cmds *simple_cmds);
 void			free_direct_path(t_data *data);
@@ -130,5 +130,6 @@ void			ft_exit_fork(t_data *data);
 void			free_data(t_data *data);
 void			free_redirections(t_simple_cmds *simple_cmd);
 void			remove_file(t_data *data);
+void			free_pipe_fd(int **pipe_fd);
 
 #endif

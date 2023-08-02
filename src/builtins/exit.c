@@ -80,7 +80,7 @@ void	free_data(t_data *data)
 
 void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (simple_cmd->cmds && simple_cmd->cmds[0][4] != '\0')
