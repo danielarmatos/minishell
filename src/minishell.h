@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/01 20:18:38 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:25:44 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_data
 	int						fd;
 	int						interactive;
 	int						og_ioput[2];
+	int						quote_count;
+	char					quote_type;
 }		t_data;
 
 int				ft_pwd(t_data *data);
@@ -82,8 +84,7 @@ int				error_status(t_data *data, int error, char *string);
 int				lexical_analysis(t_data *data, char *input);
 int				get_lexer_len(t_lexer *lexer);
 void			print_lexer(t_data *data);
-char			*count_quotes(t_data *data, char *temp_str, \
-						char quote_type, int j);
+char			*count_quotes(t_data *data, int j, char *str);
 int				check_odd_quotes(int quote_count, char quote_type);
 void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
@@ -116,8 +117,12 @@ void			free_lexer(t_data *data);
 void			free_simple_cmds(t_data *data);
 void			clear_data(t_data *data);
 
+char			*count_quotes_3(char *str);
+char			count_quotes_2(t_data *data);
+void			clean_string_vars(t_data *data);
+
 char			*expander(t_data *data, char *input, int i);
-char			*find_variable(t_data *data, char *value);
+char			*find_variable(t_data *data, char *value, int j);
 char			*expand_str(t_data *data, char *str);
 void			add_redirections(t_lexer *node, t_lexer **redirections);
 int				execute_redirection(t_data *data, t_lexer *redirections);

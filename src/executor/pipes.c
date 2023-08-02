@@ -6,17 +6,21 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 19:30:37 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 20:09:55 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:24:46 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_pipe_fd(int **pipe_fd)
+void	p_process_2(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 {
-	free(pipe_fd[0]);
-	free(pipe_fd[1]);
-	free(pipe_fd);
+	close_pipes(pipe_fd, id);
+	if (check_builtins(data, s_cmds) == 0)
+		check_executable(data, s_cmds);
+	if (pipe_fd)
+		free_pipe_fd(pipe_fd);
+	ft_exit_fork(data);
+	exit(g_exit_status);
 }
 
 void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
@@ -39,15 +43,7 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 		if (s_cmds->redirections[0])
 			execute_redirection(data, s_cmds->redirections[0]);
 		if (fork() == 0)
-		{
-			close_pipes(pipe_fd, id);
-			if (check_builtins(data, s_cmds) == 0)
-				check_executable(data, s_cmds);
-			if (pipe_fd)
-				free_pipe_fd(pipe_fd);
-			ft_exit_fork(data);
-			exit(g_exit_status);
-		}
+			p_process_2(data, s_cmds, id, pipe_fd);
 	}
 }
 
