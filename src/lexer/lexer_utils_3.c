@@ -1,48 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipes_utils.c                                      :+:      :+:    :+:   */
+/*   lexer_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/27 10:23:26 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/02 16:41:02 by dreis-ma         ###   ########.fr       */
+/*   Created: 2023/08/02 21:15:25 by dreis-ma          #+#    #+#             */
+/*   Updated: 2023/08/02 21:20:10 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_pipe_fd(int **pipe_fd)
+char	*count_quotes_3(char *str)
 {
-	free(pipe_fd[0]);
-	free(pipe_fd[1]);
-	free(pipe_fd);
+	free(str);
+	return (0);
 }
 
-void	close_pipes(int **pipe_fd, int id)
+char	count_quotes_2(t_data *data)
 {
-	while (id >= 0)
-	{
-		if (pipe_fd[id])
-		{
-			close(pipe_fd[id][0]);
-			close(pipe_fd[id][1]);
-		}
-		id--;
-	}
+	data->quote_count++;
+	return ('n');
 }
 
-int	count_pipes(t_simple_cmds *simple_cmds)
+void	clean_string_vars(t_data *data)
 {
-	t_simple_cmds	*node;
-	int				i;
-
-	i = 1;
-	node = simple_cmds;
-	while (node->next != NULL)
-	{
-		node = node->next;
-		i++;
-	}
-	return (i);
+	data->quote_count = 0;
+	data->quote_type = 'n';
 }
