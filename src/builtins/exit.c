@@ -94,7 +94,6 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 		if (simple_cmd->cmds[1] && simple_cmd->cmds[1][0] >= '0' && \
 			simple_cmd->cmds[1][0] <= '9')
 			g_exit_status = simple_cmd->cmds[1][0];
-			
 	}
 	exit(g_exit_status);
 }
@@ -119,7 +118,6 @@ void	close_minishell(t_data *data)
 	if (data->simple_cmds)
 		free_simple_cmds(data);
 	free(data);
-	ft_printf("exit\n");
 	rl_clear_history();
 	exit(g_exit_status);
 }
