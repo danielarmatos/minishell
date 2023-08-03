@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/01 14:00:36 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/03 10:25:30 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,27 +90,8 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 	}
 	else
 	{
-		if (data->env)
-		{
-			while (data->env[i])
-			{
-				free(data->env[i]);
-				i++;
-			}
-			free(data->env);
-		}
-		ft_printf("exit\n");
-		if (simple_cmd->cmds[1] && simple_cmd->cmds[1][0] >= '0' && \
-			simple_cmd->cmds[1][0] <= '9')
-			g_exit_status = simple_cmd->cmds[1][0];
-		/*if (simple_cmd->cmds[1] && digits_only(simple_cmd->cmds[1]) == 1)
-			g_exit_status = ft_atoi(simple_cmd->cmds[1]);
-		else
-		{
-			ft_printf("exit: numeric argument required\n");
-			g_exit_status = 2;
-		}
-		free_data(data);*/
+		print_exit(data, simple_cmd);
+		free_data(data);
 	}
 	exit(g_exit_status);
 }
@@ -123,6 +104,7 @@ void	close_minishell(t_data *data)
 	free(data->prompt);
 	free(data->pwd);
 	free(data->oldpwd);
+	ft_printf("exit\n");
 	if (data->env)
 	{
 		while (data->env[i])

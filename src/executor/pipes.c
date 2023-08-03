@@ -14,11 +14,11 @@
 
 void	p_process_2(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 {
-	close_pipes(pipe_fd, id);
 	if (check_builtins(data, s_cmds) == 0)
 		check_executable(data, s_cmds);
 	if (pipe_fd)
 		free_pipe_fd(pipe_fd);
+	id = id + 0;
 	ft_exit_fork(data);
 	exit(g_exit_status);
 }
@@ -36,15 +36,24 @@ void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
 			pipe(pipe_fd[id]);
 		}
 		else
+		{
+			close(pipe_fd[id - 1][0]);
 			dup2(data->og_ioput[1], STDOUT_FILENO);
+		}
 		if (pipe_fd[id])
+		{
+			if (id > 0)
+				close(pipe_fd[id - 1][0]);
 			dup2(pipe_fd[id][1], STDOUT_FILENO);
+			close(pipe_fd[id][0]);
+		}
 		dup2(pipe_fd[id - 1][0], STDIN_FILENO);
 		if (s_cmds->redirections[0])
 			execute_redirection(data, s_cmds->redirections[0]);
 		if (fork() == 0)
 			p_process_2(data, s_cmds, id, pipe_fd);
 	}
+	close_pipes(pipe_fd, id);
 }
 
 int	c_process_1(t_data *data, t_simple_cmds *simple_cmds)
