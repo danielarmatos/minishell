@@ -22,7 +22,6 @@ char	**whileloop_del_var(char **arr, char **ret, char *cmds)
 	while (arr[i] != NULL)
 	{
 		if (!(ft_strncmp(arr[i], cmds, equals(arr[i]) - 1) == 0 \
-			&& cmds[equals(arr[i])] == '\0' \
 			&& arr[i][ft_strlen(cmds)] == '='))
 		{
 			ret[j] = ft_strdup(arr[i]);
@@ -56,7 +55,9 @@ char	**del_var(char **arr, char *cmd)
 int	ft_unset(t_data *data, t_simple_cmds *simple_cmds)
 {
 	char	**tmp;
+	int	i;
 
+	i = 0;
 	g_exit_status = 0;
 	if (unset_error(simple_cmds) == 1)
 		return (EXIT_FAILURE);
@@ -64,9 +65,13 @@ int	ft_unset(t_data *data, t_simple_cmds *simple_cmds)
 		error_status(data, 3, "unset");
 	else
 	{
-		tmp = del_var(data->env, simple_cmds->cmds[1]);
-		free_arr(data->env);
-		data->env = tmp;
+		while (simple_cmds->cmds[i])
+		{
+			tmp = del_var(data->env, simple_cmds->cmds[i]);
+			free_arr(data->env);
+			data->env = tmp;
+			i++;
+		}
 	}
 	return (EXIT_SUCCESS);
 }
