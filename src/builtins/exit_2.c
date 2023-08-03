@@ -74,7 +74,7 @@ int	digits_only(const char *s)
 void	print_exit(t_data *data, t_simple_cmds *simple_cmd)
 {
 	int	i;
-	
+
 	i = 0;
 	if (data->env)
 	{

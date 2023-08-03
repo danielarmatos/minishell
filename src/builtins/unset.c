@@ -55,7 +55,7 @@ char	**del_var(char **arr, char *cmd)
 int	ft_unset(t_data *data, t_simple_cmds *simple_cmds)
 {
 	char	**tmp;
-	int	i;
+	int		i;
 
 	i = 0;
 	g_exit_status = 0;
