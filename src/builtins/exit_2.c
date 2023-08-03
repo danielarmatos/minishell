@@ -70,3 +70,31 @@ int	digits_only(const char *s)
 	}
 	return (1);
 }
+
+void	print_exit(t_data *data, t_simple_cmds *simple_cmd)
+{
+	int	i;
+	
+	i = 0;
+	if (data->env)
+	{
+		while (data->env[i])
+		{
+			free(data->env[i]);
+			i++;
+		}
+		free(data->env);
+	}
+	if (!simple_cmd->cmds[1])
+		ft_printf("exit\n");
+	if (simple_cmd->cmds[1] && digits_only(simple_cmd->cmds[1]) == 1)
+	{
+		g_exit_status = ft_atoi(simple_cmd->cmds[1]);
+		ft_printf("exit\n");
+	}
+	else if (simple_cmd->cmds[1])
+	{
+		ft_printf("exit: numeric argument required\n");
+		g_exit_status = 2;
+	}
+}

@@ -116,6 +116,7 @@ void			close_minishell(t_data *data);
 void			free_lexer(t_data *data);
 void			free_simple_cmds(t_data *data);
 void			clear_data(t_data *data);
+void			print_exit(t_data *data, t_simple_cmds *simple_cmd);
 
 char			*count_quotes_3(char *str);
 char			count_quotes_2(t_data *data);
