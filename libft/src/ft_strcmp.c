@@ -6,14 +6,14 @@
 /*   By: dmanuel- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 14:07:48 by dmanuel-          #+#    #+#             */
-/*   Updated: 2022/09/30 14:23:18 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/01 22:36:35 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
 int	ft_strcmp(char *s1, char *s2)
-{	
+{
 	int	i;
 
 	i = 0;

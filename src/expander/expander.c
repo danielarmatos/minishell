@@ -6,40 +6,14 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:33:54 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:48:13 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*find_variable(t_data *data, char *value)
-{
-	char	**str;
-	char	*variable;
-	int		j;
-
-	j = 0;
-	variable = NULL;
-	while (data->env[j])
-	{
-		str = ft_split(data->env[j], '=');
-		if (ft_strncmp(value, str[0], ft_strlen(str[0]) + 1) == 0)
-		{
-			variable = ft_strdup(str[1]);
-			free_str(str);
-			break ;
-		}
-		j++;
-		free_str(str);
-	}
-	if (variable)
-		return (variable);
-	return (NULL);
-}
-
 char	*find_value(char *input, int i)
 {
-	char	*variable;
 	int		f;
 
 	while (input[i])
@@ -61,8 +35,9 @@ char	*find_value(char *input, int i)
 	}
 	else
 		i++;
-	variable = ft_substr(input, f, (i - f));
-	return (variable);
+	if (i == f)
+		return (NULL);
+	return (ft_substr(input, f, (i - f)));
 }
 
 char	*expand_str(t_data *data, char *str)
@@ -72,7 +47,13 @@ char	*expand_str(t_data *data, char *str)
 	char	*str2;
 
 	value = find_value(str, 0);
-	variable = find_variable(data, value);
+	if (!value)
+	{
+		free(str);
+		str2 = ft_strdup("");
+		return (str2);
+	}
+	variable = find_variable(data, value, 0);
 	if (variable)
 		str2 = str_replace(str, value, variable);
 	else
@@ -106,16 +87,12 @@ int	check_here_doc(t_data *data)
 	return (1);
 }
 
-char	*expander(t_data *data, char *input, int i)
+char	*expander_2(t_data *data, char *input, char *value)
 {
-	char	*value;
 	char	*variable;
 	char	*input2;
 
-	if (check_here_doc(data) == 0)
-		return (input);
-	value = find_value(input, i);
-	variable = find_variable(data, value);
+	variable = find_variable(data, value, 0);
 	if (variable)
 		input2 = str_replace(input, value, variable);
 	else
@@ -132,4 +109,21 @@ char	*expander(t_data *data, char *input, int i)
 	free(variable);
 	free(input);
 	return (input2);
+}
+
+char	*expander(t_data *data, char *input, int i)
+{
+	char	*value;
+	char	*input2;
+
+	if (check_here_doc(data) == 0)
+		return (input);
+	value = find_value(input, i);
+	if (!value)
+	{
+		free(input);
+		input2 = ft_strdup("");
+		return (input2);
+	}
+	return (expander_2(data, input, value));
 }

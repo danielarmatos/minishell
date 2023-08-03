@@ -6,13 +6,13 @@
 #    By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 18:12:34 by dreis-ma          #+#    #+#              #
-#    Updated: 2023/07/30 19:48:24 by dreis-ma         ###   ########.fr        #
+#    Updated: 2023/08/02 21:34:48 by dreis-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-#CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+#CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 DEPS = libft/libft.a
 
 SRC = src/main.c src/builtins/pwd.c src/builtins/exit.c \
@@ -23,7 +23,8 @@ src/parser/parser_utils.c src/builtins/utils_builtins.c src/builtins/unset.c \
 src/error_free/error_builtins.c src/builtins/export.c src/executor/pipes.c \
 src/executor/pipes_utils.c src/executor/executor_utils.c \
 src/expander/expander.c src/expander/expander_utils.c src/signals_utils.c\
-src/redirections/redirections.c src/redirections/redirections_utils.c
+src/redirections/redirections.c src/redirections/redirections_utils.c \
+src/lexer/lexer_utils_3.c
 
 OBJ = $(SRC:.c=.o)
 

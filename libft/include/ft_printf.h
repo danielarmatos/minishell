@@ -6,12 +6,11 @@
 /*   By: dmanuel- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 09:58:45 by dmanuel-          #+#    #+#             */
-/*   Updated: 2022/12/01 09:58:51 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/01 22:37:27 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef  FT_PRINTF_H
-
+#ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
 # include <unistd.h>

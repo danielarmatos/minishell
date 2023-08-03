@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 20:11:49 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:25:37 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ char	*remove_quotes(char *input, t_data *data, char quote_type)
 		{
 			quote_type = input[j];
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
+			j--;
 			k = j;
-			j++;
 		}
 		if (quote_type != 'n' && input[j] == quote_type)
 		{
@@ -55,7 +55,7 @@ int	add_string_2(t_data *data, char *input, int i, int j)
 		str[x] = input[i + x];
 		x++;
 	}
-	str2 = count_quotes(data, str, 'n', 0);
+	str2 = count_quotes(data, 0, ft_strdup(str));
 	if (str2 == 0)
 	{
 		if (str)
@@ -92,20 +92,17 @@ int	add_string(t_data *data, char *input, int i, char quote_type)
 			quote_type = 'n';
 		j++;
 	}
+	clean_string_vars(data);
 	if (add_string_2(data, input, i, j) == -1)
 		return (-1);
 	return (j - 1);
 }
 
-int	add_token(t_data *data, char *input, int i)
+int	add_token(t_data *data, char *input, int i, int j)
 {
-	int		j;
 	char	*str;
 
-	j = i;
-	if (input[i] == '|')
-		str = "|";
-	else if (input[i] == '<' && input[i + 1] == '<')
+	if (input[i] == '<' && input[i + 1] == '<')
 	{
 		str = "<<";
 		j++;
@@ -115,12 +112,16 @@ int	add_token(t_data *data, char *input, int i)
 		str = ">>";
 		j++;
 	}
-	else if (input[i] == '<')
-		str = "<";
-	else if (input[i] == '>')
-		str = ">";
+	else if (input[i] == '<' || input[i] == '>' || input[i] == '|')
+		str = &input[i];
 	else
 		return (j);
+	if (input[j + 1] == '|' || input[j + 1] == '>' || input[j + 1] == '<')
+	{
+		ft_printf("minishell: syntax error near unexpected "
+			"token `%c'\n", input[j]);
+		return (-1);
+	}
 	add_node(data->lexer, create_token_node(str));
 	return (j);
 }
@@ -141,7 +142,7 @@ int	lexical_analysis(t_data *data, char *input)
 		while ((input[i] >= 9 && input[i] <= 13) || input[i] == 32)
 			i++;
 		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
-			i = add_token(data, input, i);
+			i = add_token(data, input, i, i);
 		else if (input[i] && (input[i] != '|' && input[i] != '<'
 				&& input[i] != '>'))
 			i = add_string(data, input, i, 'n');

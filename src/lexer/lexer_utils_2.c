@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:14:44 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 20:17:14 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:25:49 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,20 @@ int	check_odd_quotes(int quote_count, char quote_type)
 		return (1);
 }
 
-char	*count_quotes(t_data *data, char *temp_str, char quote_type, int j)
+char	*count_quotes(t_data *data, int j, char *str)
 {
-	int		quote_count;
-	char	*str;
-
-	str = ft_strdup(temp_str);
-	quote_count = 0;
 	while (str[j])
 	{
-		if (quote_type == 'n' && (str[j] == '\'' || str[j] == '\"'))
+		if (data->quote_type == 'n' && (str[j] == '\'' || str[j] == '\"'))
 		{
-			quote_type = str[j++];
-			quote_count++;
+			data->quote_type = str[j++];
+			data->quote_count++;
 			if (str[j] == '\0')
 				break ;
 		}
-		if (quote_type != 'n' && str[j] == quote_type)
-		{
-			quote_type = 'n';
-			quote_count++;
-		}
-		if (str[j] == '$' && quote_type != '\'')
+		if (data->quote_type != 'n' && str[j] == data->quote_type)
+			data->quote_type = count_quotes_2(data);
+		if (str[j] == '$' && data->quote_type != '\'')
 		{
 			str = expander(data, str, j);
 			if (str[0] == '\0')
@@ -56,22 +48,15 @@ char	*count_quotes(t_data *data, char *temp_str, char quote_type, int j)
 		}
 		j++;
 	}
-	if (check_odd_quotes(quote_count, quote_type) == 0)
-	{
-		free(str);
-		return (0);
-	}
+	if (check_odd_quotes(data->quote_count, data->quote_type) == 0)
+		return (count_quotes_3(str));
 	return (str);
 }
 
-int	validate_tokens(t_data *data)
+int	validate_tokens(t_data *data, int i, t_lexer *node)
 {
 	int		len;
-	int		i;
-	t_lexer	*node;
 
-	node = data->lexer[0];
-	i = 0;
 	len = get_lexer_len(data->lexer[0]);
 	while (i < len)
 	{
@@ -80,6 +65,13 @@ int	validate_tokens(t_data *data)
 			if (!node->next)
 			{
 				ft_printf("minishell: syntax error\n");
+				g_exit_status = 2;
+				return (0);
+			}
+			else if (node->next->token)
+			{
+				ft_printf("minishell: syntax error near unexpected "
+					"token `%c'\n", node->next->token[0]);
 				g_exit_status = 2;
 				return (0);
 			}
@@ -104,7 +96,7 @@ int	check_lexer(t_data *data)
 				return (0);
 			}
 		}
-		if (validate_tokens(data) == 0)
+		if (validate_tokens(data, 0, data->lexer[0]) == 0)
 			return (0);
 		parsing(data);
 		return (1);

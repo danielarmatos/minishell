@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:50:22 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 19:36:27 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:11:28 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ void	main_loop(t_data *data)
 		data->simple_cmds = NULL;
 		data->lexer = NULL;
 		data->fd = 0;
-		data->interactive = 0;
+		data->interactive = 1;
 		data->pipe_fd = NULL;
+		data->quote_count = 0;
+		data->quote_type = 'n';
 		set_signals(0);
 		data->prompt = readline("Minishell$ ");
 		set_signals(1);

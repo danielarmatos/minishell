@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:07:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/07/30 20:07:50 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:46:50 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 {
-	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, NULL) == -1)
+	if (execve(simple_cmds->cmds[0], simple_cmds->cmds, data->env) == -1)
 	{
 		if (simple_cmds->cmds[0][0] == ' ')
 			ft_printf("\n");
@@ -31,7 +31,7 @@ void	execute_direct_path(t_data *data, t_simple_cmds *simple_cmds)
 	}
 }
 
-int	execute_path(char *name, t_simple_cmds *simple_cmds)
+int	execute_path(t_data *data, char *name, t_simple_cmds *simple_cmds)
 {
 	int	result;
 	int	found;
@@ -43,7 +43,7 @@ int	execute_path(char *name, t_simple_cmds *simple_cmds)
 		found = 1;
 		if (simple_cmds->cmds[0][0] == ' ')
 			ft_printf("\n");
-		else if (execve(name, simple_cmds->cmds, NULL) == -1)
+		else if (execve(name, simple_cmds->cmds, data->env) == -1)
 		{
 			ft_putstr_fd(simple_cmds->cmds[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
@@ -69,7 +69,7 @@ int	check_executable(t_data *data, t_simple_cmds *simple_cmds)
 	{
 		temp = ft_strjoin(paths[i], "/");
 		name = ft_strjoin(temp, simple_cmds->cmds[0]);
-		found = execute_path(name, simple_cmds);
+		found = execute_path(data, name, simple_cmds);
 		free(temp);
 		free(name);
 		if (found == 1)
