@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 19:41:53 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/01 21:58:11 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/04 22:51:22 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ static void	handle_interactive_signals(int sig, siginfo_t *info, void *context)
 	(void) info;
 	(void) context;
 	if (sig == SIGINT)
+	{
+		g_exit_status = 130;
 		ft_printf("\n");
+	}
 	else if (sig == SIGQUIT)
 	{
 		ft_printf("\b\b  \b\b");

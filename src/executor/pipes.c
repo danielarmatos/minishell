@@ -6,111 +6,181 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 19:30:37 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/02 19:24:46 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/04 23:02:37 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	p_process_2(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
+void	heredoc_pipes(t_data *data, t_simple_cmds *simple_cmds, int pipe_count)
 {
-	if (check_builtins(data, s_cmds) == 0)
-		check_executable(data, s_cmds);
-	if (pipe_fd)
-		free_pipe_fd(pipe_fd);
-	id = id + 0;
-	ft_exit_fork(data);
-	exit(g_exit_status);
-}
+	t_simple_cmds	*cmds;
+	int				i;
 
-void	p_process(t_data *data, t_simple_cmds *s_cmds, int id, int **pipe_fd)
-{
-	while (s_cmds->next != NULL)
+	i = 0;
+	cmds = simple_cmds;
+	while (i < pipe_count)
 	{
-		id++;
-		s_cmds = s_cmds->next;
-		dup2(data->og_ioput[0], STDIN_FILENO);
-		if (s_cmds->next != NULL)
+		if (cmds->redirections[0])
 		{
-			pipe_fd[id] = malloc(sizeof(int) * 2);
-			pipe(pipe_fd[id]);
+			if (cmds->redirections[0]->token[0] == '<'
+				&& cmds->redirections[0]->token[1] == '<')
+			{
+				dup2(data->fd, STDIN_FILENO);
+				execute_redirection(data, cmds->redirections[0]);
+			}
 		}
-		else
-		{
-			close(pipe_fd[id - 1][0]);
-			dup2(data->og_ioput[1], STDOUT_FILENO);
-		}
-		if (pipe_fd[id])
-		{
-			if (id > 0)
-				close(pipe_fd[id - 1][0]);
-			dup2(pipe_fd[id][1], STDOUT_FILENO);
-			close(pipe_fd[id][0]);
-		}
-		dup2(pipe_fd[id - 1][0], STDIN_FILENO);
-		if (s_cmds->redirections[0])
-			execute_redirection(data, s_cmds->redirections[0]);
-		if (fork() == 0)
-			p_process_2(data, s_cmds, id, pipe_fd);
+		cmds = cmds->next;
+		i++;
 	}
-	close_pipes(pipe_fd, id);
 }
 
-int	c_process_1(t_data *data, t_simple_cmds *simple_cmds)
+void	setup_pipes(int pipes[][2], int pipe_count, t_simple_cmds *simple_cmds)
 {
-	if (simple_cmds->redirections[0])
-		return (execute_redirection(data, simple_cmds->redirections[0]));
-	return (1);
-}
+	int	i;
 
-int	create_pipes(t_data *data, t_simple_cmds *simple_cmds, int **pipe_fd)
-{
-	int		id;
-
-	id = 0;
-	set_signals(1);
-	handle_heredoc_signals(0, data);
-	pipe_fd[id] = malloc(sizeof(int) * 2);
-	pipe(pipe_fd[id]);
-	data->pipe_fd = pipe_fd;
-	if (c_process_1(data, simple_cmds) == 0)
-		return (0);
-	dup2(pipe_fd[id][1], STDOUT_FILENO);
-	if (fork() == 0)
+	i = 0;
+	heredoc_pipes(data, simple_cmds, pipe_count);
+	while (i < pipe_count)
 	{
-		close_pipes(pipe_fd, id);
-		if (check_builtins(data, simple_cmds) == 0)
-			check_executable(data, simple_cmds);
-		free_pipe_fd(pipe_fd);
-		ft_exit_fork(data);
+		pipe(pipes[i % 2]);
+		i++;
+		simple_cmds = simple_cmds->next;
 	}
-	else
-		p_process(data, simple_cmds, id, pipe_fd);
-	return (0);
+}
+
+void	handle_child_processes(int pipes[][2], int pipe_count, t_data *data, t_simple_cmds *simple_cmds)
+{
+	int		i;
+	pid_t	pid;
+
+	i = 0;
+	while (i < pipe_count)
+	{
+		pipe(pipes[i % 2]);
+		pid = fork();
+		if (pid == 0)
+		{
+			if (i > 0)
+			{
+				dup2(pipes[(i - 1) % 2][0], STDIN_FILENO);
+				close(pipes[(i - 1) % 2][0]);
+				close(pipes[(i - 1) % 2][1]);
+			}
+			if (i < pipe_count - 1)
+			{
+				dup2(pipes[i % 2][1], STDOUT_FILENO);
+				close(pipes[i % 2][0]);
+				close(pipes[i % 2][1]);
+			}
+			if (simple_cmds->redirections[0])
+			{
+				if (!(simple_cmds->redirections[0]->token[0] == '<'
+						&& simple_cmds->redirections[0]->token[1] == '<'))
+					execute_redirection(data, simple_cmds->redirections[0]);
+			}
+			if (check_builtins(data, simple_cmds) == 0)
+				check_executable(data, simple_cmds);
+			exit(EXIT_FAILURE);
+		}
+		if (i > 0)
+		{
+			close(pipes[(i - 1) % 2][0]);
+			close(pipes[(i - 1) % 2][1]);
+		}
+		i++;
+		simple_cmds = simple_cmds->next;
+	}
+}
+
+void	wait_and_cleanup(int pipes[][2], int pipe_count)
+{
+	int	i;
+	int	child_status;
+
+	i = 0;
+	while (i < pipe_count)
+	{
+		wait(&child_status);
+		if (WIFEXITED(child_status))
+			g_exit_status = WEXITSTATUS(child_status);
+		else if (WIFSIGNALED(child_status))
+			g_exit_status = 128 + WTERMSIG(child_status);
+		i++;
+	}
 }
 
 void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 {
-	int	**pipe_fd;
+	int	pipes[2][2];
 	int	pipe_count;
-	int	i;
 
 	pipe_count = count_pipes(simple_cmds);
-	pipe_fd = ft_calloc((pipe_count + 1), sizeof(int *));
-	if (!pipe_fd)
-		return ;
-	create_pipes(data, simple_cmds, pipe_fd);
-	close_pipes(pipe_fd, pipe_count);
-	while (waitpid(-1, &g_exit_status, 0) != -1)
-		;
-	g_exit_status = g_exit_status / 256;
-	while (waitpid(-1, 0, 0) != -1)
-		;
+	setup_pipes(pipes, pipe_count, simple_cmds);
+	handle_child_processes(pipes, pipe_count, data, simple_cmds);
+	close_unused_pipes(pipes, pipe_count);
+	wait_and_cleanup(pipes, pipe_count);
+}
+
+/*
+void ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
+{
+	int pipes[2][2];
+	int i;
+	pid_t pid;
+	int pipe_count;
+	int child_status;
+
+	i = 0;
+	pipe_count = count_pipes(simple_cmds);
+	heredoc_pipes(data, simple_cmds, pipe_count);
+	while (i < pipe_count)
+	{
+		pipe(pipes[i % 2]);
+		pid = fork();
+		if (pid == 0)
+		{
+			if (i > 0) {
+				dup2(pipes[(i - 1) % 2][0], STDIN_FILENO);
+				close(pipes[(i - 1) % 2][0]);
+				close(pipes[(i - 1) % 2][1]);
+			}
+			if (i < pipe_count - 1) {
+				dup2(pipes[i % 2][1], STDOUT_FILENO);
+				close(pipes[i % 2][0]);
+				close(pipes[i % 2][1]);
+			}
+			if (simple_cmds->redirections[0])
+			{
+				if (!(simple_cmds->redirections[0]->token[0] == '<' &&
+					simple_cmds->redirections[0]->token[1] == '<'))
+					execute_redirection(data, simple_cmds->redirections[0]);
+			}
+			if (check_builtins(data, simple_cmds) == 0)
+				check_executable(data, simple_cmds);
+			exit(EXIT_FAILURE);
+		}
+		if (i > 0)
+		{
+			close(pipes[(i - 1) % 2][0]);
+			close(pipes[(i - 1) % 2][1]);
+		}
+		i++;
+		simple_cmds = simple_cmds->next;
+	}
+	if (pipe_count > 1) {
+		close(pipes[(pipe_count - 2) % 2][0]);
+		close(pipes[(pipe_count - 2) % 2][1]);
+	}
 	i = 0;
 	while (i < pipe_count)
 	{
-		free(pipe_fd[i]);
+		wait(&child_status);
+		if (WIFEXITED(child_status))
+			g_exit_status = WEXITSTATUS(child_status);
+		else if (WIFSIGNALED(child_status))
+			g_exit_status = 128 + WTERMSIG(child_status);
 		i++;
 	}
-	free(pipe_fd);
 }
+*/

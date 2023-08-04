@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 20:14:44 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/02 21:25:49 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/04 20:44:30 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*count_quotes(t_data *data, int j, char *str)
 		}
 		if (data->quote_type != 'n' && str[j] == data->quote_type)
 			data->quote_type = count_quotes_2(data);
-		if (str[j] == '$' && data->quote_type != '\'')
+		while (str[j] == '$' && data->quote_type != '\'')
 		{
 			str = expander(data, str, j);
 			if (str[0] == '\0')
