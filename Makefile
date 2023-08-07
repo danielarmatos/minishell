@@ -6,13 +6,13 @@
 #    By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 18:12:34 by dreis-ma          #+#    #+#              #
-#    Updated: 2023/08/04 22:47:06 by dreis-ma         ###   ########.fr        #
+#    Updated: 2023/08/07 11:02:37 by dmanuel-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-#CFLAGS = -Wall -Wextra -Werror -g
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
+#CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 DEPS = libft/libft.a
 
 SRC = src/main.c src/builtins/pwd.c src/builtins/exit.c \

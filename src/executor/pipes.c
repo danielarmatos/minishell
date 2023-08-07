@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 19:30:37 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/04 23:02:37 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/07 11:06:43 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	heredoc_pipes(t_data *data, t_simple_cmds *simple_cmds, int pipe_count)
 	}
 }
 
-void	setup_pipes(int pipes[][2], int pipe_count, t_simple_cmds *simple_cmds)
+void	setup_pipes(int pipes[][2], int pipe_count, t_simple_cmds \
+	*simple_cmds, t_data *data)
 {
 	int	i;
 
@@ -49,7 +50,8 @@ void	setup_pipes(int pipes[][2], int pipe_count, t_simple_cmds *simple_cmds)
 	}
 }
 
-void	handle_child_processes(int pipes[][2], int pipe_count, t_data *data, t_simple_cmds *simple_cmds)
+void	handle_child_processes(int pipes[][2], int pipe_count, t_data *data, \
+t_simple_cmds *simple_cmds)
 {
 	int		i;
 	pid_t	pid;
@@ -61,27 +63,7 @@ void	handle_child_processes(int pipes[][2], int pipe_count, t_data *data, t_simp
 		pid = fork();
 		if (pid == 0)
 		{
-			if (i > 0)
-			{
-				dup2(pipes[(i - 1) % 2][0], STDIN_FILENO);
-				close(pipes[(i - 1) % 2][0]);
-				close(pipes[(i - 1) % 2][1]);
-			}
-			if (i < pipe_count - 1)
-			{
-				dup2(pipes[i % 2][1], STDOUT_FILENO);
-				close(pipes[i % 2][0]);
-				close(pipes[i % 2][1]);
-			}
-			if (simple_cmds->redirections[0])
-			{
-				if (!(simple_cmds->redirections[0]->token[0] == '<'
-						&& simple_cmds->redirections[0]->token[1] == '<'))
-					execute_redirection(data, simple_cmds->redirections[0]);
-			}
-			if (check_builtins(data, simple_cmds) == 0)
-				check_executable(data, simple_cmds);
-			exit(EXIT_FAILURE);
+			setup_child_process(pipes, i, data, simple_cmds);
 		}
 		if (i > 0)
 		{
@@ -99,6 +81,8 @@ void	wait_and_cleanup(int pipes[][2], int pipe_count)
 	int	child_status;
 
 	i = 0;
+	(void)pipes;
+	child_status = 0;
 	while (i < pipe_count)
 	{
 		wait(&child_status);
@@ -113,13 +97,12 @@ void	wait_and_cleanup(int pipes[][2], int pipe_count)
 void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 {
 	int	pipes[2][2];
-	int	pipe_count;
 
-	pipe_count = count_pipes(simple_cmds);
-	setup_pipes(pipes, pipe_count, simple_cmds);
-	handle_child_processes(pipes, pipe_count, data, simple_cmds);
-	close_unused_pipes(pipes, pipe_count);
-	wait_and_cleanup(pipes, pipe_count);
+	data->pipe_count = count_pipes(simple_cmds);
+	setup_pipes(pipes, data->pipe_count, simple_cmds, data);
+	handle_child_processes(pipes, data->pipe_count, data, simple_cmds);
+	/*close_unused_pipes(pipes, data->pipe_count);*/
+	wait_and_cleanup(pipes, data->pipe_count);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:23:26 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/02 16:41:02 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/07 11:44:13 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,28 @@ int	count_pipes(t_simple_cmds *simple_cmds)
 		i++;
 	}
 	return (i);
+}
+
+void	setup_child_process(int pipes[][2], int i, t_data *data, \
+							t_simple_cmds *simple_cmds)
+{
+	if (i > 0)
+	{
+		dup2(pipes[(i - 1) % 2][0], STDIN_FILENO);
+		close(pipes[(i - 1) % 2][0]);
+		close(pipes[(i - 1) % 2][1]);
+	}
+	if (i < data->pipe_count - 1)
+	{
+		dup2(pipes[i % 2][1], STDOUT_FILENO);
+		close(pipes[i % 2][0]);
+		close(pipes[i % 2][1]);
+	}
+	if (simple_cmds->redirections[0] && \
+		!(simple_cmds->redirections[0]->token[0] \
+		== '<' && simple_cmds->redirections[0]->token[1] == '<'))
+		execute_redirection(data, simple_cmds->redirections[0]);
+	if (check_builtins(data, simple_cmds) == 0)
+		check_executable(data, simple_cmds);
+	ft_exit_fork(data);
 }

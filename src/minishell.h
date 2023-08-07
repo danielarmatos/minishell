@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/02 21:25:44 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/07 10:58:58 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_data
 	int						og_ioput[2];
 	int						quote_count;
 	char					quote_type;
+	int						pipe_count;
 }		t_data;
 
 int				ft_pwd(t_data *data);
@@ -99,6 +100,8 @@ void			add_cmd_node(t_simple_cmds **simple_cmds, \
 char			*delete_quotes(char *str, char c);
 void			free_arr(char **split_arr);
 
+void			setup_child_process(int pipes[][2], int i, t_data *data, \
+							t_simple_cmds *simple_cmds);
 void			ft_pipes(t_data *data, t_simple_cmds *simple_cmds);
 void			close_pipes(int **pipe_fd, int id);
 int				count_pipes(t_simple_cmds *simple_cmds);
