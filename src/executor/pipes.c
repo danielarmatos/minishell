@@ -82,6 +82,7 @@ void	wait_and_cleanup(int pipes[][2], int pipe_count)
 
 	i = 0;
 	(void)pipes;
+	child_status = 0;
 	while (i < pipe_count)
 	{
 		wait(&child_status);

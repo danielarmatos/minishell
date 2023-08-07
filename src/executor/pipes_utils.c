@@ -68,5 +68,5 @@ void	setup_child_process(int pipes[][2], int i, t_data *data, \
 		execute_redirection(data, simple_cmds->redirections[0]);
 	if (check_builtins(data, simple_cmds) == 0)
 		check_executable(data, simple_cmds);
-	exit(EXIT_FAILURE);
+	ft_exit_fork(data);
 }
