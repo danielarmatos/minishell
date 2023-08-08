@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:00:11 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/02 21:25:37 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:57:14 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*remove_quotes(char *input, t_data *data, char quote_type)
 			quote_type = 'n';
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
 			if (k == j)
-				data->exporting = 1;	
+				data->exporting = 1;
 		}
 		j--;
 	}

@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 10:23:26 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/07 11:44:13 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:41:41 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void	setup_child_process(int pipes[][2], int i, t_data *data, \
 	if (simple_cmds->redirections[0] && \
 		!(simple_cmds->redirections[0]->token[0] \
 		== '<' && simple_cmds->redirections[0]->token[1] == '<'))
-		execute_redirection(data, simple_cmds->redirections[0]);
+	{
+		if (execute_redirection(data, simple_cmds->redirections[0], 0) == 0)
+			ft_exit_fork(data);
+	}
 	if (check_builtins(data, simple_cmds) == 0)
 		check_executable(data, simple_cmds);
 	ft_exit_fork(data);

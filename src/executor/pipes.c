@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 19:30:37 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/07 11:06:43 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:45:38 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	heredoc_pipes(t_data *data, t_simple_cmds *simple_cmds, int pipe_count)
 				&& cmds->redirections[0]->token[1] == '<')
 			{
 				dup2(data->fd, STDIN_FILENO);
-				execute_redirection(data, cmds->redirections[0]);
+				execute_redirection(data, cmds->redirections[0], 0);
 			}
 		}
 		cmds = cmds->next;
@@ -42,7 +42,9 @@ void	setup_pipes(int pipes[][2], int pipe_count, t_simple_cmds \
 
 	i = 0;
 	heredoc_pipes(data, simple_cmds, pipe_count);
-	set_signals(2);
+	set_signals(1);
+	data->interactive = 1;
+	handle_heredoc_signals(0, data);
 	while (i < pipe_count)
 	{
 		pipe(pipes[i % 2]);
@@ -64,6 +66,8 @@ t_simple_cmds *simple_cmds)
 		pid = fork();
 		if (pid == 0)
 		{
+			set_signals(1);
+			handle_heredoc_signals(0, data);
 			setup_child_process(pipes, i, data, simple_cmds);
 		}
 		if (i > 0)
@@ -84,13 +88,18 @@ void	wait_and_cleanup(int pipes[][2], int pipe_count)
 	i = 0;
 	(void)pipes;
 	child_status = 0;
-	while (i < pipe_count)
+	while (i < (pipe_count + 1))
 	{
 		wait(&child_status);
-		if (WIFEXITED(child_status))
-			g_exit_status = WEXITSTATUS(child_status);
-		else if (WIFSIGNALED(child_status))
-			g_exit_status = 128 + WTERMSIG(child_status);
+		if ((child_status >> 7) & 0x01)
+			write(2, "minishell: Quit (core dump)\n", 28);
+		if ((((child_status) & 0x7f) + 1) >> 1)
+		{
+			if (((child_status) & 0x7f) == 2)
+				child_status = 130;
+		}
+		else
+			child_status >>= 8;
 		i++;
 	}
 }
@@ -104,66 +113,3 @@ void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 	handle_child_processes(pipes, data->pipe_count, data, simple_cmds);
 	wait_and_cleanup(pipes, data->pipe_count);
 }
-
-/*
-void ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
-{
-	int pipes[2][2];
-	int i;
-	pid_t pid;
-	int pipe_count;
-	int child_status;
-
-	i = 0;
-	pipe_count = count_pipes(simple_cmds);
-	heredoc_pipes(data, simple_cmds, pipe_count);
-	while (i < pipe_count)
-	{
-		pipe(pipes[i % 2]);
-		pid = fork();
-		if (pid == 0)
-		{
-			if (i > 0) {
-				dup2(pipes[(i - 1) % 2][0], STDIN_FILENO);
-				close(pipes[(i - 1) % 2][0]);
-				close(pipes[(i - 1) % 2][1]);
-			}
-			if (i < pipe_count - 1) {
-				dup2(pipes[i % 2][1], STDOUT_FILENO);
-				close(pipes[i % 2][0]);
-				close(pipes[i % 2][1]);
-			}
-			if (simple_cmds->redirections[0])
-			{
-				if (!(simple_cmds->redirections[0]->token[0] == '<' &&
-					simple_cmds->redirections[0]->token[1] == '<'))
-					execute_redirection(data, simple_cmds->redirections[0]);
-			}
-			if (check_builtins(data, simple_cmds) == 0)
-				check_executable(data, simple_cmds);
-			exit(EXIT_FAILURE);
-		}
-		if (i > 0)
-		{
-			close(pipes[(i - 1) % 2][0]);
-			close(pipes[(i - 1) % 2][1]);
-		}
-		i++;
-		simple_cmds = simple_cmds->next;
-	}
-	if (pipe_count > 1) {
-		close(pipes[(pipe_count - 2) % 2][0]);
-		close(pipes[(pipe_count - 2) % 2][1]);
-	}
-	i = 0;
-	while (i < pipe_count)
-	{
-		wait(&child_status);
-		if (WIFEXITED(child_status))
-			g_exit_status = WEXITSTATUS(child_status);
-		else if (WIFSIGNALED(child_status))
-			g_exit_status = 128 + WTERMSIG(child_status);
-		i++;
-	}
-}
-*/

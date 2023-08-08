@@ -12,6 +12,15 @@
 
 #include "../minishell.h"
 
+int	execute_redirection_error(t_lexer *redirections)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(redirections->str, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+	g_exit_status = 1;
+	return (0);
+}
+
 void	remove_file(t_data *data)
 {
 	data->prompt = ft_strjoin("rm ", "temp_file");
