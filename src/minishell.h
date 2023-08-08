@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/08 18:11:06 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:27:56 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ char			count_quotes_2(t_data *data);
 void			clean_string_vars(t_data *data);
 
 char			*expander(t_data *data, char *input, int i);
-char			*find_variable(t_data *data, char *value, int j);
+char			*find_variable(t_data *data, char *value, int j, \
+							char *variable);
 char			*expand_str(t_data *data, char *str);
 void			add_redirections(t_lexer *node, t_lexer **redirections);
 int				execute_redirection(t_data *data, \

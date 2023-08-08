@@ -6,23 +6,22 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:01:27 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/02 20:45:24 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:24:38 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*find_variable(t_data *data, char *value, int j)
+char	*find_variable(t_data *data, char *value, int j, char *variable)
 {
 	char	**str;
-	char	*variable;
 
-	variable = NULL;
 	while (data->env[j])
 	{
 		if (data->env[j] == NULL)
 			return (NULL);
-		if (data->env[j][ft_strlen(data->env[j]) - 1] == '=')
+		if (data->env[j][ft_strlen(data->env[j]) - 1] == '=' ||
+				ft_strrchr(data->env[j], '=') == NULL)
 			return (NULL);
 		str = ft_split(data->env[j], '=');
 		if (!str[1])

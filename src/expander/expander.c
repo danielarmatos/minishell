@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 18:53:39 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/02 20:48:13 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:20:59 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*expand_str(t_data *data, char *str)
 		str2 = ft_strdup("");
 		return (str2);
 	}
-	variable = find_variable(data, value, 0);
+	variable = find_variable(data, value, 0, NULL);
 	if (variable)
 		str2 = str_replace(str, value, variable);
 	else
@@ -92,7 +92,7 @@ char	*expander_2(t_data *data, char *input, char *value)
 	char	*variable;
 	char	*input2;
 
-	variable = find_variable(data, value, 0);
+	variable = find_variable(data, value, 0, NULL);
 	if (variable)
 		input2 = str_replace(input, value, variable);
 	else
