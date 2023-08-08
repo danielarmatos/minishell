@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:49:20 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/08/01 20:35:33 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:33:55 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,9 @@ static int	parameter(char *str)
 	i = 0;
 	if (ft_isdigit(str[0]))
 		return (export_error(str));
-	if (equals(str) == 0)
-		return (EXIT_FAILURE);
 	if (str[0] == '=')
 		return (export_error(str));
-	while (str[i] != '=')
+	while (str[i] != '=' && str[i])
 	{
 		if (check_identifier(str[i]))
 			return (export_error(str));
