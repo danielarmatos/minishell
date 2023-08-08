@@ -86,8 +86,8 @@ int	executor_2(t_data *data, t_simple_cmds *simple_cmds, int fd_in, int fd_out)
 {
 	if (fork() == 0)
 	{
-		if (simple_cmds->redirections[0]
-			&& (execute_redirection(data, simple_cmds->redirections[0]) == 0))
+		if (simple_cmds->redirections[0] && (execute_redirection(data, \
+			simple_cmds->redirections[0], 0) == 0))
 		{
 			ft_exit_fork(data);
 			return (0);

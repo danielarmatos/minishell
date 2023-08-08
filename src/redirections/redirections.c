@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:02:17 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/04 22:13:19 by dreis-ma         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:54:22 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ int	redirect_input(t_data *data, t_lexer *redirections)
 		fd = open(redirections->str, O_RDONLY);
 		if (fd == -1)
 		{
-			ft_printf("minishell: %s: No such file or directory\n",
-				redirections->str);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(redirections->str, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
 			g_exit_status = 1;
 			return (0);
 		}
@@ -66,18 +67,24 @@ int	redirect_input(t_data *data, t_lexer *redirections)
 	return (1);
 }
 
-int	execute_redirection(t_data *data, t_lexer *redirections)
+int	execute_redirection(t_data *data, t_lexer *redirections, int fd)
 {
-	int	fd;
-
 	while (redirections)
 	{
 		if (redirections->token[0] == '>')
 		{
 			if (redirections->token[0] == '>' && redirections->token[1] == '>')
+			{
 				fd = open(redirections->str, O_CREAT | O_RDWR | O_APPEND, 0644);
+				if (fd == -1)
+					return (execute_redirection_error(redirections));
+			}
 			else
+			{
 				fd = open(redirections->str, O_CREAT | O_RDWR | O_TRUNC, 0644);
+				if (fd == -1)
+					return (execute_redirection_error(redirections));
+			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}

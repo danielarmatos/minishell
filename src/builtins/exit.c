@@ -6,7 +6,7 @@
 /*   By: dreis-ma <dreis-ma@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:09 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/01 14:00:36 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:08:02 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ void	ft_exit(t_data *data, t_simple_cmds *simple_cmd)
 	}
 	else
 	{
+		if (simple_cmd->cmds[1] && digits_only(simple_cmd->cmds[1]) == 1 && simple_cmd->cmds[2])
+		{
+			ft_printf("minishell: exit: too many arguments\n");
+			return ;
+		}
 		print_exit(data, simple_cmd);
 		free_data(data);
 	}

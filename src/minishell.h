@@ -6,7 +6,7 @@
 /*   By: dreis-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 18:12:10 by dreis-ma          #+#    #+#             */
-/*   Updated: 2023/08/07 10:58:58 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:11:06 by dreis-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,8 @@ char			*expander(t_data *data, char *input, int i);
 char			*find_variable(t_data *data, char *value, int j);
 char			*expand_str(t_data *data, char *str);
 void			add_redirections(t_lexer *node, t_lexer **redirections);
-int				execute_redirection(t_data *data, t_lexer *redirections);
+int				execute_redirection(t_data *data, \
+							t_lexer *redirections, int fd);
 char			*d_quotes_expander(t_data *data, char *input, int i, int j);
 char			*str_replace(char *str, char *variable, char *value);
 char			*str_replace_2(char *str, char *variable, char *value);
@@ -138,6 +139,7 @@ void			free_str(char **str);
 void			ft_exit_fork(t_data *data);
 void			free_data(t_data *data);
 void			free_redirections(t_simple_cmds *simple_cmd);
+int				execute_redirection_error(t_lexer *redirections);
 void			remove_file(t_data *data);
 void			free_pipe_fd(int **pipe_fd);
 
