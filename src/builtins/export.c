@@ -6,7 +6,7 @@
 /*   By: dmanuel- <dmanuel-@student.42porto.pt>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:49:20 by dmanuel-          #+#    #+#             */
-/*   Updated: 2023/08/08 15:33:55 by dmanuel-         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:55:31 by dmanuel-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	var_exist(t_data *data, char *str)
 		delete_quotes(str, '\'');
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], str, equals(data->env[i])) == 0)
+		if (ft_strcmp(data->env[i], str) == 0)
 		{
 			free(data->env[i]);
 			data->env[i] = ft_strdup(str);
