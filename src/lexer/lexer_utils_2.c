@@ -38,7 +38,7 @@ char	*count_quotes(t_data *data, int j, char *str)
 		}
 		if (data->quote_type != 'n' && str[j] == data->quote_type)
 			data->quote_type = count_quotes_2(data);
-		while (str[j] == '$' && data->quote_type != '\'')
+		if (str[j] == '$' && data->quote_type != '\'')
 		{
 			str = expander(data, str, j);
 			if (str[0] == '\0')

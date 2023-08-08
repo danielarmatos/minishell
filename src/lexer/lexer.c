@@ -32,8 +32,8 @@ char	*remove_quotes(char *input, t_data *data, char quote_type)
 		{
 			quote_type = 'n';
 			ft_strlcpy(&input[j], &input[j + 1], ft_strlen(input));
-			if (k == j + 1)
-				data->exporting = 1;
+			if (k == j)
+				data->exporting = 1;	
 		}
 		j--;
 	}

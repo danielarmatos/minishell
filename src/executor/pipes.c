@@ -42,6 +42,7 @@ void	setup_pipes(int pipes[][2], int pipe_count, t_simple_cmds \
 
 	i = 0;
 	heredoc_pipes(data, simple_cmds, pipe_count);
+	set_signals(2);
 	while (i < pipe_count)
 	{
 		pipe(pipes[i % 2]);
@@ -101,7 +102,6 @@ void	ft_pipes(t_data *data, t_simple_cmds *simple_cmds)
 	data->pipe_count = count_pipes(simple_cmds);
 	setup_pipes(pipes, data->pipe_count, simple_cmds, data);
 	handle_child_processes(pipes, data->pipe_count, data, simple_cmds);
-	/*close_unused_pipes(pipes, data->pipe_count);*/
 	wait_and_cleanup(pipes, data->pipe_count);
 }
 
