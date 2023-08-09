@@ -24,11 +24,14 @@ static int	var_exist(t_data *data, char *str)
 	while (data->env[i])
 	{
 		if ((ft_strncmp(data->env[i], str, equals(data->env[i])) == 0 && \
-		equals(str)) || (equals(str) == 0 && ft_strcmp(data->env[i], str) == 0))
+		equals(str)) || (equals(str) == 0 && ft_strcmp(data->env[i], str) \
+		== 0) || (ft_strncmp(data->env[i], str, equals(data->env[i]) - 1) \
+		== 0 && (equals(str) == 0)))
 		{
+			if (!equals(str) && ft_strcmp(data->env[i], str))
+				return (1);
 			free(data->env[i]);
 			data->env[i] = ft_strdup(str);
-			printf("same var\n");
 			return (1);
 		}
 		i++;
