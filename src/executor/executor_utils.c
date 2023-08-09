@@ -19,7 +19,7 @@ char	**search_paths(t_data *data, t_simple_cmds *simple_cmds)
 
 	if (!simple_cmds->cmds[0])
 		return (0);
-	temp = find_variable(data, "PATH", 0);
+	temp = find_variable(data, "PATH", 0, NULL);
 	if (temp == NULL)
 	{
 		execute_direct_path(data, simple_cmds);
