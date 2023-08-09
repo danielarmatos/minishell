@@ -67,3 +67,16 @@ int	env_count(t_data *data)
 	i = i - 1;
 	return (i);
 }
+
+char	*check_varstr(char *str)
+{
+	char	*str2;
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '=')
+		i++;
+	str2 = malloc(sizeof(char) + i);
+	ft_strlcpy(str2, str, i);
+	return (str2);
+}

@@ -91,6 +91,7 @@ void			add_node(t_lexer **lexer, t_lexer *new_node);
 t_lexer			*create_token_node(char *str);
 t_lexer			*create_str_node(char *str);
 size_t			equals(char *str);
+char			*check_varstr(char *str);
 
 int				parsing(t_data *data);
 t_lexer			**create_redirections(void);
